@@ -3,7 +3,11 @@ export const siteConfig = {
   title: "Digital Product Designer & Web Service Expert",
   description:
     "Проектирование и разработка сайтов, SaaS-продуктов и веб-сервисов: исследование бизнеса, UX/UI, автоматизация, AI-интеграции и запуск цифровых продуктов.",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
+  url:
+    process.env.NEXT_PUBLIC_SITE_URL ??
+    (process.env.VERCEL_PROJECT_PRODUCTION_URL
+      ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+      : "https://ilyas-azelkhanov-portfolio.vercel.app"),
   contacts: { email: "", telegram: "", linkedin: "" },
   formEndpoint: process.env.NEXT_PUBLIC_FORM_ENDPOINT ?? "",
 };
