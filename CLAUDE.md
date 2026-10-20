@@ -6,17 +6,17 @@
 @DESIGN.md
 
 ## Стек (не менять без согласования)
-- Next.js 16.4 (App Router, Turbopack, cacheComponents), React 19.3, TypeScript strict, pnpm
-- `export const ensureStatic = 'navigation'` на маркетинговом layout: страницы только статические
+- Next.js 16.4 (App Router, Turbopack), React 19.3, TypeScript 7 strict, pnpm
+- `output: 'export'` + `trailingSlash: true`: сайт — чистая статика в `out/`, хостинг hoster.kz (зона .kz обязана жить на серверах в РК). Никаких route handlers, middleware, ISR и серверных функций
 - Tailwind CSS 4.3 + shadcn/ui (Base UI). Готовые анимированные блоки (Magic UI / Aceternity / React Bits / 21st): максимум 4 на сайт, всегда перестилизованы под токены
 - GSAP 3.15 + ScrollTrigger + SplitText через @gsap/react (useGSAP, cleanup обязателен): скролл-сцены
 - Motion 14 (`motion/react`): hover/tap/layout состояния компонентов. Не два движка на одном элементе
 - View Transitions (React 19.3) для переходов между страницами; без поддержки браузера — обычная навигация
 - Lenis 1.3: только desktop; выключен на touch и при reduced motion; один общий rAF через gsap.ticker
 - three / R3F / drei: ТОЛЬКО для одной сцены hero на главной (`components/hero-scene`), lazy, desktop + capable mobile
-- next-intl: `/ru` (default), `/kk`, позже `/en`. Код языка `kk`, не `kz`
+- Языки: волна 1 без next-intl — RU в корне, KK-страницы статичными маршрутами `/kk/prices`, `/kk/contact`, `/kk/privacy`, `/kk/offer` из `content/kk/*.ts`. next-intl — в волне 2. Код языка `kk`, не `kz`
 - @serwist/turbopack: manifest + offline-страница. Push, background sync: не делать
-- Деплой: Vercel, функции `regions: ['fra1']`
+- Деплой: GitHub Actions → `pnpm build` → SFTP на hoster.kz (доступы в GitHub Secrets). Превью — `dev.azelkhanov.kz` за basic auth. `.htaccess`: HTTPS-редирект, 404, кэш статики
 
 ## Карта сайта (источник правды — SPEC.md)
 `/` · `/services/websites` · `/services/mini-apps` · `/services/bots` · `/services/automation` · `/training` · `/work` · `/about` · `/brief` · `/contact` · `/privacy` · `/offer`
@@ -24,8 +24,10 @@
 
 ## Команды
 - `pnpm dev` / `pnpm build` / `pnpm lint` / `pnpm typecheck`
-- `pnpm shots`: Playwright-скриншоты 375 / 768 / 1440 всех маршрутов в `./shots`
-- `npx @google/design.md lint DESIGN.md`: токены и WCAG-контраст
+- `pnpm shots [маршруты]`: Playwright-скриншоты 375 / 768 / 1440 из `out/` в `./shots` (сначала `pnpm build`); печатает горизонтальный overflow и ошибки консоли
+- `pnpm design:lint`: линтер DESIGN.md (токены и WCAG-контраст)
+- `pnpm tokens`: DESIGN.md → `app/tokens.css` + `content/tokens.json`. Запускать после любой правки токенов
+- `pnpm fonts`: `brand/fonts-src/*.ttf` → `public/fonts/*.woff2` + `app/fonts.css` (нужны `fonttools`, `brotli`)
 
 ## Контент
 - Весь текст, цены и FAQ живут в `content/*.ts` (типизировано), не в JSX.
@@ -41,6 +43,8 @@
 
 ## Дизайн
 - Только токены из DESIGN.md. Никаких сырых hex/px/радиусов в компонентах.
+- Шкалы Tailwind по умолчанию отключены (`app/tokens.css`): существуют только наши цвета, радиусы и отступы. Отступы — ИМЕНОВАННЫЕ, не кратные 4: `p-5` = 24px, `p-7` = 48px, `p-10` = 144px; `w-20`, `p-12` и т.п. не существуют. Типографика — только утилиты `t-<токен>` (плавные между 375 и 1440).
+- Синее — скруглённое (`rounded-pill`), ink — острое (`rounded-xs`/`none`). Синий текст — только `primary-deep`.
 - Одна сильная сцена на страницу. Главная: 3D-hero. Страница услуги: её демо. Остальное тихое — типографика и отступы.
 - Запрещено: Inter / Roboto / Space Grotesk как display; фиолетово-синие градиенты; кремовый фон + терракота; near-black + кислотный акцент; сетки одинаковых скруглённых карточек с мягкой тенью; eyebrow-лейблы капсом; «→» после ссылок; 01/02/03 вне реальных последовательностей; акцент одного слова в заголовке; fade-up на каждой секции; кастомный курсор; прелоадер и счётчик 0%; autoplay звука; scroll-jacking и горизонтальный скролл на mobile.
 - Любой шрифт обязан содержать: Әә Ғғ Ққ Ңң Өө Ұұ Үү Һһ Іі. Проверь до подключения.
@@ -54,7 +58,7 @@
 ## Бюджет производительности (mobile, каждая страница)
 - LCP ≤ 2.5s, INP ≤ 200ms, CLS ≤ 0.1; Lighthouse mobile ≥ 90
 - Initial JS страницы ≤ 170KB gzip; 3D-чанк и демо — отдельные lazy-чанки
-- ≤ 2 семейства шрифтов (variable, subset latin+cyrillic+cyrillic-ext); изображения AVIF, hero-постер ≤ 120KB
+- ≤ 2 семейства шрифтов: Geologica (весь текст) + Fira Code (только код и метрики в демо); один woff2 на семейство из `pnpm fonts`; изображения AVIF, hero-постер ≤ 120KB
 - LCP-элемент: текст или постер, никогда canvas/iframe
 - WebGL: DPR ≤ 1.5 на mobile, frameloop="demand", обработка потери контекста, gate по reduced motion / Save-Data / deviceMemory / WebGL2
 - Анимировать только transform/opacity; reduced motion через gsap.matchMedia и MotionConfig reducedMotion="user"
@@ -62,7 +66,7 @@
 ## Данные и право
 - Волна 1 не хранит персональные данные: бриф считается в браузере и уходит предзаполненным текстом в WhatsApp/Telegram.
 - Без отдельного решения в SPEC.md: никаких форм с ПДн, логов чата, Supabase/Resend (локализация ПДн в РК с 25.08.2026).
-- Аналитика: Yandex Metrica (`next/script` lazyOnload) + @vercel/analytics + @vercel/speed-insights.
+- Аналитика: только Yandex Metrica (`next/script` lazyOnload); полевые CWV — через `web-vitals` в параметры визита Метрики. Пакеты Vercel не используем (хостинг не Vercel).
 
 ## Как работать
 - Используй Context7 для документации библиотек без напоминаний.
