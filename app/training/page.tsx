@@ -46,11 +46,11 @@ export default function TrainingPage() {
         <p className="col-span-4 t-body-s text-slate md:col-span-8 lg:col-span-12">Курс для студентов — в подготовке.</p>
       </section>
       <section className="flex flex-col gap-5">
-        <h2 className="t-display-l">Где выступал и преподавал</h2>
+        <h2 className="t-display-l">Работал с</h2>
         <ul className="flex flex-wrap gap-2">
           {venues.map((v) => (
-            <li key={v} className="rounded-pill bg-mist px-4 py-2 t-label">
-              {v}
+            <li key={v.name} className="rounded-pill bg-mist px-4 py-2 t-label">
+              {v.name}
             </li>
           ))}
         </ul>
