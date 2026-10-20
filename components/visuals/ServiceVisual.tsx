@@ -72,8 +72,8 @@ function Automation() {
   return (
     <div className="relative flex size-full items-center justify-between px-2">
       <span className="absolute inset-x-6 top-1/2 h-px -translate-y-1/2 bg-ink/20" />
-      <span className="absolute inset-x-6 top-1/2 -translate-y-1/2 [container-type:inline-size]">
-        <span className="v-travel block size-3 -translate-y-1/2 rounded-pill bg-primary" />
+      <span className="absolute inset-x-6 top-1/2 block h-0 [container-type:inline-size]">
+        <span className="v-travel absolute top-0 left-0 block size-3 rounded-pill bg-primary" />
       </span>
       {nodes.map((n, i) => (
         <span

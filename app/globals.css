@@ -285,9 +285,9 @@
   100% { opacity: 0; transform: none; }
 }
 @keyframes v-travel {
-  0% { transform: translate3d(0, -50%, 0); opacity: 0; }
+  0% { transform: translate3d(-50%, -50%, 0); opacity: 0; }
   10%, 90% { opacity: 1; }
-  100% { transform: translate3d(100cqw, -50%, 0); opacity: 0; }
+  100% { transform: translate3d(calc(100cqw - 50%), -50%, 0); opacity: 0; }
 }
 @keyframes v-node {
   0%, 100% { transform: scale(1); }
