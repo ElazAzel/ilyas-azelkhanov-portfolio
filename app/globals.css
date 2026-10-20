@@ -334,3 +334,20 @@
     transform: translate3d(-100%, 0, 0);
   }
 }
+
+/* Demo micro-motion: new chat message slides in, typing dots pulse. */
+@media (prefers-reduced-motion: no-preference) {
+  .v-in {
+    animation: v-msg-in var(--dur-base) var(--ease-out) both;
+  }
+  .v-dot {
+    animation: v-dot 0.9s var(--ease-in-out) infinite;
+  }
+}
+@keyframes v-msg-in {
+  from { opacity: 0; transform: translate3d(0, 8px, 0) scale(0.97); }
+}
+@keyframes v-dot {
+  0%, 100% { opacity: 0.3; transform: translate3d(0, 0, 0); }
+  50% { opacity: 1; transform: translate3d(0, -3px, 0); }
+}

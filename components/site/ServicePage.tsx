@@ -10,6 +10,8 @@ import { buttonClass } from "@/components/ui/Button";
 import { WhatsAppIcon } from "@/components/ui/Icons";
 import { CheckIcon, MinusIcon } from "@/components/ui/Icons2";
 import { CtaBand } from "./CtaBand";
+import { DemoSlot } from "@/components/demos/DemoSlot";
+import { hasDemo } from "@/content/demos";
 
 /** One template for every service (CLAUDE.md): offer → scene → includes/excludes → packages → process → FAQ → CTA. */
 export function ServicePage({ id, children }: { id: ServiceId; children?: ReactNode }) {
@@ -43,12 +45,20 @@ export function ServicePage({ id, children }: { id: ServiceId; children?: ReactN
           </div>
         </div>
         <figure className="col-span-4 flex flex-col gap-3 md:col-span-8 lg:col-span-6">
-          <div className="px-tilt rounded-md bg-mist p-5 md:p-7">
-            <ServiceVisual id={s.id} className="aspect-[4/3] w-full" />
-          </div>
+          {hasDemo(s.id) ? (
+            <div className="rounded-md bg-mist p-4 md:p-6">
+              <DemoSlot id={s.id} poster={<ServiceVisual id={s.id} className="aspect-[4/3] w-full" />} />
+            </div>
+          ) : (
+            <div className="px-tilt rounded-md bg-mist p-5 md:p-7">
+              <ServiceVisual id={s.id} className="aspect-[4/3] w-full" />
+            </div>
+          )}
           <figcaption className="flex items-center gap-2 t-body-s text-slate">
             <span aria-hidden="true" className="size-2 rounded-pill bg-primary" />
-            Схема работы. Живое демо, которое можно нажимать, появится здесь же.
+            {hasDemo(s.id)
+              ? "Демо-сценарий: нажимайте кнопки, как будто вы клиент. Данные выдуманы, ничего никуда не отправляется."
+              : "Схема работы. Живое демо, которое можно нажимать, появится здесь же."}
           </figcaption>
         </figure>
       </section>

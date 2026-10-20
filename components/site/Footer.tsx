@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Logo } from "@/components/brand/Logo";
 import { services } from "@/content/services";
 import { contacts, telegramLink, whatsappLink } from "@/content/contacts";
+import { company } from "@/content/legal";
 
 export function Footer() {
   return (
@@ -31,6 +32,11 @@ export function Footer() {
             Оценить задачу
           </Link>
           <p className="t-body-s text-slate-inverse">{contacts.sla}</p>
+        </div>
+        <div className="col-span-4 flex flex-wrap gap-x-5 gap-y-2 pt-5 t-body-s text-slate-inverse md:col-span-8 lg:col-span-12">
+          <span>{company.name}, ИИН/БИН {company.iin}</span>
+          <Link href="/offer/" className="underline underline-offset-4 hover:text-ink-inverse">Публичная оферта</Link>
+          <Link href="/privacy/" className="underline underline-offset-4 hover:text-ink-inverse">Политика конфиденциальности</Link>
         </div>
       </div>
     </footer>
