@@ -124,7 +124,7 @@ export default function BotDemo() {
       <div className="flex flex-col gap-3 rounded-md bg-night p-5 text-ink-inverse">
         <p className="t-label text-slate-inverse">Telegram менеджера</p>
         {leads.length === 0 ? (
-          <p className="t-body-s text-slate-inverse">Запишитесь в боте слева — заявка придёт сюда.</p>
+          <p className="t-body-s text-slate-inverse">Сюда придёт заявка.</p>
         ) : (
           <ul className="flex flex-col gap-3">
             {leads.map((l) => (

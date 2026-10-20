@@ -222,7 +222,7 @@ export default function MiniAppDemo() {
         <div className="flex flex-col gap-3 rounded-md bg-night p-5 text-ink-inverse">
           <p className="t-label text-slate-inverse">Экран бариста</p>
           {orders.length === 0 ? (
-            <p className="t-body-s text-slate-inverse">Оформите заказ в приложении слева — он появится здесь.</p>
+            <p className="t-body-s text-slate-inverse">Здесь появится заказ.</p>
           ) : (
             <ul className="flex flex-col gap-3">
               {orders.map((o) => (
@@ -246,7 +246,7 @@ export default function MiniAppDemo() {
         >
           <span className="t-label text-slate">Собственный продукт</span>
           <span className="t-heading-s">{ownBot.handle}</span>
-          <span className="t-body-s text-slate">Мой {ownBot.what} в Telegram — откройте и попробуйте.</span>
+          <span className="t-body-s text-slate">Открыть в Telegram</span>
         </a>
       </div>
     </div>

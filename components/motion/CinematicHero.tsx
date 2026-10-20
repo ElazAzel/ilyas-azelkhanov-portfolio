@@ -6,6 +6,7 @@ import { MagneticLink } from "@/components/motion/MagneticLink";
 import { buttonClass } from "@/components/ui/Button";
 import { WhatsAppIcon } from "@/components/ui/Icons";
 import { contacts, whatsappLink } from "@/content/contacts";
+import { formatPrice, packagesFor } from "@/content/pricing";
 import { heroChapters, heroFrames, heroIntro, heroOutro } from "@/content/hero";
 import { BASE_PATH } from "@/lib/base-path";
 import { haptic } from "@/lib/haptics";
@@ -283,13 +284,16 @@ export function CinematicHero() {
 
           {heroChapters.map((c) => (
             <div key={c.title} data-ch className="cine-ch">
-              <h2 className="t-display-l">{c.title}</h2>
-              <p className="measure t-body-l text-slate-inverse">{c.text}</p>
+              <h2 className="t-display-xl">{c.title}</h2>
+              <p className="t-price">{formatPrice(packagesFor(c.service)[0]!)}</p>
+              <Link href={c.href} data-fx="press" className={buttonClass("inverse")}>
+                Смотреть демо
+              </Link>
             </div>
           ))}
 
           <div data-ch className="cine-ch">
-            <h2 className="t-display-l">{heroOutro.title}</h2>
+            <h2 className="t-display-xl">{heroOutro.title}</h2>
             <p className="t-body-m text-slate-inverse">{contacts.sla}</p>
             <div className="flex flex-wrap items-center gap-3">
               <a href={hello} data-fx="press" className={buttonClass("primary")}>

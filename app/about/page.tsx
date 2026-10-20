@@ -5,10 +5,7 @@ import { CtaBand } from "@/components/site/CtaBand";
 import { buttonClass } from "@/components/ui/Button";
 import { CheckIcon } from "@/components/ui/Icons2";
 import { venues } from "@/content/services";
-import { processSteps } from "@/content/process";
-import { contacts } from "@/content/contacts";
 import { company, prepayment } from "@/content/legal";
-import { guarantee } from "@/content/pricing";
 
 export const metadata: Metadata = {
   title: "Обо мне",
@@ -17,11 +14,9 @@ export const metadata: Metadata = {
 
 // TODO(ilyas): фото и 3–5 предложений о себе своими словами. До этого — только подтверждённые факты.
 const principles = [
-  "Цены «от» открыто на сайте — одинаковые на всех страницах",
-  "Заранее пишу, что входит в работу и что не входит",
+  "Цены открыто на сайте",
   `Договор с ${company.name}, предоплата ${prepayment}`,
-  `Гарантия — ${guarantee}`,
-  contacts.sla,
+  "Гарантия 1 месяц после сдачи",
   "Тренинги на русском и казахском",
 ];
 
@@ -32,8 +27,7 @@ export default function AboutPage() {
         <div className="col-span-4 flex flex-col gap-5 md:col-span-8 lg:col-span-7">
           <h1 className="t-display-xl">Ильяс Азелханов</h1>
           <p className="measure t-body-l">
-            Алматы. Делаю сайты, Telegram-ботов и Mini Apps, автоматизирую процессы с ИИ — и учу команды с этим работать. Разработка и обучение в одних руках:
-            то, что я сделал, ваша команда сможет поддерживать сама.
+            Алматы. Делаю сайты, ботов, Mini Apps и AI-автоматизацию — и учу команды этим пользоваться.
           </p>
           <p className="t-body-m text-slate">В соцсетях и Telegram — Elazart.</p>
           <div className="flex flex-wrap gap-3">
@@ -51,7 +45,7 @@ export default function AboutPage() {
       </section>
 
       <section className="grid-page gap-y-6">
-        <h2 className="col-span-4 t-display-l md:col-span-8 lg:col-span-4">Как я работаю</h2>
+        <h2 className="col-span-4 t-display-l md:col-span-8 lg:col-span-4">Условия</h2>
         <ul className="col-span-4 grid gap-3 md:col-span-8 md:grid-cols-2 lg:col-span-8">
           {principles.map((p) => (
             <li key={p} className="flex gap-3 rounded-md bg-mist p-4 t-body-m">
@@ -73,19 +67,6 @@ export default function AboutPage() {
             </li>
           ))}
         </ul>
-      </section>
-
-      <section className="flex flex-col gap-5">
-        <h2 className="t-display-l">Путь проекта</h2>
-        <ol className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          {processSteps.map((s, i) => (
-            <li key={s.title} className="flex flex-col gap-3 rounded-md bg-night p-5 text-ink-inverse">
-              <span className="grid size-7 place-items-center rounded-pill bg-primary t-label text-on-primary">{i + 1}</span>
-              <h3 className="t-heading-s">{s.title}</h3>
-              <p className="t-body-s text-slate-inverse">{s.text}</p>
-            </li>
-          ))}
-        </ol>
       </section>
 
       <CtaBand />

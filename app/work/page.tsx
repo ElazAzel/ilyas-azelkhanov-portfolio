@@ -28,7 +28,7 @@ export default function WorkPage() {
       <header className="flex flex-col gap-4">
         <h1 className="t-display-xl">Работы</h1>
         <p className="measure t-body-l text-slate">
-          Собственные продукты и живые демо. Всё ниже можно открыть и нажать — это лучше любого скриншота.
+          Всё ниже можно открыть и нажать.
         </p>
       </header>
 
@@ -48,7 +48,7 @@ export default function WorkPage() {
             <span className="flex flex-col gap-2">
               <span className="t-label text-slate-inverse">Собственный продукт</span>
               <span className="t-display-l">{ownBot.handle}</span>
-              <span className="t-body-m text-slate-inverse">Мой {ownBot.what} в Telegram. Откройте и попробуйте сами.</span>
+              <span className="t-body-m text-slate-inverse">{ownBot.what.charAt(0).toUpperCase() + ownBot.what.slice(1)} в Telegram.</span>
             </span>
             <span className="flex items-center gap-3 t-label">
               Открыть в Telegram
@@ -62,7 +62,7 @@ export default function WorkPage() {
             <h3 className="t-display-l">Этот сайт</h3>
             <ParticleMonogram className="w-2/3 self-center" />
             <ul className="grid gap-2 t-body-m md:grid-cols-2">
-              <li>Объёмная монограмма из 3 400 точек — 3 KB кода</li>
+              <li>3D-знак, который вращается при прокрутке</li>
               <li>Пять живых демо вместо скриншотов</li>
               <li>Звук и вибрация в ответ на нажатия</li>
               <li>Версия для ИИ-поиска —{" "}
@@ -70,7 +70,7 @@ export default function WorkPage() {
               </li>
             </ul>
             <Link href="/services/websites/" data-fx="press" className="link self-start t-label">
-              Включить рентген и посмотреть, как он устроен
+              Посмотреть, как он устроен
             </Link>
           </div>
         </div>

@@ -148,7 +148,7 @@ export default function XrayDemo() {
         </div>
       ) : (
         <div className="flex flex-col gap-3 rounded-sm bg-night p-4 text-ink-inverse">
-          <p className="t-label text-slate-inverse">{xray ? "Измерено в вашем браузере прямо сейчас" : "Включите рентген — увидите сетку, компоненты и замеры"}</p>
+          <p className="t-label text-slate-inverse">{xray ? "Измерено в вашем браузере прямо сейчас" : "Включите рентген"}</p>
           {xray ? (
             <dl className="grid gap-x-4 gap-y-2 t-code">
               {rows.map(([k, v]) => (

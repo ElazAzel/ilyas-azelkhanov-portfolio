@@ -1,19 +1,22 @@
 import Link from "next/link";
 import { ViewTransition, type ReactNode } from "react";
-import { formatPrice, guarantee, packagesFor, type ServiceId } from "@/content/pricing";
+import { formatPrice, packagesFor, type ServiceId } from "@/content/pricing";
+import { prepayment } from "@/content/legal";
 import { serviceById } from "@/content/services";
-import { processSteps } from "@/content/process";
 import { whatsappLink } from "@/content/contacts";
 import { ServiceVisual } from "@/components/visuals/ServiceVisual";
 import { MagneticLink } from "@/components/motion/MagneticLink";
 import { buttonClass } from "@/components/ui/Button";
 import { WhatsAppIcon } from "@/components/ui/Icons";
-import { CheckIcon, MinusIcon } from "@/components/ui/Icons2";
+import { CheckIcon } from "@/components/ui/Icons2";
 import { CtaBand } from "./CtaBand";
 import { DemoSlot } from "@/components/demos/DemoSlot";
 import { demoCaption, hasDemo } from "@/content/demos";
 
-/** One template for every service (CLAUDE.md): offer → scene → includes/excludes → packages → process → FAQ → CTA. */
+// Short facts next to prices instead of a paragraph of explanations.
+const terms = ["Точная цена — после разбора задачи", "Договор с ИП", `Предоплата ${prepayment}`, "Гарантия 1 месяц"];
+
+/** One template for every service: offer → live demo → what's included → prices → FAQ → CTA. Few words, the demo does the talking. */
 export function ServicePage({ id, children }: { id: ServiceId; children?: ReactNode }) {
   const s = serviceById(id);
   const pkgs = packagesFor(id);
@@ -58,46 +61,38 @@ export function ServicePage({ id, children }: { id: ServiceId; children?: ReactN
             <span aria-hidden="true" className="size-2 rounded-pill bg-primary" />
             {hasDemo(s.id)
               ? demoCaption(s.id)
-              : "Схема работы. Живое демо, которое можно нажимать, появится здесь же."}
+              : "Схема работы."}
           </figcaption>
         </figure>
       </section>
 
-      {/* Includes / excludes */}
-      <section className="grid-page gap-y-6">
-        <div data-xray="IncludesList" className="col-span-4 flex flex-col gap-5 rounded-md bg-mist p-5 md:col-span-4 lg:col-span-7 lg:p-7">
-          <h2 className="t-heading-m">Что входит</h2>
-          <ul className="flex flex-col gap-3">
-            {s.includes.map((i) => (
-              <li key={i} className="flex gap-3 t-body-m">
-                <span className="mt-1 grid size-5 shrink-0 place-items-center rounded-pill bg-primary text-on-primary">
-                  <CheckIcon />
-                </span>
-                {i}
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div className="col-span-4 flex flex-col gap-5 rounded-md p-5 ring-[length:var(--stroke)] ring-line ring-inset md:col-span-4 lg:col-span-5 lg:p-7" data-xray="ExcludesList">
-          <h2 className="t-heading-m">Не входит</h2>
-          <ul className="flex flex-col gap-3">
-            {s.excludes.map((i) => (
-              <li key={i} className="flex gap-3 t-body-m text-slate">
-                <span className="mt-1 grid size-5 shrink-0 place-items-center rounded-xs bg-ink/10 text-ink">
-                  <MinusIcon />
-                </span>
-                {i}
-              </li>
-            ))}
-          </ul>
-        </div>
+      {/* What's included — one compact block */}
+      <section data-xray="IncludesList" className="flex flex-col gap-5">
+        <h2 className="t-display-l">Что входит</h2>
+        <ul className="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
+          {s.includes.map((i) => (
+            <li key={i} className="flex items-start gap-3 rounded-md bg-mist p-5 t-heading-s">
+              <span className="mt-1 grid size-5 shrink-0 place-items-center rounded-pill bg-primary text-on-primary">
+                <CheckIcon />
+              </span>
+              {i}
+            </li>
+          ))}
+        </ul>
+        <p className="t-body-s text-slate">Не входит: {s.excludes.join(", ")}.</p>
       </section>
 
       {/* Packages */}
       <section className="flex flex-col gap-6">
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-4">
           <h2 className="t-display-l">Цены</h2>
-          <p className="t-body-m text-slate">Цены «от»: точную сумму называю после разбора задачи. Гарантия — {guarantee}.</p>
+          <ul className="flex flex-wrap gap-2">
+            {terms.map((t) => (
+              <li key={t} className="rounded-pill bg-mist px-4 py-2 t-label">
+                {t}
+              </li>
+            ))}
+          </ul>
         </div>
         <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {pkgs.map((p) => (
@@ -116,20 +111,6 @@ export function ServicePage({ id, children }: { id: ServiceId; children?: ReactN
       </section>
 
       {children}
-
-      {/* Process */}
-      <section className="flex flex-col gap-6">
-        <h2 className="t-display-l">Как я работаю</h2>
-        <ol className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          {processSteps.map((p, i) => (
-            <li key={p.title} data-xray="ProcessStep" className="flex flex-col gap-3 rounded-md bg-mist p-5">
-              <span className="grid size-7 place-items-center rounded-pill bg-primary t-label text-on-primary">{i + 1}</span>
-              <h3 className="t-heading-s">{p.title}</h3>
-              <p className="t-body-s text-slate">{p.text}</p>
-            </li>
-          ))}
-        </ol>
-      </section>
 
       {/* FAQ: only answered questions */}
       {s.faq.length ? (

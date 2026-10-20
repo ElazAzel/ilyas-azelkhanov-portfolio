@@ -6,8 +6,8 @@ export function CtaBand({ ask = "Здравствуйте, Ильяс! Хочу 
   return (
     <section data-xray="CtaBand" className="overflow-hidden rounded-md bg-primary p-5 text-on-primary md:p-7 lg:p-9">
       <div className="flex flex-col gap-6">
-        <h2 className="px-drift max-w-[16ch] t-display-xl">Расскажите задачу — отвечу в течение 2 часов</h2>
-        <p className="t-body-l">В будни с 10 до 19 по Алматы.</p>
+        <h2 className="px-drift max-w-[16ch] t-display-xl">Напишите — отвечу за 2&nbsp;часа</h2>
+        <p className="t-body-m">Будни, 10–19 по Алматы</p>
         <div className="flex flex-wrap gap-3">
           <a
             href={whatsappLink(ask)}

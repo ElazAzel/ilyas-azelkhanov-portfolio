@@ -90,7 +90,7 @@ export default function TrainingDemo() {
             <WhatsAppIcon /> Запросить программу
           </a>
         </div>
-        <p className="t-body-s text-slate-inverse">Это пример. Финальную программу собираю под задачи вашей команды после короткого созвона.</p>
+        <p className="t-body-s text-slate-inverse">Пример. Финальная программа — под вашу команду.</p>
       </div>
     </div>
   );

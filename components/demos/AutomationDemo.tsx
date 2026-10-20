@@ -145,7 +145,7 @@ export default function AutomationDemo() {
             </span>
           </div>
         ))}
-        <p className="t-body-s text-slate-inverse">Прогоните заявку в обоих режимах и сравните. Время — пример, на вашем процессе замерим реальное.</p>
+        <p className="t-body-s text-slate-inverse">Сравните оба режима. Время — пример.</p>
       </div>
     </div>
   );

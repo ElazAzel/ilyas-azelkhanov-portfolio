@@ -1,14 +1,19 @@
 import Link from "next/link";
-import { buttonClass } from "@/components/ui/Button";
-import { PhoneFrame } from "@/components/ui/PhoneFrame";
-import { NightStage } from "@/components/motion/NightStage";
 import { CinematicHero } from "@/components/motion/CinematicHero";
-import { ProcessScene } from "@/components/motion/ProcessScene";
+import { NightStage } from "@/components/motion/NightStage";
 import { SmoothScroll } from "@/components/motion/SmoothScroll";
+import { DemoSlot } from "@/components/demos/DemoSlot";
 import { ServiceGrid } from "@/components/site/ServiceGrid";
 import { Marquee } from "@/components/site/Marquee";
 import { CtaBand } from "@/components/site/CtaBand";
-import { processSteps } from "@/content/process";
+import { ServiceVisual } from "@/components/visuals/ServiceVisual";
+
+const otherDemos = [
+  { href: "/services/bots/", label: "Бот автосервиса" },
+  { href: "/services/websites/", label: "Рентген сайта" },
+  { href: "/services/automation/", label: "Автоматизация заявки" },
+  { href: "/training/", label: "Конструктор тренинга" },
+];
 
 export default function Home() {
   return (
@@ -25,36 +30,22 @@ export default function Home() {
         </section>
 
         <div className="container-page">
-          <ProcessScene title="Как я работаю" steps={processSteps} />
-        </div>
-
-        <div className="container-page">
-          <NightStage className="grid-page gap-y-7 p-5 md:p-7 lg:p-8">
-            <div className="col-span-4 flex flex-col gap-5 md:col-span-8 lg:col-span-5 lg:self-center">
-              <h2 className="t-display-l">Сначала попробуйте, потом заказывайте</h2>
-              <p className="measure t-body-l text-slate-inverse">
-                На каждой странице услуги — живая схема, а скоро и демо, которое можно нажимать: бот, мини-апп, автоматизация.
-              </p>
-              <Link href="/services/bots/" data-fx="press" className={buttonClass("primary", "self-start")}>
-                Посмотреть ботов
-              </Link>
+          <NightStage className="grid-page gap-y-6 p-5 md:p-7 lg:p-8">
+            <h2 className="col-span-4 t-display-xl md:col-span-8 lg:col-span-12">Попробуйте сами</h2>
+            <div className="col-span-4 flex flex-col gap-5 md:col-span-8 lg:col-span-4 lg:self-start">
+              <p className="t-body-l text-slate-inverse">Mini App кофейни — соберите заказ.</p>
+              <ul className="flex flex-wrap gap-2">
+                {otherDemos.map((d) => (
+                  <li key={d.href}>
+                    <Link href={d.href} data-fx="select" className="inline-block rounded-pill bg-night-raised px-4 py-3 t-label hover:bg-primary">
+                      {d.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
             </div>
-            <div className="px-tilt col-span-4 md:col-span-8 lg:col-span-6 lg:col-start-7">
-              <PhoneFrame label="Пример экрана чат-бота">
-                <div className="flex h-full flex-col gap-3 bg-mist px-4 pt-7 pb-4 t-body-s text-ink">
-                  <p className="self-start rounded-sm bg-paper px-4 py-3">Здравствуйте! Я бот автосервиса. Что вас интересует?</p>
-                  <p className="self-end rounded-sm bg-primary px-4 py-3 text-on-primary">Записаться</p>
-                  <p className="self-start rounded-sm bg-paper px-4 py-3">Выберите услугу:</p>
-                  <div className="mt-auto grid grid-cols-2 gap-2">
-                    {["Замена масла", "Диагностика", "Шиномонтаж", "Другое"].map((b) => (
-                      <span key={b} className="rounded-sm bg-paper px-3 py-3 text-center t-label">
-                        {b}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </PhoneFrame>
-              <p className="mt-4 text-center t-body-s text-slate-inverse">Демо-сценарий. Данные выдуманы для примера.</p>
+            <div className="col-span-4 rounded-md bg-mist p-4 text-ink md:col-span-8 md:p-6 lg:col-span-8">
+              <DemoSlot id="mini-apps" poster={<ServiceVisual id="mini-apps" className="aspect-[4/3] w-full" />} />
             </div>
           </NightStage>
         </div>

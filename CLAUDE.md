@@ -21,7 +21,8 @@
 
 ## Карта сайта (источник правды — SPEC.md)
 `/` · `/services/websites` · `/services/mini-apps` · `/services/bots` · `/services/automation` · `/training` · `/work` · `/about` · `/brief` · `/contact` · `/privacy` · `/offer`
-Каждая страница услуги = один шаблон `ServicePage`: оффер → живое демо → что входит/не входит → пакеты «от» → процесс → FAQ → CTA.
+Каждая страница услуги = один шаблон `ServicePage`: оффер → живое демо → что входит/не входит → пакеты «от» → FAQ → CTA.
+- Тон: показывать, а не объяснять. Одна фраза — что это, цена «от», демо. Без абзацев-пояснений (решение Ильяса 20.10.2026).
 
 ## Команды
 - `pnpm dev` / `pnpm build` / `pnpm lint` / `pnpm typecheck`
