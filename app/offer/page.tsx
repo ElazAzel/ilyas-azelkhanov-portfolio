@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { LegalPage } from "@/components/site/LegalPage";
-import { company, prepayment } from "@/content/legal";
+import { company, freeRescheduleHours, nonRefundable, prepayment, refundDays } from "@/content/legal";
 import { contacts } from "@/content/contacts";
 import { formatPrice, packages } from "@/content/pricing";
 
@@ -8,7 +8,6 @@ export const metadata: Metadata = { title: "Публичная оферта", de
 
 const personal = packages.find((p) => p.id === "training-personal")!;
 
-// TODO(ilyas): перенос, отмена и возврат предоплаты — без этих условий раздел не публикуется.
 export default function OfferPage() {
   return (
     <LegalPage title="Публичная оферта" updated="20.10.2026">
@@ -34,11 +33,27 @@ export default function OfferPage() {
         </p>
       </section>
       <section className="flex flex-col gap-3">
-        <h2 className="t-heading-m">4. Ответственность</h2>
+        <h2 className="t-heading-m">4. Перенос, отмена и возврат</h2>
+        <ul className="flex list-disc flex-col gap-2 pl-5 t-body-m">
+          <li>
+            Перенос занятия бесплатный, если Заказчик предупредил не позднее чем за {freeRescheduleHours} часа до начала. Один бесплатный
+            перенос на каждое оплаченное занятие.
+          </li>
+          <li>
+            Если Заказчик отменяет занятие раньше чем за {freeRescheduleHours} часа, предоплата возвращается за вычетом {nonRefundable} её суммы.
+            Эта часть невозвратная: она покрывает зарезервированное время и подготовку программы под Заказчика.
+          </li>
+          <li>Если Заказчик отменяет занятие позднее чем за {freeRescheduleHours} часа или не приходит, предоплата не возвращается.</li>
+          <li>Если занятие отменяет или переносит Исполнитель, Заказчик выбирает: перенос на удобное время или полный возврат предоплаты.</li>
+          <li>Возврат — в течение {refundDays} рабочих дней на счёт или карту, с которых пришла оплата.</li>
+        </ul>
+      </section>
+      <section className="flex flex-col gap-3">
+        <h2 className="t-heading-m">5. Ответственность</h2>
         <p className="t-body-m">Стороны несут ответственность в соответствии с законодательством Республики Казахстан.</p>
       </section>
       <section className="flex flex-col gap-3">
-        <h2 className="t-heading-m">5. Связь</h2>
+        <h2 className="t-heading-m">6. Связь</h2>
         <p className="t-body-m">
           WhatsApp {contacts.whatsapp.display}, Telegram {contacts.telegram.display}. {contacts.sla}.
         </p>
