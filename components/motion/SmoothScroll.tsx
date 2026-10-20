@@ -16,7 +16,7 @@ export function SmoothScroll() {
       ]);
       if (cancelled) return;
       gsap.registerPlugin(ScrollTrigger);
-      const lenis = new Lenis({ autoRaf: false, lerp: 0.12 });
+      const lenis = new Lenis({ autoRaf: false, lerp: 0.12, anchors: { offset: -64 } });
       const tick = (time: number) => lenis.raf(time * 1000);
       lenis.on("scroll", ScrollTrigger.update);
       gsap.ticker.add(tick);

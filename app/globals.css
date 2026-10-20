@@ -236,3 +236,101 @@
     transform: translate3d(-4%, 0, 0);
   }
 }
+
+/* Service visuals: tiny looping scenes on the service cards and pages. transform/opacity only. */
+@media (prefers-reduced-motion: no-preference) {
+  .service-visual .v-build {
+    animation: v-build 5s var(--ease-out) var(--d, 0s) infinite both;
+  }
+  .service-visual .v-pick {
+    animation: v-pick 3s var(--ease-in-out) infinite;
+  }
+  .service-visual .v-bump {
+    animation: v-bump 3s var(--ease-out) infinite;
+  }
+  .service-visual .v-msg {
+    animation: v-msg 6s var(--ease-out) var(--d, 0s) infinite both;
+  }
+  .service-visual .v-travel {
+    animation: v-travel 3.2s var(--ease-in-out) infinite;
+  }
+  .service-visual .v-node {
+    animation: v-node 3.2s var(--ease-out) var(--d, 0s) infinite;
+  }
+  .service-visual .v-grow {
+    animation: v-grow 4s var(--ease-out) var(--d, 0s) infinite both;
+  }
+  .service-visual .v-blink {
+    animation: v-blink 2.8s var(--ease-in-out) var(--d, 0s) infinite;
+  }
+}
+
+@keyframes v-build {
+  0% { transform: scale(0, 1); opacity: 0; }
+  12%, 80% { transform: scale(1, 1); opacity: 1; }
+  100% { transform: scale(1, 1); opacity: 0; }
+}
+@keyframes v-pick {
+  0%, 30%, 100% { transform: scale(1); box-shadow: 0 0 0 0 transparent; }
+  40%, 70% { transform: scale(0.94); box-shadow: 0 0 0 2px var(--color-primary); }
+}
+@keyframes v-bump {
+  0%, 38%, 100% { transform: scale(1); }
+  45% { transform: scale(1.15); }
+  52% { transform: scale(1); }
+}
+@keyframes v-msg {
+  0% { opacity: 0; transform: translate3d(0, 10px, 0) scale(0.96); }
+  8%, 85% { opacity: 1; transform: none; }
+  100% { opacity: 0; transform: none; }
+}
+@keyframes v-travel {
+  0% { transform: translate3d(0, -50%, 0); opacity: 0; }
+  10%, 90% { opacity: 1; }
+  100% { transform: translate3d(100cqw, -50%, 0); opacity: 0; }
+}
+@keyframes v-node {
+  0%, 100% { transform: scale(1); }
+  15% { transform: scale(1.08); }
+  30% { transform: scale(1); }
+}
+@keyframes v-grow {
+  0% { transform: scaleY(0.05); }
+  25%, 85% { transform: scaleY(1); }
+  100% { transform: scaleY(0.05); }
+}
+@keyframes v-blink {
+  0%, 100% { opacity: 0.25; }
+  40% { opacity: 1; background: var(--color-primary); }
+}
+
+/* Venue strip (S10): endless marquee, pauses on hover; static and wrapping with reduced motion. */
+.marquee {
+  width: max-content;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .marquee .marquee-track {
+    animation: marquee 48s linear infinite;
+  }
+  .marquee:hover .marquee-track {
+    animation-play-state: paused;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .marquee {
+    width: auto;
+    padding-inline: var(--gutter);
+  }
+  .marquee .marquee-track {
+    flex-wrap: wrap;
+    row-gap: var(--spacing-3);
+  }
+  .marquee .marquee-track[aria-hidden] {
+    display: none;
+  }
+}
+@keyframes marquee {
+  to {
+    transform: translate3d(-100%, 0, 0);
+  }
+}

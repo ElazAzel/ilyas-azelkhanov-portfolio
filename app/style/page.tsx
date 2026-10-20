@@ -123,7 +123,7 @@ export default function StylePage() {
         <div className="flex flex-col gap-5">
           <div className="flex items-center justify-between gap-5">
             <LogoInline className="inline-flex items-center gap-3" />
-            <Link href="/lab/" className="link t-label">
+            <Link href="/" className="link t-label">
               Выразительный слой
             </Link>
           </div>

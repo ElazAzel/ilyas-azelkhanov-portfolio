@@ -22,7 +22,7 @@ export function PageTransition({ children }: { children: ReactNode }) {
   }, [pathname]);
   return (
     <ViewTransition key={pathname} name="az-page" share="az-page" default="none">
-      <div className="min-h-dvh bg-paper">{children}</div>
+      <div className="bg-paper">{children}</div>
     </ViewTransition>
   );
 }
