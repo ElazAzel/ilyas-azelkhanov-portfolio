@@ -389,3 +389,122 @@ html.xray [data-xray]:not(.night-stage)::before {
     padding-bottom: calc(var(--spacing-8) + env(safe-area-inset-bottom));
   }
 }
+
+/* S1 — cinematic hero: sticky stage, the canvas is scrubbed by scroll (components/motion/CinematicHero.tsx) */
+.cine {
+  position: relative;
+  height: 320svh;
+}
+.cine-stage {
+  position: sticky;
+  top: var(--spacing-8);
+  height: calc(100svh - var(--spacing-8));
+  overflow: hidden;
+  background: var(--color-night);
+  color: var(--color-ink-inverse);
+}
+.cine-media {
+  position: absolute;
+  inset: 0;
+  transform: scale(1.06);
+  will-change: transform;
+}
+.cine-poster,
+.cine-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.cine-canvas {
+  opacity: 0;
+}
+.cine-canvas[data-ready] {
+  opacity: 1;
+}
+.cine-copy {
+  position: relative;
+  display: grid;
+  height: 100%;
+}
+.cine-ch {
+  grid-area: 1 / 1;
+  align-self: end;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-5);
+  padding-bottom: var(--spacing-9);
+  opacity: 0;
+  will-change: transform, opacity;
+}
+.cine-ch:first-child {
+  opacity: 1;
+}
+@media (min-width: 1024px) {
+  .cine-ch {
+    align-self: center;
+    max-width: 44%;
+    padding-bottom: 0;
+  }
+}
+.cine-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-3);
+}
+.cine-hint-dot {
+  width: var(--spacing-2);
+  height: var(--spacing-2);
+  border-radius: var(--radius-pill);
+  background: var(--color-primary-light);
+  animation: cine-hint 1.6s var(--ease-in-out) infinite;
+}
+@keyframes cine-hint {
+  50% {
+    transform: translateY(var(--spacing-2));
+  }
+}
+.cine-progress {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: var(--spacing-1);
+  background: var(--color-line-inverse);
+}
+.cine-progress-bar {
+  height: 100%;
+  background: var(--color-primary);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+@media (prefers-reduced-motion: reduce) {
+  .cine {
+    height: auto;
+  }
+  .cine-stage {
+    position: relative;
+    top: 0;
+    height: auto;
+    padding-top: 60svh;
+  }
+  .cine-media {
+    bottom: auto;
+    height: 60svh;
+    transform: none;
+  }
+  .cine-copy {
+    gap: var(--spacing-8);
+    padding-bottom: var(--spacing-8);
+  }
+  .cine-ch {
+    grid-area: auto;
+    opacity: 1;
+    padding-bottom: 0;
+  }
+  .cine-hint,
+  .cine-progress {
+    display: none;
+  }
+}

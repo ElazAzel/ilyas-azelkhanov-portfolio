@@ -1,51 +1,21 @@
 import Link from "next/link";
 import { buttonClass } from "@/components/ui/Button";
-import { WhatsAppIcon } from "@/components/ui/Icons";
 import { PhoneFrame } from "@/components/ui/PhoneFrame";
-import { MagneticLink } from "@/components/motion/MagneticLink";
 import { NightStage } from "@/components/motion/NightStage";
-import { ParticleMonogram } from "@/components/motion/ParticleMonogram";
+import { CinematicHero } from "@/components/motion/CinematicHero";
 import { ProcessScene } from "@/components/motion/ProcessScene";
 import { SmoothScroll } from "@/components/motion/SmoothScroll";
 import { ServiceGrid } from "@/components/site/ServiceGrid";
 import { Marquee } from "@/components/site/Marquee";
 import { CtaBand } from "@/components/site/CtaBand";
-import { contacts, whatsappLink } from "@/content/contacts";
 import { processSteps } from "@/content/process";
-
-const hello = whatsappLink("Здравствуйте, Ильяс! Хочу обсудить задачу.");
 
 export default function Home() {
   return (
     <>
       <SmoothScroll />
       <main className="flex flex-col gap-9 pb-8 lg:gap-10">
-        {/* S1 + S3 + S7 */}
-        <section className="container-page relative grid content-center gap-7 py-6 lg:min-h-[calc(85svh-var(--spacing-8))]">
-          <div className="px-hero relative z-10 flex flex-col gap-6 lg:w-5/12">
-            <h1 className="t-display-xl">Сделаю и&nbsp;научу</h1>
-            <p className="measure t-body-l">
-              Сайты, Telegram-боты и Mini Apps, AI-автоматизация процессов — и обучение команды, чтобы всё это работало.
-            </p>
-            <p className="t-body-s text-slate">{contacts.sla}</p>
-            <div className="flex flex-wrap items-center gap-3">
-              <MagneticLink href={hello} icon={<WhatsAppIcon />}>
-                Написать в WhatsApp
-              </MagneticLink>
-              <Link href="/brief/" data-fx="press" className={buttonClass("secondary")}>
-                Оценить задачу
-              </Link>
-            </div>
-          </div>
-          <div className="flex flex-col items-center gap-3 max-lg:order-first lg:absolute lg:top-1/2 lg:right-7 lg:w-[56%] lg:-translate-y-1/2">
-            <ParticleMonogram className="w-4/5 lg:w-full" />
-            <p className="flex items-center gap-2 t-body-s text-slate">
-              <span aria-hidden="true" className="size-2 rounded-pill bg-primary" />
-              <span className="lg:hidden">Нажмите на знак или наклоните телефон</span>
-              <span className="max-lg:hidden">Поводите курсором и нажмите на знак</span>
-            </p>
-          </div>
-        </section>
+        <CinematicHero />
 
         <Marquee />
 
