@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import type { ReactNode } from "react";
 import tokens from "@/content/tokens.json";
 import { packages } from "@/content/pricing";
@@ -120,7 +121,12 @@ export default function StylePage() {
     <main className="container-page flex flex-col gap-8 pb-10 lg:gap-10">
       <header className="flex flex-col gap-6 border-b-[length:var(--stroke)] border-ink pt-6 pb-8 lg:flex-row lg:items-end lg:justify-between">
         <div className="flex flex-col gap-5">
-          <LogoInline className="inline-flex items-center gap-3" />
+          <div className="flex items-center justify-between gap-5">
+            <LogoInline className="inline-flex items-center gap-3" />
+            <Link href="/lab/" className="link t-label">
+              Выразительный слой
+            </Link>
+          </div>
           <h1 className="t-display-xl">Дизайн-система</h1>
           <p className="measure t-body-l text-slate">
             Style tile фазы 1. Все значения берутся из DESIGN.md и проходят через один генератор токенов.

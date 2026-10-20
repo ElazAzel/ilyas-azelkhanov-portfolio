@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { PageTransition } from "@/components/motion/PageTransition";
 import tokens from "@/content/tokens.json";
 import "./globals.css";
 
@@ -20,7 +21,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <link rel="preload" href="/fonts/geologica.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
       </head>
-      <body>{children}</body>
+      <body>
+        <PageTransition>{children}</PageTransition>
+      </body>
     </html>
   );
 }

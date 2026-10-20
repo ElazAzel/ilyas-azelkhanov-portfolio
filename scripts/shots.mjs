@@ -33,6 +33,7 @@ for (const route of ROUTES) {
     page.on("console", (m) => m.type() === "error" && errors.push(m.text()));
     await page.goto(`http://localhost:4173${route}`, { waitUntil: "networkidle" });
     await page.evaluate(() => document.fonts.ready);
+    await page.waitForTimeout(Number(process.env.SHOTS_WAIT ?? 0));
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
     const name = (route.replace(/\//g, "_").replace(/^_|_$/g, "") || "home") + `-${width}.png`;
     await page.screenshot({ path: join(SHOTS, name), fullPage: true });

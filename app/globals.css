@@ -104,12 +104,7 @@
   }
 }
 
-/* Page transitions: short crossfade; shared elements morph by name. */
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation-duration: var(--dur-page);
-  animation-timing-function: var(--ease-out);
-}
+/* Shared elements morph by name. The page itself uses the S2 wipe below. */
 
 ::view-transition-group(.morph) {
   animation-duration: var(--dur-base);
@@ -125,4 +120,69 @@
 :root {
   --stroke: 1.5px;
   --phone-w: 20rem;
+}
+
+/* S5 night stage: static dot grid + the same grid in primary-light, revealed around the cursor. */
+@utility night-stage {
+  --mx: -999px;
+  --my: -999px;
+  --dot-gap: var(--spacing-5);
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-size: var(--dot-gap) var(--dot-gap);
+  }
+  &::before {
+    background-image: radial-gradient(circle, var(--color-line-inverse) var(--stroke), transparent calc(var(--stroke) + 0.5px));
+  }
+  &::after {
+    background-image: radial-gradient(circle, var(--color-primary-light) var(--stroke), transparent calc(var(--stroke) + 0.5px));
+    mask-image: radial-gradient(circle var(--spacing-10) at var(--mx) var(--my), #000, transparent);
+  }
+}
+
+/* S2 diagonal wipe between pages: the old page is cut away along the AZ diagonal,
+   a primary band passes, the new page is revealed behind it. 121.3vh = viewport height / tan(39.5°). */
+::view-transition-image-pair(.az-page) {
+  background: var(--color-primary);
+}
+
+::view-transition-old(.az-page) {
+  animation: az-cut-out 560ms var(--ease-in-out) both;
+}
+
+::view-transition-new(.az-page) {
+  animation: az-cut-in 560ms var(--ease-in-out) 140ms both;
+}
+
+@keyframes az-cut-out {
+  from {
+    clip-path: polygon(0 0, 300vw 0, 300vw 100%, calc(0px - 121.3vh) 100%);
+  }
+  to {
+    clip-path: polygon(calc(100vw + 121.3vh) 0, 300vw 0, 300vw 100%, 100vw 100%);
+  }
+}
+
+@keyframes az-cut-in {
+  from {
+    clip-path: polygon(-300vw 0, 0 0, calc(0px - 121.3vh) 100%, -300vw 100%);
+  }
+  to {
+    clip-path: polygon(-300vw 0, calc(100vw + 121.3vh) 0, 100vw 100%, -300vw 100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(.az-page),
+  ::view-transition-new(.az-page) {
+    animation: none;
+  }
 }
