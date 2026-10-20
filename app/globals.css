@@ -351,3 +351,25 @@
   0%, 100% { opacity: 0.3; transform: translate3d(0, 0, 0); }
   50% { opacity: 1; transform: translate3d(0, -3px, 0); }
 }
+
+/* X-ray demo (/services/websites): outlines and names every component marked with data-xray. */
+html.xray [data-xray] {
+  outline: var(--stroke) dashed var(--color-primary);
+  outline-offset: calc(-1 * var(--stroke));
+}
+html.xray [data-xray]:not(.night-stage) {
+  position: relative;
+}
+html.xray [data-xray]:not(.night-stage)::before {
+  content: attr(data-xray);
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 41;
+  padding: var(--spacing-1) var(--spacing-2);
+  border-radius: 0 0 var(--radius-xs) 0;
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  font: 500 0.75rem/1.2 "Fira Code", ui-monospace, monospace;
+  pointer-events: none;
+}

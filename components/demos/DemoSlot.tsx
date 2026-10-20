@@ -7,6 +7,7 @@ type Loader = () => Promise<{ default: ComponentType }>;
 const LOADERS: Record<string, Loader> = {
   bots: () => import("./BotDemo"),
   "mini-apps": () => import("./MiniAppDemo"),
+  websites: () => import("./XrayDemo"),
 };
 
 /** Loads a demo only when it approaches the viewport (CLAUDE.md → Демо). Shows the poster until then. */

@@ -6,7 +6,7 @@ import { company } from "@/content/legal";
 
 export function Footer() {
   return (
-    <footer className="mt-9 bg-night pb-[calc(var(--spacing-10)+env(safe-area-inset-bottom))] text-ink-inverse lg:pb-8">
+    <footer data-xray="Footer" className="mt-9 bg-night pb-[calc(var(--spacing-10)+env(safe-area-inset-bottom))] text-ink-inverse lg:pb-8">
       <div className="container-page grid-page gap-y-7 pt-8">
         <div className="col-span-4 flex flex-col gap-4 md:col-span-8 lg:col-span-4">
           <Logo className="w-9 text-ink-inverse" />

@@ -11,7 +11,7 @@ import { WhatsAppIcon } from "@/components/ui/Icons";
 import { CheckIcon, MinusIcon } from "@/components/ui/Icons2";
 import { CtaBand } from "./CtaBand";
 import { DemoSlot } from "@/components/demos/DemoSlot";
-import { hasDemo } from "@/content/demos";
+import { demoCaption, hasDemo } from "@/content/demos";
 
 /** One template for every service (CLAUDE.md): offer → scene → includes/excludes → packages → process → FAQ → CTA. */
 export function ServicePage({ id, children }: { id: ServiceId; children?: ReactNode }) {
@@ -22,7 +22,7 @@ export function ServicePage({ id, children }: { id: ServiceId; children?: ReactN
   return (
     <main className="container-page flex flex-col gap-9 pb-8 lg:gap-10">
       {/* Offer + scene */}
-      <section className="grid-page items-center gap-y-7 pt-5 lg:min-h-[calc(100svh-var(--spacing-8))] lg:pt-0">
+      <section data-xray="ServicePage.Offer" className="grid-page items-center gap-y-7 pt-5 lg:min-h-[calc(100svh-var(--spacing-8))] lg:pt-0">
         <div className="col-span-4 flex flex-col gap-5 md:col-span-8 lg:col-span-6">
           <Link href="/#services" data-fx="select" className="link t-label">
             Все услуги
@@ -57,7 +57,7 @@ export function ServicePage({ id, children }: { id: ServiceId; children?: ReactN
           <figcaption className="flex items-center gap-2 t-body-s text-slate">
             <span aria-hidden="true" className="size-2 rounded-pill bg-primary" />
             {hasDemo(s.id)
-              ? "Демо-сценарий: нажимайте кнопки, как будто вы клиент. Данные выдуманы, ничего никуда не отправляется."
+              ? demoCaption(s.id)
               : "Схема работы. Живое демо, которое можно нажимать, появится здесь же."}
           </figcaption>
         </figure>
@@ -65,7 +65,7 @@ export function ServicePage({ id, children }: { id: ServiceId; children?: ReactN
 
       {/* Includes / excludes */}
       <section className="grid-page gap-y-6">
-        <div className="col-span-4 flex flex-col gap-5 rounded-md bg-mist p-5 md:col-span-4 lg:col-span-7 lg:p-7">
+        <div data-xray="IncludesList" className="col-span-4 flex flex-col gap-5 rounded-md bg-mist p-5 md:col-span-4 lg:col-span-7 lg:p-7">
           <h2 className="t-heading-m">Что входит</h2>
           <ul className="flex flex-col gap-3">
             {s.includes.map((i) => (
@@ -78,7 +78,7 @@ export function ServicePage({ id, children }: { id: ServiceId; children?: ReactN
             ))}
           </ul>
         </div>
-        <div className="col-span-4 flex flex-col gap-5 rounded-md p-5 ring-[length:var(--stroke)] ring-line ring-inset md:col-span-4 lg:col-span-5 lg:p-7">
+        <div className="col-span-4 flex flex-col gap-5 rounded-md p-5 ring-[length:var(--stroke)] ring-line ring-inset md:col-span-4 lg:col-span-5 lg:p-7" data-xray="ExcludesList">
           <h2 className="t-heading-m">Не входит</h2>
           <ul className="flex flex-col gap-3">
             {s.excludes.map((i) => (
@@ -101,7 +101,7 @@ export function ServicePage({ id, children }: { id: ServiceId; children?: ReactN
         </div>
         <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {pkgs.map((p) => (
-            <li key={p.id} className="flex flex-col justify-between gap-6 rounded-md bg-night p-5 text-ink-inverse lg:p-6">
+            <li key={p.id} data-xray="PriceCard" className="flex flex-col justify-between gap-6 rounded-md bg-night p-5 text-ink-inverse lg:p-6">
               <div className="flex flex-col gap-3">
                 <h3 className="t-heading-s">{p.title}</h3>
                 <p className="t-price">{formatPrice(p)}</p>
@@ -122,7 +122,7 @@ export function ServicePage({ id, children }: { id: ServiceId; children?: ReactN
         <h2 className="t-display-l">Как я работаю</h2>
         <ol className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           {processSteps.map((p, i) => (
-            <li key={p.title} className="flex flex-col gap-3 rounded-md bg-mist p-5">
+            <li key={p.title} data-xray="ProcessStep" className="flex flex-col gap-3 rounded-md bg-mist p-5">
               <span className="grid size-7 place-items-center rounded-pill bg-primary t-label text-on-primary">{i + 1}</span>
               <h3 className="t-heading-s">{p.title}</h3>
               <p className="t-body-s text-slate">{p.text}</p>
@@ -137,7 +137,7 @@ export function ServicePage({ id, children }: { id: ServiceId; children?: ReactN
           <h2 className="col-span-4 t-display-l md:col-span-8 lg:col-span-4">Вопросы</h2>
           <div className="col-span-4 flex flex-col gap-3 md:col-span-8 lg:col-span-8">
             {s.faq.map((f) => (
-              <details key={f.q} className="group rounded-md bg-mist p-5 open:bg-paper open:ring-[length:var(--stroke)] open:ring-line open:ring-inset">
+              <details key={f.q} data-xray="Faq" className="group rounded-md bg-mist p-5 open:bg-paper open:ring-[length:var(--stroke)] open:ring-line open:ring-inset">
                 <summary data-fx="select" className="flex cursor-pointer list-none items-center justify-between gap-5 t-heading-s [&::-webkit-details-marker]:hidden">
                   {f.q}
                   <span aria-hidden="true" className="grid size-7 shrink-0 place-items-center rounded-pill bg-ink text-paper transition-transform duration-[var(--dur-base)] group-open:rotate-45">

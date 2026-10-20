@@ -23,7 +23,7 @@ export function Header() {
   }, [open]);
 
   return (
-    <header className="sticky top-0 z-30 bg-paper">
+    <header data-xray="Header" className="sticky top-0 z-30 bg-paper">
       <div className="container-page flex min-h-8 items-center justify-between gap-5">
         <Link href="/" aria-label="Azelkhanov — на главную" data-fx="select">
           <LogoInline className="inline-flex items-center gap-3" />
