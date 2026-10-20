@@ -18,6 +18,7 @@ export function ChoiceGroup({ legend, options, initial }: Props) {
               key={o}
               type="button"
               role="radio"
+              data-fx="select"
               aria-checked={on}
               onClick={() => setValue(o)}
               className={

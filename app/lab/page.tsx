@@ -10,6 +10,7 @@ import { NightStage } from "@/components/motion/NightStage";
 import { ParticleMonogram } from "@/components/motion/ParticleMonogram";
 import { ProcessScene } from "@/components/motion/ProcessScene";
 import { SmoothScroll } from "@/components/motion/SmoothScroll";
+import { SoundToggle } from "@/components/motion/SoundToggle";
 import { contacts, whatsappLink } from "@/content/contacts";
 import { processSteps } from "@/content/process";
 
@@ -26,7 +27,8 @@ export default function LabPage() {
       <SmoothScroll />
       <header className="container-page flex min-h-8 items-center justify-between">
         <LogoInline className="inline-flex items-center gap-3" />
-        <nav aria-label="Прототипы" className="flex items-center gap-5 t-label">
+        <nav aria-label="Прототипы" className="flex items-center gap-4 t-label">
+          <SoundToggle />
           <span className="text-slate max-md:hidden">Прототип выразительного слоя</span>
           <Link href="/style/" className="link">
             Дизайн-система
@@ -37,7 +39,7 @@ export default function LabPage() {
       <main className="container-page flex flex-col gap-9 pb-10 lg:gap-10">
         {/* S1 + S3 */}
         <section className="relative grid min-h-[calc(100svh-var(--spacing-8))] content-center gap-7 py-6">
-          <div className="relative z-10 flex flex-col gap-6 lg:w-5/12">
+          <div className="px-hero relative z-10 flex flex-col gap-6 lg:w-5/12">
             <h1 className="t-display-xl">Сделаю и&nbsp;научу</h1>
             <p className="measure t-body-l">
               Сайты, Telegram-боты и Mini Apps, AI-автоматизация процессов — и обучение команды, чтобы всё это работало.
@@ -80,7 +82,7 @@ export default function LabPage() {
               На каждой странице услуги — живое демо: бот, мини-апп, автоматизация. Нажимайте кнопки, как будто вы ваш клиент.
             </p>
           </div>
-          <div className="col-span-4 md:col-span-8 lg:col-span-6 lg:col-start-7">
+          <div className="px-tilt col-span-4 md:col-span-8 lg:col-span-6 lg:col-start-7">
             <PhoneFrame label="Пример экрана чат-бота">
               <div className="flex h-full flex-col gap-3 bg-mist px-4 pt-7 pb-4 t-body-s text-ink">
                 <p className="self-start rounded-sm bg-paper px-4 py-3">Здравствуйте! Я бот автосервиса. Что вас интересует?</p>
@@ -101,7 +103,7 @@ export default function LabPage() {
 
         {/* S5 + S3: final CTA */}
         <NightStage className="flex flex-col items-start gap-6 p-5 md:p-7 lg:p-9">
-          <h2 className="max-w-[18ch] t-display-xl">Расскажите задачу — отвечу в течение 2 часов</h2>
+          <h2 className="px-drift max-w-[18ch] t-display-xl">Расскажите задачу — отвечу в течение 2 часов</h2>
           <p className="t-body-l text-slate-inverse">В будни с 10 до 19 по Алматы. WhatsApp {contacts.whatsapp.display}.</p>
           <MagneticLink href={hello} icon={<WhatsAppIcon />}>
             Написать в WhatsApp

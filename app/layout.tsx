@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { PageTransition } from "@/components/motion/PageTransition";
+import { Feedback } from "@/components/motion/Feedback";
 import tokens from "@/content/tokens.json";
 import "./globals.css";
 
@@ -23,6 +24,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <PageTransition>{children}</PageTransition>
+        <Feedback />
       </body>
     </html>
   );

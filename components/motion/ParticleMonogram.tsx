@@ -3,11 +3,9 @@
 import { useEffect, useRef, useState } from "react";
 import { Monogram } from "@/components/brand/Logo";
 
-type NavigatorHints = Navigator & { connection?: { saveData?: boolean }; deviceMemory?: number };
-
 /**
- * S1: static monogram first (never blocks LCP), particles load after idle.
- * Reduced motion, Save-Data or a weak device keep the static mark.
+ * S1: static monogram first (never blocks LCP), the 3D particle mark loads right after.
+ * Same experience on phone and desktop. Only the OS "reduce motion" setting keeps the static mark.
  */
 export function ParticleMonogram({ className = "" }: { className?: string }) {
   const host = useRef<HTMLDivElement>(null);
@@ -15,9 +13,7 @@ export function ParticleMonogram({ className = "" }: { className?: string }) {
   const [live, setLive] = useState(false);
 
   useEffect(() => {
-    const nav = navigator as NavigatorHints;
-    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce || nav.connection?.saveData || (nav.deviceMemory !== undefined && nav.deviceMemory < 4)) return;
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     let cancelled = false;
     let stop: (() => void) | undefined;
@@ -28,7 +24,7 @@ export function ParticleMonogram({ className = "" }: { className?: string }) {
       });
     };
     const idle = "requestIdleCallback" in window;
-    const id = idle ? window.requestIdleCallback(go, { timeout: 1500 }) : window.setTimeout(go, 300);
+    const id = idle ? window.requestIdleCallback(go, { timeout: 600 }) : window.setTimeout(go, 300);
     return () => {
       cancelled = true;
       if (idle) window.cancelIdleCallback(id);
@@ -40,9 +36,9 @@ export function ParticleMonogram({ className = "" }: { className?: string }) {
   return (
     <div ref={host} aria-hidden="true" className={`relative aspect-[951/445] ${className}`}>
       <Monogram
-        className={`absolute inset-x-[4%] top-1/2 w-[92%] -translate-y-1/2 transition-opacity duration-[var(--dur-base)] ${live ? "opacity-0" : "opacity-100"}`}
+        className={`absolute inset-x-[6%] top-1/2 w-[88%] -translate-y-1/2 transition-opacity duration-[var(--dur-base)] ${live ? "opacity-0" : "opacity-100"}`}
       />
-      <canvas ref={canvas} className="absolute inset-0 size-full touch-pan-y" />
+      <canvas ref={canvas} className="absolute inset-0 size-full cursor-pointer touch-pan-y" />
     </div>
   );
 }

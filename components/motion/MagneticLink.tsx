@@ -50,7 +50,7 @@ export function MagneticLink({ href, children, icon, variant = "primary" }: Prop
   const roll = "block transition-transform duration-[var(--dur-base)] ease-[var(--ease-out)]";
   return (
     <span ref={wrap} className="inline-block will-change-transform">
-      <a href={href} className={buttonClass(variant, "group")}>
+      <a data-fx="press" href={href} className={buttonClass(variant, "group")}>
         {icon}
         <span className="relative block overflow-hidden">
           <span className={`${roll} group-hover:-translate-y-full`}>{children}</span>

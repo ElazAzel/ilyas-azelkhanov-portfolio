@@ -12,7 +12,8 @@
 - GSAP 3.15 + ScrollTrigger + SplitText через @gsap/react (useGSAP, cleanup обязателен): скролл-сцены
 - Motion 14 (`motion/react`): hover/tap/layout состояния компонентов. Не два движка на одном элементе
 - View Transitions (React 19.3) для переходов между страницами; без поддержки браузера — обычная навигация
-- Lenis 1.3: только desktop; выключен на touch и при reduced motion; один общий rAF через gsap.ticker
+- Lenis 1.3: только desktop (на телефоне нативная прокрутка лучше); выключен при reduced motion; один общий rAF через gsap.ticker
+- Звук и вибрация: `lib/sfx.ts` (Web Audio, без файлов) и `lib/haptics.ts`; подключаются атрибутом `data-fx="press|select|hover"`, обработчик один — `components/motion/Feedback.tsx`
 - three / R3F / drei: ТОЛЬКО для одной сцены hero на главной (`components/hero-scene`), lazy, desktop + capable mobile
 - Языки: волна 1 без next-intl — RU в корне, KK-страницы статичными маршрутами `/kk/prices`, `/kk/contact`, `/kk/privacy`, `/kk/offer` из `content/kk/*.ts`. next-intl — в волне 2. Код языка `kk`, не `kz`
 - @serwist/turbopack: manifest + offline-страница. Push, background sync: не делать
@@ -46,7 +47,7 @@
 - Шкалы Tailwind по умолчанию отключены (`app/tokens.css`): существуют только наши цвета, радиусы и отступы. Отступы — ИМЕНОВАННЫЕ, не кратные 4: `p-5` = 24px, `p-7` = 48px, `p-10` = 144px; `w-20`, `p-12` и т.п. не существуют. Типографика — только утилиты `t-<токен>` (плавные между 375 и 1440).
 - Синее — скруглённое (`rounded-pill`), ink — острое (`rounded-xs`/`none`). Синий текст — только `primary-deep`.
 - Одна сильная сцена на страницу. Главная: 3D-hero. Страница услуги: её демо. Остальное тихое — типографика и отступы.
-- Запрещено: Inter / Roboto / Space Grotesk как display; фиолетово-синие градиенты; кремовый фон + терракота; near-black + кислотный акцент; сетки одинаковых скруглённых карточек с мягкой тенью; eyebrow-лейблы капсом; «→» после ссылок; 01/02/03 вне реальных последовательностей; акцент одного слова в заголовке; fade-up на каждой секции; кастомный курсор; прелоадер и счётчик 0%; autoplay звука; scroll-jacking и горизонтальный скролл на mobile.
+- Запрещено: Inter / Roboto / Space Grotesk как display; фиолетово-синие градиенты; кремовый фон + терракота; near-black + кислотный акцент; сетки одинаковых скруглённых карточек с мягкой тенью; eyebrow-лейблы капсом; «→» после ссылок; 01/02/03 вне реальных последовательностей; акцент одного слова в заголовке; fade-up на каждой секции; кастомный курсор; прелоадер и счётчик 0%; автозвук до действия пользователя (звуки — только в ответ на тап/клик/клавишу, S8); scroll-jacking и горизонтальный скролл на mobile.
 - Любой шрифт обязан содержать: Әә Ғғ Ққ Ңң Өө Ұұ Үү Һһ Іі. Проверь до подключения.
 
 ## Mobile / PWA
@@ -61,7 +62,8 @@
 - Выразительный слой — только сигнатуры S1–S6 из DESIGN.md → Expressive layer; прототипы живут на `/lab`
 - ≤ 2 семейства шрифтов: Geologica (весь текст) + Fira Code (только код и метрики в демо); один woff2 на семейство из `pnpm fonts`; изображения AVIF, hero-постер ≤ 120KB
 - LCP-элемент: текст или постер, никогда canvas/iframe
-- WebGL: DPR ≤ 1.5 на mobile, frameloop="demand", обработка потери контекста, gate по reduced motion / Save-Data / deviceMemory / WebGL2
+- Паритет: телефон получает те же эффекты, что desktop (DESIGN.md → Expressive layer → Паритет). Не отключать эффекты по типу устройства, памяти или Save-Data. Единственный выключатель — `prefers-reduced-motion`
+- WebGL/canvas: DPR ≤ 2, пауза вне экрана, обработка потери контекста
 - Анимировать только transform/opacity; reduced motion через gsap.matchMedia и MotionConfig reducedMotion="user"
 
 ## Данные и право

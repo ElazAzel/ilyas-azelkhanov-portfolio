@@ -21,7 +21,7 @@ type LinkProps = ComponentProps<"a"> & { variant?: Variant; icon?: ReactNode };
 
 export function ButtonLink({ variant = "primary", icon, className = "", children, ...rest }: LinkProps) {
   return (
-    <a className={buttonClass(variant, className)} {...rest}>
+    <a data-fx="press" className={buttonClass(variant, className)} {...rest}>
       {icon}
       {children}
     </a>
@@ -32,7 +32,7 @@ type ButtonProps = ComponentProps<"button"> & { variant?: Variant; icon?: ReactN
 
 export function Button({ variant = "primary", icon, className = "", children, type = "button", ...rest }: ButtonProps) {
   return (
-    <button type={type} className={buttonClass(variant, className)} {...rest}>
+    <button data-fx="press" type={type} className={buttonClass(variant, className)} {...rest}>
       {icon}
       {children}
     </button>

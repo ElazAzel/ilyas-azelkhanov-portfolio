@@ -12,6 +12,7 @@ export function ServiceIndex({ rows }: { rows: Row[] }) {
           <li key={r.service}>
             <a
               href={`/services/${r.service}/`}
+              data-fx="hover"
               className="group grid-page items-baseline gap-y-1 py-5 lg:py-6"
             >
               <span className="col-span-4 md:col-span-5 t-heading-m transition-colors duration-[var(--dur-quick)] group-hover:text-primary-deep">
