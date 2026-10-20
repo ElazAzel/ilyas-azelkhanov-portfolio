@@ -1,0 +1,128 @@
+@import "tailwindcss";
+@import "./fonts.css";
+@import "./tokens.css";
+
+/* Motion tokens (DESIGN.md → Layout → Motion). */
+:root {
+  --dur-press: 120ms;
+  --dur-quick: 200ms;
+  --dur-base: 320ms;
+  --dur-page: 280ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --az-angle: 39.5deg;
+  --gutter: var(--spacing-4);
+  --container: 85rem;
+}
+
+@media (width >= 48rem) {
+  :root {
+    --gutter: var(--spacing-6);
+  }
+}
+
+@media (width >= 64rem) {
+  :root {
+    --gutter: var(--spacing-7);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-press: 0ms;
+    --dur-quick: 0ms;
+    --dur-base: 0ms;
+    --dur-page: 0ms;
+  }
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    @apply bg-paper text-ink t-body-m;
+    min-height: 100dvh;
+  }
+
+  h1,
+  h2,
+  h3,
+  p {
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 2px var(--color-paper);
+  }
+
+  ::selection {
+    background: var(--color-primary);
+    color: var(--color-on-primary);
+  }
+}
+
+@utility container-page {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+@utility grid-page {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  column-gap: var(--spacing-3);
+  @media (width >= 48rem) {
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    column-gap: var(--spacing-4);
+  }
+  @media (width >= 64rem) {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--spacing-5);
+  }
+}
+
+@utility measure {
+  max-width: 68ch;
+}
+
+@utility link {
+  color: var(--color-primary-deep);
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  transition: text-decoration-thickness var(--dur-quick) var(--ease-out);
+  &:hover {
+    text-decoration-thickness: 2px;
+  }
+}
+
+/* Page transitions: short crossfade; shared elements morph by name. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: var(--dur-page);
+  animation-timing-function: var(--ease-out);
+}
+
+::view-transition-group(.morph) {
+  animation-duration: var(--dur-base);
+  animation-timing-function: var(--ease-in-out);
+}
+
+/* Elevation: the only shadow in the system (DESIGN.md → Elevation & Depth). */
+:root {
+  --shadow-phone: 0 24px 48px -24px color-mix(in srgb, var(--color-ink) 30%, transparent);
+}
+
+/* Component sizes from DESIGN.md → components. */
+:root {
+  --stroke: 1.5px;
+  --phone-w: 20rem;
+}
