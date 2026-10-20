@@ -37,7 +37,14 @@ export default function Home() {
               </Link>
             </div>
           </div>
-          <ParticleMonogram className="w-4/5 max-lg:order-first lg:absolute lg:top-1/2 lg:right-7 lg:w-[56%] lg:-translate-y-1/2" />
+          <div className="flex flex-col items-center gap-3 max-lg:order-first lg:absolute lg:top-1/2 lg:right-7 lg:w-[56%] lg:-translate-y-1/2">
+            <ParticleMonogram className="w-4/5 lg:w-full" />
+            <p className="flex items-center gap-2 t-body-s text-slate">
+              <span aria-hidden="true" className="size-2 rounded-pill bg-primary" />
+              <span className="lg:hidden">Нажмите на знак или наклоните телефон</span>
+              <span className="max-lg:hidden">Поводите курсором и нажмите на знак</span>
+            </p>
+          </div>
         </section>
 
         <Marquee />

@@ -8,7 +8,7 @@ import { SoundToggle } from "@/components/motion/SoundToggle";
 import { buttonClass } from "@/components/ui/Button";
 import { WhatsAppIcon, TelegramIcon } from "@/components/ui/Icons";
 import { CloseIcon, MenuIcon } from "@/components/ui/Icons2";
-import { nav } from "@/content/nav";
+import { menuLinks, nav } from "@/content/nav";
 import { services } from "@/content/services";
 import { contacts, telegramLink, whatsappLink } from "@/content/contacts";
 
@@ -30,7 +30,13 @@ export function Header() {
         </Link>
         <nav aria-label="Основное" className="flex items-center gap-5 max-lg:hidden">
           {nav.map((n) => (
-            <Link key={n.href} href={n.href} data-fx="select" className="t-label hover:text-primary-deep">
+            <Link
+              key={n.href}
+              href={n.href}
+              data-fx="select"
+              aria-current={pathname === n.href ? "page" : undefined}
+              className="t-label underline-offset-8 hover:text-primary-deep aria-[current=page]:text-primary-deep aria-[current=page]:underline"
+            >
               {n.label}
             </Link>
           ))}
@@ -68,7 +74,7 @@ export function Header() {
             ))}
           </ul>
           <ul className="flex flex-col gap-4">
-            {nav.slice(2).map((n) => (
+            {menuLinks.map((n) => (
               <li key={n.href}>
                 <Link href={n.href} data-fx="press" className="t-heading-m underline decoration-line underline-offset-4">
                   {n.label}

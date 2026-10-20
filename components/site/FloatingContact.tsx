@@ -8,7 +8,7 @@ export function FloatingContact() {
       href={whatsappLink("Здравствуйте, Ильяс! Хочу обсудить задачу.")}
       data-fx="press"
       aria-label="Написать в WhatsApp"
-      className="fixed right-4 bottom-[calc(var(--spacing-4)+env(safe-area-inset-bottom))] z-20 inline-flex min-h-7 items-center gap-2 rounded-pill bg-primary px-5 py-3 t-label text-on-primary shadow-[var(--shadow-phone)] active:scale-98 lg:hidden"
+      className="floating-contact fixed right-4 bottom-[calc(var(--spacing-4)+env(safe-area-inset-bottom))] z-20 inline-flex min-h-7 items-center gap-2 rounded-pill bg-primary px-5 py-3 t-label text-on-primary shadow-[var(--shadow-phone)] active:scale-98 lg:hidden"
     >
       <WhatsAppIcon />
       Написать

@@ -1,13 +1,13 @@
 # azelkhanov-site
 
-Многостраничный сайт услуг Ильяса Азелханова (Алматы). Направления: сайты, Telegram Mini Apps, боты, AI-автоматизация, тренинги (корпоративные и личные). Сайт сам является демонстрацией уровня разработки. Бизнес-цель: заявка в WhatsApp или Telegram. RU основной язык; KK для цен/пакетов, политики ПДн, оферты, контактов (полный KK и EN в волне 2).
+Многостраничный сайт услуг Ильяса Азелханова (Алматы). Направления: сайты, Telegram Mini Apps, боты, AI-автоматизация, тренинги (корпоративные и личные). Сайт сам является демонстрацией уровня разработки. Бизнес-цель: заявка в WhatsApp или Telegram. Сайт только на русском (решение Ильяса 20.10.2026: казахские версии убраны).
 
 @SPEC.md
 @DESIGN.md
 
 ## Стек (не менять без согласования)
 - Next.js 16.4 (App Router, Turbopack), React 19.3, TypeScript 7 strict, pnpm
-- `output: 'export'` + `trailingSlash: true`: сайт — чистая статика в `out/`, хостинг hoster.kz (зона .kz обязана жить на серверах в РК). Никаких route handlers, middleware, ISR и серверных функций
+- `output: 'export'` + `trailingSlash: true`: сайт — чистая статика в `out/`, хостинг hoster.kz (зона .kz обязана жить на серверах в РК). Никаких middleware, ISR и серверных функций; route handlers — только `force-static` (они превращаются в файлы: `llms.txt`, `sitemap.xml`, `robots.txt`, `manifest.webmanifest`)
 - Tailwind CSS 4.3 + shadcn/ui (Base UI). Готовые анимированные блоки (Magic UI / Aceternity / React Bits / 21st): максимум 4 на сайт, всегда перестилизованы под токены
 - GSAP 3.15 + ScrollTrigger + SplitText через @gsap/react (useGSAP, cleanup обязателен): скролл-сцены
 - Motion 14 (`motion/react`): hover/tap/layout состояния компонентов. Не два движка на одном элементе
@@ -15,7 +15,7 @@
 - Lenis 1.3: только desktop (на телефоне нативная прокрутка лучше); выключен при reduced motion; один общий rAF через gsap.ticker
 - Звук и вибрация: `lib/sfx.ts` (Web Audio, без файлов) и `lib/haptics.ts`; подключаются атрибутом `data-fx="press|select|hover"`, обработчик один — `components/motion/Feedback.tsx`
 - three / R3F / drei: ТОЛЬКО для одной сцены hero на главной (`components/hero-scene`), lazy, desktop + capable mobile
-- Языки: волна 1 без next-intl — RU в корне, KK-страницы статичными маршрутами `/kk/prices`, `/kk/contact`, `/kk/privacy`, `/kk/offer` из `content/kk/*.ts`. next-intl — в волне 2. Код языка `kk`, не `kz`
+- Язык сайта: только русский, без next-intl и `/kk`-страниц
 - @serwist/turbopack: manifest + offline-страница. Push, background sync: не делать
 - Деплой: GitHub Actions → `pnpm build` → SFTP на hoster.kz (доступы в GitHub Secrets). Превью — `dev.azelkhanov.kz` за basic auth. `.htaccess`: HTTPS-редирект, 404, кэш статики
 

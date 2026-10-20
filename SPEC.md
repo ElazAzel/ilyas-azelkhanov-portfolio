@@ -40,7 +40,7 @@ hoster.kz вместо Vercel меняет архитектуру. Предла�
 | Vercel, функции `fra1` | `output: 'export'`: чистая статика на hoster.kz | В волне 1 сервер не нужен: бриф и демо считаются в браузере. Статика на любом хостинге РК работает, и проще её не сломать |
 | `ensureStatic`, cacheComponents | Не нужны: при export всё статично по определению | — |
 | @vercel/analytics, speed-insights | Только **Yandex Metrica** (+ CWV через `web-vitals` в Метрику как параметры визита) | Пакеты Vercel не работают вне Vercel |
-| next-intl `/ru`, `/kk` | **Волна 1 без next-intl**: RU в корне, KK-страницы статичными маршрутами `/kk/prices`, `/kk/contact`, `/kk/privacy`, `/kk/offer` из `content/kk/*.ts`. next-intl — в волне 2 вместе с полным KK | Middleware при export не работает, а локализовать сейчас нужно всего 4 страницы |
+| next-intl `/ru`, `/kk` | **Только русский** — решение Ильяса 20.10.2026, казахские версии убраны | Проще поддерживать |
 | Превью на Vercel | Превью на `dev.azelkhanov.kz` за basic auth (тот же hoster.kz) | Hobby-план Vercel запрещён для коммерции |
 | Деплой Vercel | GitHub Actions → build → SFTP/FTP на hoster.kz. Доступы — в GitHub Secrets (заводит Ильяс) | — |
 | — | `trailingSlash: true` + `.htaccess`: HTTPS-редирект, 404, кэш статики | Чистые URL на Apache/LiteSpeed |
@@ -84,7 +84,6 @@ hoster.kz вместо Vercel меняет архитектуру. Предла�
 /contact               контакты
 /privacy               политика ПДн
 /offer                 публичная оферта (личные тренинги)
-/kk/prices /kk/contact /kk/privacy /kk/offer   казахские версии
 /llms.txt + .md-версии страниц                  для демо «Человек / Машина»
 ```
 

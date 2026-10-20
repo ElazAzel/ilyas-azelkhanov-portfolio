@@ -31,6 +31,7 @@ jobs:
       - run: pnpm build
         env:
           NEXT_PUBLIC_BASE_PATH: /ilyas-azelkhanov-portfolio
+          NEXT_PUBLIC_SITE_URL: https://elazazel.github.io/ilyas-azelkhanov-portfolio
       # Pages must be switched on once by the repo owner: Settings → Pages → Source: GitHub Actions.
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3

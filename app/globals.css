@@ -373,3 +373,19 @@ html.xray [data-xray]:not(.night-stage)::before {
   font: 500 0.75rem/1.2 "Fira Code", ui-monospace, monospace;
   pointer-events: none;
 }
+
+/* Installed app (PWA standalone): bottom tab bar instead of the floating button; room for it below content. */
+.tabbar {
+  display: none;
+}
+@media (display-mode: standalone) {
+  .tabbar {
+    display: grid;
+  }
+  .floating-contact {
+    display: none;
+  }
+  body {
+    padding-bottom: calc(var(--spacing-8) + env(safe-area-inset-bottom));
+  }
+}
