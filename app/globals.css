@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@import "./fonts.css";
 @import "./tokens.css";
 
 /* Motion tokens (DESIGN.md → Layout → Motion). */

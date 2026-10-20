@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { formatPrice, packages, type ServiceId } from "@/content/pricing";
 
 type Row = { service: ServiceId; title: string; line: string; packageId: string };
@@ -10,7 +11,7 @@ export function ServiceIndex({ rows }: { rows: Row[] }) {
         const pkg = packages.find((p) => p.id === r.packageId)!;
         return (
           <li key={r.service}>
-            <a
+            <Link
               href={`/services/${r.service}/`}
               data-fx="hover"
               className="group grid-page items-baseline gap-y-1 py-5 lg:py-6"
@@ -28,7 +29,7 @@ export function ServiceIndex({ rows }: { rows: Row[] }) {
                 />
                 {formatPrice(pkg)}
               </span>
-            </a>
+            </Link>
           </li>
         );
       })}

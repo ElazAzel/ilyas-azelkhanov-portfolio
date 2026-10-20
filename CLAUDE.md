@@ -28,7 +28,7 @@
 - `pnpm shots [маршруты]`: Playwright-скриншоты 375 / 768 / 1440 из `out/` в `./shots` (сначала `pnpm build`); печатает горизонтальный overflow и ошибки консоли
 - `pnpm design:lint`: линтер DESIGN.md (токены и WCAG-контраст)
 - `pnpm tokens`: DESIGN.md → `app/tokens.css` + `content/tokens.json`. Запускать после любой правки токенов
-- `pnpm fonts`: `brand/fonts-src/*.ttf` → `public/fonts/*.woff2` + `app/fonts.css` (нужны `fonttools`, `brotli`)
+- `pnpm fonts`: `brand/fonts-src/*.ttf` → `public/fonts/*.woff2` + `app/font-faces.ts` (нужны `fonttools`, `brotli`)
 
 ## Контент
 - Весь текст, цены и FAQ живут в `content/*.ts` (типизировано), не в JSX.

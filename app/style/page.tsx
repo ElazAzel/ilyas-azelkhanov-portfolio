@@ -180,18 +180,18 @@ export default function StylePage() {
             <ButtonLink href={telegramLink()} variant="secondary" icon={<TelegramIcon />}>
               Telegram {contacts.telegram.display}
             </ButtonLink>
-            <a href="/brief/" className="link t-label">
+            <Link href="/brief/" className="link t-label">
               Оценить задачу
-            </a>
+            </Link>
             <Button disabled>Недоступно</Button>
           </div>
           <div className="flex flex-wrap items-center gap-4 rounded-md bg-night p-5">
             <ButtonLink href={whatsappLink("Здравствуйте, Ильяс!")} icon={<WhatsAppIcon />}>
               На тёмном
             </ButtonLink>
-            <a href="/contact/" className="t-label text-primary-light underline underline-offset-4">
+            <Link href="/contact/" className="t-label text-primary-light underline underline-offset-4">
               Ссылка на тёмном
-            </a>
+            </Link>
           </div>
         </div>
       </Section>

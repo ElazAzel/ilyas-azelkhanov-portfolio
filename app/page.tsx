@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Logo } from "@/components/brand/Logo";
 
 export const metadata = { robots: { index: false } };
@@ -8,9 +9,12 @@ export default function Home() {
     <main className="container-page flex min-h-dvh flex-col items-start justify-center gap-6">
       <Logo className="w-10" />
       <p className="t-body-l text-slate">Сайт в разработке.</p>
-      <a href="/style/" className="link t-label">
+      <Link href="/lab/" className="link t-label">
+        Прототип главной: 3D, звук, вибрация
+      </Link>
+      <Link href="/style/" className="link t-label">
         Дизайн-система
-      </a>
+      </Link>
     </main>
   );
 }

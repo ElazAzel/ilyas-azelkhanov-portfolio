@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from "next";
 import { PageTransition } from "@/components/motion/PageTransition";
 import { Feedback } from "@/components/motion/Feedback";
 import tokens from "@/content/tokens.json";
+import { BASE_PATH } from "@/lib/base-path";
+import { FONT_FACES } from "./font-faces";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -20,7 +22,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="ru">
       <head>
-        <link rel="preload" href="/fonts/geologica.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+        <link rel="preload" href={`${BASE_PATH}/fonts/geologica.woff2`} as="font" type="font/woff2" crossOrigin="anonymous" />
+        <style dangerouslySetInnerHTML={{ __html: FONT_FACES.replaceAll('url("/fonts/', `url("${BASE_PATH}/fonts/`) }} />
       </head>
       <body>
         <PageTransition>{children}</PageTransition>
