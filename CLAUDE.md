@@ -57,7 +57,8 @@
 
 ## Бюджет производительности (mobile, каждая страница)
 - LCP ≤ 2.5s, INP ≤ 200ms, CLS ≤ 0.1; Lighthouse mobile ≥ 90
-- Initial JS страницы ≤ 170KB gzip; 3D-чанк и демо — отдельные lazy-чанки
+- Initial JS: каркас Next 16 + React 19 сам весит ≈171 KB gzip (≈148 KB brotli) — это пол, ниже не уйти без смены фреймворка. Собственный код страницы поверх каркаса ≤ 40 KB gzip. GSAP, ScrollTrigger, Lenis, частицы и демо — только динамический `import()` (по idle или IntersectionObserver), никогда статический импорт. На hoster.kz включить brotli
+- Выразительный слой — только сигнатуры S1–S6 из DESIGN.md → Expressive layer; прототипы живут на `/lab`
 - ≤ 2 семейства шрифтов: Geologica (весь текст) + Fira Code (только код и метрики в демо); один woff2 на семейство из `pnpm fonts`; изображения AVIF, hero-постер ≤ 120KB
 - LCP-элемент: текст или постер, никогда canvas/iframe
 - WebGL: DPR ≤ 1.5 на mobile, frameloop="demand", обработка потери контекста, gate по reduced motion / Save-Data / deviceMemory / WebGL2
