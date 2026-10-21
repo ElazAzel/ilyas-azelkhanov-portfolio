@@ -6,6 +6,7 @@ import { createPortal } from "react-dom";
 import { usePathname } from "next/navigation";
 import { LogoInline } from "@/components/brand/Logo";
 import { SoundToggle } from "@/components/motion/SoundToggle";
+import { CommandTrigger } from "./CommandTrigger";
 import { buttonClass } from "@/components/ui/Button";
 import { WhatsAppIcon, TelegramIcon } from "@/components/ui/Icons";
 import { CloseIcon, MenuIcon } from "@/components/ui/Icons2";
@@ -52,7 +53,7 @@ export function Header() {
         data-xray="Header"
         className="site-header sticky top-0 z-30 bg-paper"
       >
-        <div className="container-page flex min-h-8 items-center justify-between gap-5">
+        <div className="container-page flex min-h-8 items-center justify-between gap-3 md:gap-5">
           <Link href="/" aria-label="Azelkhanov - на главную" data-fx="select">
             <LogoInline className="inline-flex items-center gap-3" />
           </Link>
@@ -72,7 +73,8 @@ export function Header() {
               </Link>
             ))}
           </nav>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1 md:gap-2">
+            <CommandTrigger />
             <SoundToggle />
             <a
               href={hello}
