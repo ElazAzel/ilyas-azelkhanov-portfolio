@@ -20,7 +20,7 @@ export type Command = {
 
 export const commandCopy = {
   placeholder: "Куда перейти или что сделать?",
-  empty: "Ничего не нашлось. Напишите мне - отвечу за 2 часа.",
+  empty: "Ничего не нашлось. Напишите мне в WhatsApp.",
   open: "Поиск по сайту",
 };
 

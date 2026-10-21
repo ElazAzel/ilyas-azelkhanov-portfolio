@@ -54,7 +54,7 @@ const TYPE: { token: string; cls: string; sample: string }[] = [
     sample:
       "Разбираю процесс, собираю схему «как есть → как будет», настраиваю интеграции и учу команду. Қазақша: Әә Ғғ Ққ Ңң Өө Ұұ Үү Һһ Іі.",
   },
-  { token: "body-s", cls: "t-body-s", sample: "Отвечаю в течение 2 часов в будни с 10 до 19 (Алматы)." },
+  { token: "body-s", cls: "t-body-s", sample: "Демо-сценарий: все данные вымышленные." },
   { token: "label", cls: "t-label", sample: "Написать в WhatsApp" },
   { token: "price", cls: "t-price", sample: "от 250 000 ₸" },
   { token: "code", cls: "t-code", sample: "--color-primary: #2464FB;" },

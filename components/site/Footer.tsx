@@ -31,7 +31,6 @@ export function Footer() {
           <Link href="/brief/" className="t-label hover:text-primary-light">
             Оценить задачу
           </Link>
-          <p className="t-body-s text-slate-inverse">{contacts.sla}</p>
         </div>
         <div className="col-span-4 flex flex-wrap gap-x-5 gap-y-2 pt-5 t-body-s text-slate-inverse md:col-span-8 lg:col-span-12">
           <span>{company.name}, ИИН/БИН {company.iin}</span>

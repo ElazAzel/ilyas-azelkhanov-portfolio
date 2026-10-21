@@ -415,7 +415,6 @@ export function CinematicHero() {
 
           <div data-ch className="cine-ch">
             <h2 className="t-display-xl">{heroOutro.title}</h2>
-            <p className="t-body-m text-slate-inverse">{contacts.sla}</p>
             <div className="flex flex-wrap items-center gap-3">
               <a
                 href={hello}

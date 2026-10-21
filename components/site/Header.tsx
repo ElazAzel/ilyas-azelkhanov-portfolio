@@ -182,7 +182,6 @@ export function Header() {
                   <TelegramIcon />
                   Telegram {contacts.telegram.display}
                 </a>
-                <p className="t-body-s text-slate">{contacts.sla}</p>
               </div>
             </div>
           </dialog>,

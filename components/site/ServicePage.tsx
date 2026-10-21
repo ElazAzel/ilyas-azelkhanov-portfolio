@@ -15,7 +15,7 @@ import { DemoSlot } from "@/components/demos/DemoSlot";
 import { demoCaption, hasDemo } from "@/content/demos";
 
 // Short facts next to prices instead of a paragraph of explanations.
-const terms = ["Точная цена - после разбора задачи", "Договор с ИП", `Предоплата ${prepayment}`, "Гарантия 1 месяц"];
+const terms = ["Точная цена - после разбора задачи", "Договор с ИП", `Предоплата ${prepayment}`, "Сопровождение 1 месяц"];
 
 /** One template for every service: offer → live demo → what's included → prices → FAQ → CTA. Few words, the demo does the talking. */
 export function ServicePage({ id, children }: { id: ServiceId; children?: ReactNode }) {

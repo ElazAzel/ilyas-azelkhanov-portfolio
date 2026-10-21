@@ -26,7 +26,8 @@ export const packages: Package[] = [
   { id: "training-personal", service: "training", title: "Личный тренинг", from: 15_000, unit: "hour", term: "по записи" },
 ];
 
-export const guarantee = "1 месяц бесплатного исправления ошибок после сдачи";
+/** Месяц сопровождения после сдачи (решение Ильяса 21.10.2026: «сопровождение», не «гарантия»). */
+export const support = "1 месяц сопровождения после сдачи";
 
 const NBSP = " ";
 const UNIT: Record<NonNullable<Package["unit"]>, string> = { project: "", hour: "/час", month: "/мес" };

@@ -33,18 +33,19 @@ function Count({ value }: { value: number }) {
   return <span ref={ref}>{n}</span>;
 }
 
-function Tile({ f, i }: { f: Fact; i: number }) {
-  const dark = i === 1 || i === 2;
+function Tile({ f, wide }: { f: Fact; wide: boolean }) {
   const body = (
     <>
-      <span className="fact-num t-display-l">
+      <span className={`fact-num ${wide ? "t-display-xl" : "t-display-l"}`}>
         <Count value={f.value} />
-        <span className={dark ? "text-primary-light" : "text-primary-deep"}>{f.suffix}</span>
+        <span className={wide ? "text-primary-light" : "text-primary-deep"}>{f.suffix}</span>
       </span>
-      <span className={`t-body-s md:t-body-m ${dark ? "text-slate-inverse" : "text-slate"}`}>{f.label}</span>
+      <span className={wide ? "t-heading-s text-ink-inverse" : "t-body-m text-slate"}>{f.label}</span>
     </>
   );
-  const cls = `flex h-full flex-col justify-between gap-6 rounded-md p-5 lg:p-6 ${dark ? "night-stage bg-night text-ink-inverse" : "bg-mist text-ink"}`;
+  const cls = `flex h-full justify-between gap-5 rounded-md p-5 lg:p-6 ${
+    wide ? "night-stage flex-col bg-night text-ink-inverse" : "flex-col bg-mist text-ink"
+  }`;
   return f.href ? (
     <Link href={f.href} data-fx="hover" className={`${cls} transition-transform duration-[var(--dur-quick)] hover:-translate-y-1`}>
       {body}
@@ -54,12 +55,13 @@ function Tile({ f, i }: { f: Fact; i: number }) {
   );
 }
 
+/** First fact spans the row (dark), the other two sit below it. */
 export function Facts() {
   return (
-    <ul className="grid grid-cols-2 gap-3 lg:gap-4">
+    <ul className="grid h-full grid-cols-2 grid-rows-[auto_auto] gap-3 lg:gap-4">
       {facts.map((f, i) => (
-        <li key={f.label} className="min-w-0">
-          <Tile f={f} i={i} />
+        <li key={f.label} className={`min-w-0 ${i === 0 ? "col-span-2" : ""}`}>
+          <Tile f={f} wide={i === 0} />
         </li>
       ))}
     </ul>

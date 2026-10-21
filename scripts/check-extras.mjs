@@ -61,11 +61,10 @@ for (const width of [1440, 375]) {
   ok(await page.locator(".next-service").innerText().then((t) => t.includes("AI-автоматизация")), `next service after bots is automation (${width})`);
   await page.locator(".next-service").screenshot({ path: `${OUT}/next-${width}.png` });
 
-  // Contact
+  // Contact: no response-time promises anywhere (decision 21.10.2026)
   await page.goto(`${BASE}/contact/`, { waitUntil: "networkidle" });
-  await page.waitForTimeout(500);
-  const clock = await page.locator(".fact-num").first().innerText();
-  ok(/^\d\d:\d\d$/.test(clock), `contact clock shows Almaty time ${clock} (${width})`);
+  const contactText = await page.locator("body").innerText();
+  ok(!/отвеча|отвечу|2 час|10 до 19/i.test(contactText), `contact has no response-time copy (${width})`);
   await page.screenshot({ path: `${OUT}/contact-${width}.png`, fullPage: true });
 
   // Home about strip
@@ -73,6 +72,8 @@ for (const width of [1440, 375]) {
   await page.locator('[data-xray="AboutStrip"]').scrollIntoViewIfNeeded();
   await page.waitForTimeout(1300);
   await page.locator('[data-xray="AboutStrip"]').screenshot({ path: `${OUT}/about-strip-${width}.png` });
+  const strip = await page.locator('[data-xray="AboutStrip"]').innerText();
+  ok(strip.includes("30+") && strip.includes("сопровождения") && !/гарант|отвеча/i.test(strip), `facts: 30+, сопровождение, no SLA (${width})`);
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth - innerWidth);
   ok(overflow <= 0, `no horizontal overflow on home (${width})`);
   ok(errors.length === 0, `no console errors (${width}) ${errors.join(" | ")}`);

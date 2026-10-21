@@ -6,7 +6,7 @@
 @import "./project-art.css";
 /* Live project selector and scene transitions. */
 @import "./playground.css";
-/* Brief receipt, contact status, command palette, next-service link. */
+/* Brief receipt, command palette, next-service link. */
 @import "./extras.css";
 
 /* Motion tokens (DESIGN.md → Layout → Motion). */

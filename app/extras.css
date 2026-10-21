@@ -1,4 +1,4 @@
-/* Brief, contact status, command palette, next-service link. Tokens only; transform/opacity motion. */
+/* Brief, command palette, next-service link. Tokens only; transform/opacity motion. */
 
 /* ---------- Brief ---------- */
 @media (prefers-reduced-motion: no-preference) {
@@ -52,57 +52,6 @@
 }
 .brief-receipt.is-done {
   box-shadow: inset 0 0 0 var(--stroke) var(--color-primary);
-}
-
-/* ---------- Contact: availability ---------- */
-.avail-track {
-  position: relative;
-  height: var(--spacing-2);
-  border-radius: var(--radius-pill);
-  background: var(--color-line-inverse);
-}
-.avail-window {
-  position: absolute;
-  inset-block: 0;
-  left: calc(10 / 24 * 100%);
-  width: calc(9 / 24 * 100%);
-  border-radius: var(--radius-pill);
-  background: var(--color-primary);
-}
-.avail-now {
-  position: absolute;
-  top: 50%;
-  left: var(--now, 50%);
-  width: var(--spacing-4);
-  height: var(--spacing-4);
-  border-radius: var(--radius-pill);
-  background: var(--color-ink-inverse);
-  box-shadow: 0 0 0 var(--spacing-1) var(--color-night);
-  transform: translate(-50%, -50%);
-}
-.avail-pulse {
-  position: relative;
-  display: inline-block;
-  width: var(--spacing-3);
-  height: var(--spacing-3);
-  border-radius: var(--radius-pill);
-  background: var(--avail-color, var(--color-primary-light));
-}
-@media (prefers-reduced-motion: no-preference) {
-  .avail-pulse[data-on]::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    background: inherit;
-    animation: avail-ping 1.8s var(--ease-out) infinite;
-  }
-}
-@keyframes avail-ping {
-  to {
-    opacity: 0;
-    transform: scale(2.6);
-  }
 }
 
 /* ---------- Command palette ---------- */

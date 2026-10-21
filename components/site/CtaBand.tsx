@@ -13,7 +13,6 @@ export function CtaBand({ ask = "Здравствуйте, Ильяс! Хочу 
       <div className="cta-content flex flex-col gap-6">
         <p className="t-label">{homeCopy.ctaLead}</p>
         <h2 className="max-w-[16ch] t-display-xl whitespace-pre-line">{homeCopy.cta}</h2>
-        <p className="t-body-m">Отвечу за 2 часа · Будни, 10–19 по Алматы</p>
         <div className="flex flex-wrap gap-3">
           <a
             href={whatsappLink(ask)}

@@ -55,7 +55,7 @@ export default function OfferPage() {
       <section className="flex flex-col gap-3">
         <h2 className="t-heading-m">6. Связь</h2>
         <p className="t-body-m">
-          WhatsApp {contacts.whatsapp.display}, Telegram {contacts.telegram.display}. {contacts.sla}.
+          WhatsApp {contacts.whatsapp.display}, Telegram {contacts.telegram.display}.
         </p>
       </section>
     </LegalPage>

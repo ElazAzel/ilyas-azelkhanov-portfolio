@@ -3,12 +3,11 @@ import Link from "next/link";
 import { ParticleMonogram } from "@/components/motion/ParticleMonogram";
 import { TelegramIcon, WhatsAppIcon } from "@/components/ui/Icons";
 import { CopyButton } from "@/components/ui/CopyButton";
-import { Availability } from "@/components/site/Availability";
 import { contacts, telegramLink, whatsappLink } from "@/content/contacts";
 
 export const metadata: Metadata = {
   title: "Контакты",
-  description: "WhatsApp и Telegram. Отвечаю в течение 2 часов в будни с 10 до 19 по Алматы.",
+  description: "WhatsApp и Telegram. Алматы, работаю по всему Казахстану онлайн.",
 };
 
 export default function ContactPage() {
@@ -53,8 +52,7 @@ export default function ContactPage() {
           Не знаете, с чего начать? Оцените задачу за 4 вопроса
         </Link>
       </div>
-      <div className="col-span-4 flex flex-col gap-5 md:col-span-8 lg:col-span-6">
-        <Availability />
+      <div className="col-span-4 md:col-span-8 lg:col-span-6">
         <ParticleMonogram className="w-full" />
       </div>
     </main>

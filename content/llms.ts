@@ -39,7 +39,6 @@ export function llmsTxt(origin = ""): string {
     "## Связь",
     `- WhatsApp: ${contacts.whatsapp.display}`,
     `- Telegram: ${contacts.telegram.display}`,
-    `- ${contacts.sla}`,
     "",
     "## Подробно",
     "",
