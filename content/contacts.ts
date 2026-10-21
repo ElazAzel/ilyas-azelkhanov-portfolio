@@ -5,6 +5,9 @@ export const contacts = {
   sla: "Отвечаю в течение 2 часов в будни с 10 до 19 (Алматы)",
 } as const;
 
+/** Рабочие часы из SLA: будни 10–19 по Алматы. */
+export const availability = { timeZone: "Asia/Almaty", from: 10, to: 19 } as const;
+
 export function whatsappLink(text: string): string {
   return `https://wa.me/${contacts.whatsapp.number}?text=${encodeURIComponent(text)}`;
 }
