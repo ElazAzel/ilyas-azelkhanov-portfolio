@@ -10,6 +10,7 @@ import { buttonClass } from "@/components/ui/Button";
 import { WhatsAppIcon } from "@/components/ui/Icons";
 import { CheckIcon } from "@/components/ui/Icons2";
 import { CtaBand } from "./CtaBand";
+import { NextService } from "./NextService";
 import { DemoSlot } from "@/components/demos/DemoSlot";
 import { demoCaption, hasDemo } from "@/content/demos";
 
@@ -135,6 +136,8 @@ export function ServicePage({ id, children }: { id: ServiceId; children?: ReactN
       ) : null}
 
       <CtaBand ask={s.ask} />
+
+      <NextService id={s.id} />
     </main>
   );
 }
