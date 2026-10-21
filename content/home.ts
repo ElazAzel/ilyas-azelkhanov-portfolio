@@ -45,3 +45,13 @@ export const playgroundProjects = [
     href: "/training/",
   },
 ] as const;
+
+/** Обо мне коротко (SPEC.md §7 главная, п. 5–7). Только подтверждённые факты. TODO(ilyas): фото. */
+export const homeAbout = {
+  name: "Ильяс Азелханов",
+  lead: "Алматы. Делаю продукты и учу команды ими пользоваться.",
+  handle: "В соцсетях - Elazart",
+  more: "Обо мне",
+  product: "@elazart_bot - мой обучающий бот по ИИ",
+  productNote: "собственный продукт",
+};

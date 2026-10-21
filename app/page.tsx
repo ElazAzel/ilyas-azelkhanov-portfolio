@@ -4,6 +4,7 @@ import { ServiceGrid } from "@/components/site/ServiceGrid";
 import { Marquee } from "@/components/site/Marquee";
 import { CtaBand } from "@/components/site/CtaBand";
 import { ProjectPlayground } from "@/components/site/ProjectPlayground";
+import { AboutStrip } from "@/components/site/AboutStrip";
 import { homeCopy } from "@/content/home";
 
 export default function Home() {
@@ -31,6 +32,10 @@ export default function Home() {
 
         <div className="container-page">
           <ProjectPlayground />
+        </div>
+
+        <div className="container-page">
+          <AboutStrip />
         </div>
 
         <div className="container-page">
