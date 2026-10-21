@@ -1,6 +1,8 @@
-// Smoke test for the brief receipt, ⌘K palette, contact status and next-service link. Needs `pnpm preview` on :3000.
+// Smoke test for the brief receipt, ⌘K palette, contact status and next-service link.
+// Default: `pnpm preview` on :3000. Another site: BASE=https://… node scripts/check-extras.mjs
 import { chromium } from "playwright";
 import { mkdir } from "node:fs/promises";
+const BASE = (process.env.BASE ?? "http://localhost:3000").replace(/\/$/, "");
 const OUT = "shots/extras";
 await mkdir(OUT, { recursive: true });
 const browser = await chromium.launch(process.platform === "win32" ? { channel: "msedge" } : {});
@@ -14,7 +16,7 @@ for (const width of [1440, 375]) {
   page.on("console", (m) => m.type() === "error" && errors.push(m.text()));
 
   // Brief
-  await page.goto("http://localhost:3000/brief/", { waitUntil: "networkidle" });
+  await page.goto(`${BASE}/brief/`, { waitUntil: "networkidle" });
   await page.getByRole("button", { name: /Сайты и лендинги/ }).click();
   await page.waitForTimeout(400);
   await page.getByRole("button", { name: /Корпоративный сайт/ }).click();
@@ -35,14 +37,14 @@ for (const width of [1440, 375]) {
 
   if (width > 500) {
     // Keyboard on brief
-    await page.goto("http://localhost:3000/brief/", { waitUntil: "networkidle" });
+    await page.goto(`${BASE}/brief/`, { waitUntil: "networkidle" });
     await page.keyboard.press("3");
     await page.waitForTimeout(400);
     ok(await page.getByText("2/4").isVisible(), "digit key picks option and advances");
   }
 
   // Palette (wait for hydration: the shortcut listener attaches on the client)
-  await page.goto("http://localhost:3000/", { waitUntil: "networkidle" });
+  await page.goto(`${BASE}/`, { waitUntil: "networkidle" });
   await page.waitForTimeout(3000);
   if (width > 500) await page.keyboard.press("Control+k");
   else await page.getByRole("button", { name: "Поиск по сайту" }).click();
@@ -60,14 +62,14 @@ for (const width of [1440, 375]) {
   await page.locator(".next-service").screenshot({ path: `${OUT}/next-${width}.png` });
 
   // Contact
-  await page.goto("http://localhost:3000/contact/", { waitUntil: "networkidle" });
+  await page.goto(`${BASE}/contact/`, { waitUntil: "networkidle" });
   await page.waitForTimeout(500);
   const clock = await page.locator(".fact-num").first().innerText();
   ok(/^\d\d:\d\d$/.test(clock), `contact clock shows Almaty time ${clock} (${width})`);
   await page.screenshot({ path: `${OUT}/contact-${width}.png`, fullPage: true });
 
   // Home about strip
-  await page.goto("http://localhost:3000/", { waitUntil: "networkidle" });
+  await page.goto(`${BASE}/`, { waitUntil: "networkidle" });
   await page.locator('[data-xray="AboutStrip"]').scrollIntoViewIfNeeded();
   await page.waitForTimeout(1300);
   await page.locator('[data-xray="AboutStrip"]').screenshot({ path: `${OUT}/about-strip-${width}.png` });
