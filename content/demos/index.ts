@@ -1,12 +1,12 @@
-// Services that already have a live demo (the rest show their scheme until their demo is built).
+// Complete interactive example projects available on the service pages.
 export const DEMOS = ["bots", "mini-apps", "websites", "automation", "training"] as const;
 
 const CAPTIONS: Record<string, string> = {
-  bots: "Демо — нажимайте кнопки. Данные выдуманы.",
-  "mini-apps": "Демо — соберите заказ. Данные выдуманы.",
-  websites: "Цифры измерены в вашем браузере.",
-  automation: "Демо. Время — для примера.",
-  training: "Программа — пример, цена — реальная.",
+  bots: "Запишитесь в чате и подтвердите заявку у администратора. Демонстрационный проект.",
+  "mini-apps": "Соберите заказ, затем приготовьте его на экране бариста. Демонстрационный проект.",
+  websites: "Откройте проекты и соберите бриф на сайте интерьерной студии. Демонстрационный проект.",
+  automation: "Обработайте сообщение, проверьте расчёт и согласуйте заявку в CRM. Демонстрационный проект.",
+  training: "Программа - пример, цена - реальная.",
 };
 
 export function hasDemo(id: string): boolean {

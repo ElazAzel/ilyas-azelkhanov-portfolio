@@ -7,7 +7,7 @@ export const dynamic = "force-static";
 export default function manifest(): MetadataRoute.Manifest {
   const p = (s: string) => `${BASE_PATH}${s}`;
   return {
-    name: "Azelkhanov — сделаю и научу",
+    name: "Azelkhanov - сделаю и научу",
     short_name: "Azelkhanov",
     description: "Сайты, Telegram-боты, Mini Apps, AI-автоматизация и тренинги. Алматы.",
     lang: "ru",

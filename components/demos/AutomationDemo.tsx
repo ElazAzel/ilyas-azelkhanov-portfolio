@@ -1,152 +1,400 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { autoFlow, manualFlow, sampleRequest, type FlowStep } from "@/content/demos/automation";
-import { play } from "@/lib/sfx";
-import { haptic } from "@/lib/haptics";
+import {
+  automationStages,
+  printCatalog,
+  requestSamples,
+} from "@/content/demos/automation";
+import { money } from "@/content/demos/shared";
+import { DemoIcon, DemoWindow } from "./DemoKit";
+import { ProjectSignature } from "@/components/visuals/ProjectSignature";
 
-type Mode = "manual" | "auto";
-const WHO: Record<FlowStep["who"], string> = { client: "Клиент", human: "Человек", ai: "ИИ", system: "Система" };
+type Lead = {
+  id: number;
+  product: string;
+  qty: number;
+  city: string;
+  total: number;
+  status: "Новая" | "Согласована";
+  reply: string;
+};
+function extract(text: string) {
+  const product = printCatalog.find((p) => p.keyword.test(text));
+  const qty = Number(
+    text.match(/\b(\d{1,4})\s*(?:шт|худи|футбол|шоппер)/i)?.[1] || 0,
+  );
+  const city = /астан/i.test(text)
+    ? "Астана"
+    : /алмат/i.test(text)
+      ? "Алматы"
+      : "Уточнить город";
+  return { product, qty, city, total: product && qty ? product.unit * qty : 0 };
+}
 
-const total = (f: FlowStep[]) => f.reduce((a, s) => a + s.minutes, 0);
-const fmt = (min: number) => (min >= 1 ? `${Math.round(min)} мин` : `${Math.max(1, Math.round(min * 60))} с`);
-
-/** Automation demo (SPEC.md §8): send one test request through the manual and the automated path and compare. */
 export default function AutomationDemo() {
-  const [mode, setMode] = useState<Mode>("manual");
-  const [step, setStep] = useState(-1);
-  const [clock, setClock] = useState(0);
-  const [results, setResults] = useState<Partial<Record<Mode, number>>>({});
-  const timers = useRef<number[]>([]);
-  const running = step >= 0 && step < (mode === "manual" ? manualFlow : autoFlow).length;
-
-  const flow = mode === "manual" ? manualFlow : autoFlow;
-  useEffect(() => () => timers.current.forEach((t) => window.clearTimeout(t)), []);
-
+  const [tab, setTab] = useState("Входящие");
+  const [text, setText] = useState(requestSamples[0]!.text);
+  const [stage, setStage] = useState(-1);
+  const [running, setRunning] = useState(false);
+  const [error, setError] = useState("");
+  const [filter, setFilter] = useState("Все");
+  const [leads, setLeads] = useState<Lead[]>([]);
+  const [selected, setSelected] = useState<Lead | null>(null);
+  const [events, setEvents] = useState<string[]>([
+    "Рабочее пространство готово. Сценарий «Заявка → расчёт → CRM» включён.",
+  ]);
+  const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
+  useEffect(() => () => timers.current.forEach(clearTimeout), []);
+  const preview = extract(text);
   const run = () => {
-    timers.current.forEach((t) => window.clearTimeout(t));
-    timers.current = [];
+    if (running) return;
+    setError("");
+    setSelected(null);
+    setStage(-1);
+    if (!preview.product || preview.qty < 1) {
+      setError(
+        "Укажите изделие (худи, футболки или шопперы) и количество. Например: «30 худи в Алматы».",
+      );
+      return;
+    }
+    const data = { ...preview, product: preview.product };
+    setRunning(true);
     const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const perStep = reduce ? 0 : mode === "manual" ? 1100 : 380;
-    let acc = 0;
-    setClock(0);
-    setStep(0);
-    play("press");
-    flow.forEach((s, i) => {
-      acc += s.minutes;
-      const at = acc;
+    timers.current.forEach(clearTimeout);
+    timers.current = [];
+    automationStages.forEach((title, i) => {
       timers.current.push(
-        window.setTimeout(() => {
-          setStep(i);
-          setClock(at);
-          if (i > 0) {
-            play("tick");
-            haptic("light");
-          }
-          if (i === flow.length - 1) {
-            timers.current.push(
-              window.setTimeout(() => {
-                setStep(flow.length);
-                setResults((r) => ({ ...r, [mode]: total(flow) }));
-                play("step");
-                haptic("success");
-              }, perStep),
-            );
-          }
-        }, i * perStep),
+        setTimeout(
+          () => {
+            setStage(i);
+            setEvents((list) => [
+              title + " · " + new Date().toLocaleTimeString("ru-RU"),
+              ...list,
+            ]);
+            if (i === automationStages.length - 1) {
+              const lead: Lead = {
+                id: 2088 + leads.length,
+                product: data.product.name,
+                qty: data.qty,
+                city: data.city,
+                total: data.total,
+                status: "Новая",
+                reply:
+                  "Здравствуйте! Предварительный расчёт: " +
+                  data.qty +
+                  " × " +
+                  data.product.name.toLowerCase() +
+                  " по " +
+                  money(data.product.unit) +
+                  " = " +
+                  money(data.total) +
+                  ". Город: " +
+                  data.city +
+                  ". Для точного расчёта пришлите макет и размерный ряд. Менеджер подтвердит срок производства.",
+              };
+              setLeads((list) => [lead, ...list]);
+              setSelected(lead);
+              setRunning(false);
+            }
+          },
+          reduce ? 0 : 450 + i * 500,
+        ),
       );
     });
   };
-
-  const switchMode = (m: Mode) => {
-    if (running) return;
-    setMode(m);
-    setStep(-1);
-    setClock(0);
+  const approve = (lead: Lead) => {
+    setLeads((list) =>
+      list.map((l) => (l.id === lead.id ? { ...l, status: "Согласована" } : l)),
+    );
+    setSelected((l) =>
+      l?.id === lead.id ? { ...l, status: "Согласована" } : l,
+    );
+    setEvents((list) => [
+      "Заявка №" + lead.id + " согласована менеджером",
+      ...list,
+    ]);
   };
 
-  const max = Math.max(total(manualFlow), total(autoFlow));
-
   return (
-    <div className="flex flex-col gap-4">
-      <div className="grid grid-cols-2 gap-2 rounded-pill bg-paper p-1" role="radiogroup" aria-label="Как обрабатывается заявка">
-        {(["manual", "auto"] as const).map((m) => (
-          <button
-            key={m}
-            type="button"
-            role="radio"
-            aria-checked={mode === m}
-            data-fx="select"
-            disabled={running}
-            onClick={() => switchMode(m)}
-            className={`min-h-7 rounded-pill px-4 py-2 t-label transition-colors ${mode === m ? "bg-ink text-paper" : "text-ink"}`}
-          >
-            {m === "manual" ? "Сейчас: вручную" : "С автоматизацией"}
-          </button>
-        ))}
-      </div>
-
-      <div className="flex flex-col gap-3 rounded-md bg-paper p-4 ring-[length:var(--stroke)] ring-line ring-inset">
-        <div className="flex items-center justify-between gap-3">
-          <p className="t-body-s text-slate">Тестовая заявка</p>
-          <p className="t-label tabular-nums" aria-live="polite">
-            {step >= 0 ? `прошло: ${fmt(clock)}` : "часы стоят"}
-          </p>
+    <div className="pd automation-project">
+      <DemoWindow title="Flowdesk / студия печати">
+        <div className="flow-header">
+          <span className="flow-brand">
+            <DemoIcon name="bolt" />
+            flowdesk<span>/</span>
+            <small>Студия печати</small>
+          </span>
+          <span className="pd-status">Сценарий включён</span>
         </div>
-        <p className="rounded-sm bg-mist px-3 py-2 t-body-s">«{sampleRequest}»</p>
-        <ol className="flex flex-col gap-2">
-          {flow.map((s, i) => {
-            const done = step > i || step === flow.length;
-            const now = step === i;
-            return (
-              <li
-                key={s.title}
-                className={`flex items-center gap-3 rounded-sm px-3 py-2 transition-colors duration-[var(--dur-base)] ${
-                  now ? "bg-primary text-on-primary" : done ? "bg-mist text-ink" : "text-slate"
-                }`}
+        <ProjectSignature id="automation" active={running} />
+        <nav className="flow-nav" aria-label="Разделы автоматизации">
+          {["Входящие", "CRM", "Журнал"].map((t) => (
+            <button
+              type="button"
+              key={t}
+              aria-pressed={tab === t}
+              onClick={() => setTab(t)}
+            >
+              {t}
+              {t === "CRM" && <span>{leads.length}</span>}
+            </button>
+          ))}
+        </nav>
+        <div className="flow-body">
+          <div className="flow-workflow">
+            {automationStages.map((s, i) => (
+              <div
+                key={s}
+                data-active={stage === i}
+                data-done={stage > i || (!running && stage === 3)}
               >
-                <span
-                  className={`grid size-6 shrink-0 place-items-center rounded-pill t-label ${
-                    now ? "bg-paper text-primary-deep" : done ? "bg-ink text-paper" : "bg-mist text-slate"
-                  }`}
-                >
-                  {done ? "✓" : i + 1}
+                <span>
+                  {stage > i ? (
+                    <DemoIcon name="check" />
+                  ) : (
+                    <DemoIcon
+                      name={(["send", "bolt", "file", "grid"] as const)[i]!}
+                    />
+                  )}
                 </span>
-                <span className="flex-1 t-body-s">{s.title}</span>
-                <span className={`rounded-pill px-2 py-1 t-label ${s.who === "ai" ? "bg-primary-light/30" : ""}`}>{WHO[s.who]}</span>
-              </li>
-            );
-          })}
-        </ol>
-        <button
-          type="button"
-          data-fx="press"
-          disabled={running}
-          onClick={run}
-          className="min-h-7 rounded-pill bg-primary px-5 py-3 t-label text-on-primary active:scale-98 disabled:opacity-50"
-        >
-          {running ? "Заявка в пути…" : step === flow.length ? "Отправить ещё раз" : "Отправить тестовую заявку"}
-        </button>
-      </div>
-
-      <div className="flex flex-col gap-3 rounded-md bg-night p-4 text-ink-inverse">
-        <p className="t-label text-slate-inverse">Клиент получил ответ через (пример)</p>
-        {(["manual", "auto"] as const).map((m) => (
-          <div key={m} className="flex flex-col gap-1">
-            <div className="flex justify-between t-body-s">
-              <span>{m === "manual" ? "Вручную" : "С автоматизацией"}</span>
-              <span className="tabular-nums">{results[m] !== undefined ? fmt(results[m]!) : "запустите"}</span>
-            </div>
-            <span className="h-2 overflow-hidden rounded-pill bg-night-raised">
-              <span
-                className={`block h-full origin-left rounded-pill transition-transform duration-[var(--dur-scene,700ms)] ease-[var(--ease-out)] ${m === "auto" ? "bg-primary-light" : "bg-slate-inverse"}`}
-                style={{ transform: `scaleX(${results[m] !== undefined ? Math.max(0.02, results[m]! / max) : 0})` }}
-              />
-            </span>
+                <small>{s}</small>
+              </div>
+            ))}
           </div>
-        ))}
-        <p className="t-body-s text-slate-inverse">Сравните оба режима. Время — пример.</p>
-      </div>
+          {tab === "Входящие" && (
+            <div className="flow-columns">
+              <section className="flow-inbox">
+                <header>
+                  <span className="pd-app-icon">
+                    <DemoIcon name="send" />
+                  </span>
+                  <div>
+                    <h3>Входящее сообщение</h3>
+                    <p>Канал: WhatsApp · демо</p>
+                  </div>
+                </header>
+                <div className="flow-presets">
+                  {requestSamples.map((s) => (
+                    <button
+                      type="button"
+                      key={s.label}
+                      disabled={running}
+                      onClick={() => {
+                        setText(s.text);
+                        setStage(-1);
+                        setSelected(null);
+                        setError("");
+                      }}
+                    >
+                      {s.label}
+                    </button>
+                  ))}
+                </div>
+                <label className="pd-label" htmlFor="flow-request">
+                  Текст заявки
+                </label>
+                <textarea
+                  id="flow-request"
+                  aria-describedby={error ? "flow-error" : undefined}
+                  value={text}
+                  maxLength={1200}
+                  disabled={running}
+                  onChange={(e) => {
+                    setText(e.target.value);
+                    setSelected(null);
+                    setStage(-1);
+                    setError("");
+                  }}
+                />
+                {error && (
+                  <p id="flow-error" className="pd-error" role="alert">
+                    {error}
+                  </p>
+                )}
+                <button
+                  type="button"
+                  className="pd-button"
+                  disabled={running}
+                  onClick={run}
+                >
+                  <DemoIcon name={running ? "clock" : "bolt"} />
+                  {running ? "Обрабатываю заявку…" : "Запустить обработку"}
+                </button>
+                <p className="pd-subtle">
+                  Можно изменить текст: изделие, количество и город попадут в
+                  карточку.
+                </p>
+              </section>
+              <section className="flow-result" aria-live="polite">
+                <header>
+                  <h3>
+                    {selected ? "Результат обработки" : "Данные из сообщения"}
+                  </h3>
+                  <span className="pd-badge">
+                    {selected ? "Записано в CRM" : "Предпросмотр"}
+                  </span>
+                </header>
+                <dl className="flow-fields">
+                  <div>
+                    <dt>Изделие</dt>
+                    <dd>{preview.product?.name || "Нужно уточнить"}</dd>
+                  </div>
+                  <div>
+                    <dt>Количество</dt>
+                    <dd>
+                      {preview.qty ? preview.qty + " шт." : "Нужно уточнить"}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>Город</dt>
+                    <dd>{preview.city}</dd>
+                  </div>
+                  <div>
+                    <dt>Цена за единицу</dt>
+                    <dd>
+                      {preview.product ? money(preview.product.unit) : "-"}
+                    </dd>
+                  </div>
+                </dl>
+                <div className="flow-total">
+                  <small>Предварительная сумма</small>
+                  <strong>{money(preview.total)}</strong>
+                </div>
+                {selected ? (
+                  <>
+                    <div className="flow-reply">
+                      <span>
+                        <DemoIcon name="check" />
+                        Ответ подготовлен
+                      </span>
+                      <p>{selected.reply}</p>
+                    </div>
+                    <button
+                      type="button"
+                      className="pd-button pd-button--outline"
+                      onClick={() => setTab("CRM")}
+                    >
+                      Открыть CRM <DemoIcon name="arrow" />
+                    </button>
+                  </>
+                ) : (
+                  <p className="pd-subtle">
+                    После запуска здесь появится готовый ответ клиенту.
+                  </p>
+                )}
+              </section>
+            </div>
+          )}
+          {tab === "CRM" && (
+            <section className="flow-crm">
+              <header>
+                <div>
+                  <h3>Заявки на производство</h3>
+                  <p>
+                    {leads.length} заявок ·{" "}
+                    {money(leads.reduce((s, l) => s + l.total, 0))}
+                  </p>
+                </div>
+                <select
+                  aria-label="Фильтр статуса CRM"
+                  className="pd-select"
+                  value={filter}
+                  onChange={(e) => setFilter(e.target.value)}
+                >
+                  {["Все", "Новая", "Согласована"].map((s) => (
+                    <option key={s}>{s}</option>
+                  ))}
+                </select>
+              </header>
+              {!leads.length ? (
+                <div className="flow-crm-empty">
+                  <DemoIcon name="grid" />
+                  <h4>Рабочая очередь готова</h4>
+                  <p>
+                    Обработайте сообщение во «Входящих» - карточка появится
+                    здесь со всеми данными и расчётом.
+                  </p>
+                  <button
+                    type="button"
+                    className="pd-button"
+                    onClick={() => setTab("Входящие")}
+                  >
+                    Создать первую заявку
+                  </button>
+                </div>
+              ) : (
+                <div className="flow-table-wrap">
+                  <table className="flow-table">
+                    <thead>
+                      <tr>
+                        <th>Заявка</th>
+                        <th>Заказ</th>
+                        <th>Сумма</th>
+                        <th>Статус</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {leads
+                        .filter((l) => filter === "Все" || l.status === filter)
+                        .map((l) => (
+                          <tr key={l.id}>
+                            <td>
+                              <strong>#{l.id}</strong>
+                              <small>{l.city}</small>
+                            </td>
+                            <td>
+                              {l.product}
+                              <small>{l.qty} шт.</small>
+                            </td>
+                            <td>{money(l.total)}</td>
+                            <td>
+                              {l.status === "Новая" ? (
+                                <button
+                                  type="button"
+                                  className="pd-button pd-button--small"
+                                  onClick={() => approve(l)}
+                                >
+                                  Согласовать
+                                </button>
+                              ) : (
+                                <span className="pd-badge pd-badge--success">
+                                  Согласована
+                                </span>
+                              )}
+                            </td>
+                          </tr>
+                        ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </section>
+          )}
+          {tab === "Журнал" && (
+            <section className="flow-log">
+              <h3>История выполнения</h3>
+              {events.map((e, i) => (
+                <p key={events.length - i}>
+                  <DemoIcon name="check" />
+                  <span>{e}</span>
+                </p>
+              ))}
+            </section>
+          )}
+        </div>
+        <footer className="flow-footer">
+          <span>
+            <i />
+            Все изменения сохранены в этой сессии
+          </span>
+          <span>Без внешних подключений</span>
+        </footer>
+      </DemoWindow>
+      <p className="pd-disclaimer">
+        Демонстрационный проект. Правила обработки и цены условные; сумма
+        рассчитывается из выбранных данных.
+      </p>
     </div>
   );
 }

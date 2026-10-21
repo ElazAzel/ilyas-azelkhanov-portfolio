@@ -17,7 +17,7 @@ const description = "Сайты, Telegram-боты, Mini Apps, AI-автомат
 
 export const metadata: Metadata = {
   metadataBase: new URL(`${SITE_URL}/`),
-  title: { default: "Azelkhanov — сделаю и научу", template: "%s — Azelkhanov" },
+  title: { default: "Azelkhanov - сделаю и научу", template: "%s - Azelkhanov" },
   description,
   applicationName: "Azelkhanov",
   appleWebApp: { capable: true, title: "Azelkhanov", statusBarStyle: "default" },
@@ -25,9 +25,9 @@ export const metadata: Metadata = {
     type: "website",
     locale: "ru_KZ",
     siteName: "Azelkhanov",
-    title: "Azelkhanov — сделаю и научу",
+    title: "Azelkhanov - сделаю и научу",
     description,
-    images: [{ url: `${BASE_PATH}/og.png`, width: 1200, height: 630, alt: "Azelkhanov — сделаю и научу" }],
+    images: [{ url: `${BASE_PATH}/og.png`, width: 1200, height: 630, alt: "Azelkhanov - сделаю и научу" }],
   },
   twitter: { card: "summary_large_image", images: [`${BASE_PATH}/og.png`] },
 };

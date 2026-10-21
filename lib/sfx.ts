@@ -1,4 +1,4 @@
-// Interface sounds synthesised with Web Audio — no audio files, nothing plays before the first tap or key.
+// Interface sounds synthesised with Web Audio - no audio files, nothing plays before the first tap or key.
 // iOS keeps the default "ambient" audio session, so the silent switch mutes the site like any polite app.
 
 type Sound = "tick" | "press" | "whoosh" | "burst" | "step";

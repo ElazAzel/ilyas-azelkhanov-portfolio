@@ -1,4 +1,4 @@
-// Machine-readable version of the site (llms.txt + per-service markdown) — the "Человек / Машина" switch on /services/websites.
+// Machine-readable version of the site (llms.txt + per-service markdown) - the "Человек / Машина" switch on /services/websites.
 import { formatPrice, packagesFor } from "./pricing";
 import { services, type Service } from "./services";
 import { contacts } from "./contacts";
@@ -31,7 +31,7 @@ export function llmsTxt(origin = ""): string {
   return [
     "# Azelkhanov",
     "",
-    "> Ильяс Азелханов, Алматы. Делаю сайты, Telegram-ботов, Mini Apps и AI-автоматизацию — и учу команды с этим работать.",
+    "> Ильяс Азелханов, Алматы. Делаю сайты, Telegram-ботов, Mini Apps и AI-автоматизацию - и учу команды с этим работать.",
     "",
     "## Услуги",
     ...services.map((s) => `- [${s.title}](${origin}${s.href}): ${s.line}. ${plain(formatPrice(packagesFor(s.id)[0]!))}`),

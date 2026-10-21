@@ -6,9 +6,9 @@ import { haptic } from "@/lib/haptics";
 
 /**
  * One delegated listener gives sound + haptics to anything marked with data-fx:
- *   data-fx="press"  — buttons and CTAs (press sound, medium haptic)
- *   data-fx="select" — chips, toggles (tick, light haptic)
- *   data-fx="hover"  — rows that tick on mouse hover (desktop) and press on tap
+ *   data-fx="press"  - buttons and CTAs (press sound, medium haptic)
+ *   data-fx="select" - chips, toggles (tick, light haptic)
+ *   data-fx="hover"  - rows that tick on mouse hover (desktop) and press on tap
  */
 export function Feedback() {
   useEffect(() => {

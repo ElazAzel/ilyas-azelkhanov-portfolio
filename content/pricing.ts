@@ -7,7 +7,7 @@ export type Package = {
   id: string;
   service: ServiceId;
   title: string;
-  /** Цена «от» в тенге. null — только по КП. */
+  /** Цена «от» в тенге. null - только по КП. */
   from: number | null;
   unit?: "project" | "hour" | "month";
   term?: string;

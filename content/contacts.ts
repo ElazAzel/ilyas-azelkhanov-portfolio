@@ -1,4 +1,4 @@
-// SPEC.md §7 /contact — подтверждено Ильясом.
+// SPEC.md §7 /contact - подтверждено Ильясом.
 export const contacts = {
   whatsapp: { display: "+7 705 109 76 64", number: "77051097664" },
   telegram: { display: "@elazart", username: "elazart" },

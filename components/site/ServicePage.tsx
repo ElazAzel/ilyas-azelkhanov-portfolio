@@ -14,7 +14,7 @@ import { DemoSlot } from "@/components/demos/DemoSlot";
 import { demoCaption, hasDemo } from "@/content/demos";
 
 // Short facts next to prices instead of a paragraph of explanations.
-const terms = ["Точная цена — после разбора задачи", "Договор с ИП", `Предоплата ${prepayment}`, "Гарантия 1 месяц"];
+const terms = ["Точная цена - после разбора задачи", "Договор с ИП", `Предоплата ${prepayment}`, "Гарантия 1 месяц"];
 
 /** One template for every service: offer → live demo → what's included → prices → FAQ → CTA. Few words, the demo does the talking. */
 export function ServicePage({ id, children }: { id: ServiceId; children?: ReactNode }) {
@@ -26,7 +26,7 @@ export function ServicePage({ id, children }: { id: ServiceId; children?: ReactN
     <main className="container-page flex flex-col gap-9 pb-8 lg:gap-10">
       {/* Offer + scene */}
       <section data-xray="ServicePage.Offer" className="grid-page items-center gap-y-7 pt-5 lg:min-h-[calc(100svh-var(--spacing-8))] lg:pt-0">
-        <div className="col-span-4 flex flex-col gap-5 md:col-span-8 lg:col-span-6">
+        <div className="col-span-4 flex flex-col gap-5 md:col-span-8 lg:col-span-5">
           <Link href="/#services" data-fx="select" className="link t-label">
             Все услуги
           </Link>
@@ -47,9 +47,9 @@ export function ServicePage({ id, children }: { id: ServiceId; children?: ReactN
             </Link>
           </div>
         </div>
-        <figure className="col-span-4 flex flex-col gap-3 md:col-span-8 lg:col-span-6">
+        <figure className="col-span-4 min-w-0 flex flex-col gap-3 md:col-span-8 lg:col-span-7">
           {hasDemo(s.id) ? (
-            <div className="rounded-md bg-mist p-4 md:p-6">
+            <div className="rounded-md bg-mist p-3 md:p-4">
               <DemoSlot id={s.id} poster={<ServiceVisual id={s.id} className="aspect-[4/3] w-full" />} />
             </div>
           ) : (
@@ -66,7 +66,7 @@ export function ServicePage({ id, children }: { id: ServiceId; children?: ReactN
         </figure>
       </section>
 
-      {/* What's included — one compact block */}
+      {/* What's included - one compact block */}
       <section data-xray="IncludesList" className="flex flex-col gap-5">
         <h2 className="t-display-l">Что входит</h2>
         <ul className="grid gap-3 md:grid-cols-2 lg:grid-cols-4">

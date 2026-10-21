@@ -1,0 +1,840 @@
+/* Independent art direction for fictional projects. AZ's surrounding UI keeps its tokens. */
+.concept-cover,
+.project-signature,
+.interior-hero {
+  --art-orange: #ff7449;
+  --art-orange-deep: #a62d0b;
+  --art-graphite: #242522;
+  --art-fog: #e6e6e0;
+  --art-stone: #a9aaa0;
+  --art-metal: #536682;
+  --sculpture-shadow: var(--art-metal);
+  --sculpture-light: var(--color-paper);
+  --sculpture-mid: var(--color-line);
+  isolation: isolate;
+}
+.project-sculpture {
+  position: relative;
+  aspect-ratio: 1;
+  perspective: 700px;
+  pointer-events: none;
+  transform: translate3d(
+      calc(var(--art-x, 0) * 18px),
+      calc(var(--art-y, 0) * 18px),
+      0
+    )
+    rotateY(calc(var(--art-x, 0) * 18deg))
+    rotateX(calc(var(--art-y, 0) * -14deg));
+  transition: transform 650ms var(--ease-out);
+}
+.sculpture-object {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(
+    8px 18px 14px color-mix(in srgb, var(--sculpture-shadow) 25%, transparent)
+  );
+  animation: sculpture-arrive 4.5s var(--ease-out) backwards;
+}
+.sculpture-shadow {
+  position: absolute;
+  left: 20%;
+  right: 20%;
+  bottom: 5%;
+  height: 8%;
+  background: var(--sculpture-shadow);
+  opacity: 0.25;
+  filter: blur(12px);
+  border-radius: 50%;
+}
+.sculpture-orbit {
+  position: absolute;
+  inset: 7%;
+  border: 1px solid currentColor;
+  opacity: 0.15;
+  border-radius: 50%;
+  transform: rotateX(65deg) rotateZ(-25deg) scale(1.2);
+}
+.sculpture--mini-apps {
+  --sculpture-shadow: var(--art-orange-deep);
+  --sculpture-light: var(--color-paper);
+}
+.sculpture--bots {
+  --sculpture-shadow: var(--color-ink);
+  --sculpture-light: var(--color-primary-light);
+}
+.sculpture--websites {
+  --sculpture-shadow: var(--art-stone);
+  --sculpture-light: var(--color-paper);
+  --sculpture-mid: var(--art-fog);
+}
+.sculpture--training {
+  --sculpture-shadow: var(--color-primary-deep);
+  --sculpture-light: var(--color-paper);
+}
+
+/* Gallery covers: editorial typography and product evidence, instead of tiny browser windows. */
+.concept-cover {
+  border-radius: var(--radius-sm);
+  background: var(--color-mist);
+  color: var(--color-ink);
+  border: 1px solid color-mix(in srgb, currentColor 10%, transparent);
+  transform: translateZ(0);
+}
+.concept-cover::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(currentColor 0.5px, transparent 0.7px);
+  background-size: 6px 6px;
+  opacity: 0.045;
+  z-index: -1;
+}
+.concept-masthead {
+  position: absolute;
+  z-index: 3;
+  inset: 5% 6% auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 5%;
+  font-size: 2.05cqi;
+  line-height: 1.3;
+}
+.concept-masthead strong {
+  font-size: 4.7cqi;
+  line-height: 1;
+  letter-spacing: -0.07em;
+  font-weight: 800;
+}
+.concept-masthead > span {
+  max-width: 18ch;
+  text-align: right;
+}
+.concept-title {
+  position: absolute;
+  z-index: 2;
+  left: 6%;
+  top: 24%;
+  font-size: 8.4cqi;
+  font-weight: 780;
+  line-height: 0.98;
+  letter-spacing: -0.065em;
+}
+.concept-cover > .project-sculpture {
+  position: absolute;
+  width: 65%;
+  right: -5%;
+  top: 5%;
+  z-index: 1;
+}
+.concept-proof {
+  position: absolute;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  gap: 3cqi;
+  border: 1px solid color-mix(in srgb, currentColor 15%, transparent);
+  background: var(--color-paper);
+  color: var(--color-ink);
+  box-shadow: 0 3cqi 5cqi -3cqi
+    color-mix(in srgb, var(--color-ink) 30%, transparent);
+  padding: 3cqi;
+  font-size: 2.6cqi;
+  line-height: 1.4;
+}
+.concept-proof > span:not(.concept-check) {
+  flex: 1;
+}
+.concept-proof b {
+  display: block;
+  font-weight: 650;
+}
+.concept-proof small {
+  display: block;
+  font-size: 2.05cqi;
+  margin-top: 0.6cqi;
+  color: var(--color-slate);
+}
+.concept-cover .pd-icon {
+  width: 3.5cqi;
+  height: 3.5cqi;
+}
+.concept-footer {
+  position: absolute;
+  z-index: 4;
+  bottom: 4%;
+  left: 6%;
+  font-size: 1.9cqi;
+  line-height: 1.3;
+}
+.concept-corner {
+  position: absolute;
+  bottom: 3%;
+  right: 6%;
+  font-size: 4cqi;
+  font-weight: 300;
+  line-height: 1;
+}
+.concept-check {
+  display: grid;
+  place-items: center;
+  width: 7cqi;
+  height: 7cqi;
+  background: var(--color-primary);
+  color: var(--color-paper);
+  border-radius: 50%;
+}
+.cover--mini-apps {
+  background: var(--art-orange);
+  color: var(--art-graphite);
+}
+.cover--mini-apps .concept-masthead strong {
+  font-size: 18cqi;
+  letter-spacing: -0.12em;
+}
+.cover--mini-apps .concept-masthead {
+  align-items: start;
+  top: 4%;
+}
+.cover--mini-apps .concept-title {
+  top: 35%;
+  font-size: 7cqi;
+}
+.cover--mini-apps > .project-sculpture {
+  width: 76%;
+  top: 5%;
+  right: -19%;
+  transform: rotate(-20deg);
+}
+.concept-coffee-photo {
+  position: absolute;
+  z-index: 1;
+  width: 29%;
+  aspect-ratio: 1;
+  right: 10%;
+  top: 31%;
+  border-radius: 50%;
+  overflow: hidden;
+  transform: rotate(16deg);
+  border: 0.6cqi solid var(--color-paper);
+}
+.concept-stamp {
+  position: absolute;
+  z-index: 3;
+  right: 7%;
+  top: 56%;
+  width: 19%;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  border-radius: 50%;
+  background: var(--art-graphite);
+  color: var(--color-paper);
+  font-size: 2cqi;
+  line-height: 1.3;
+  transform: rotate(12deg);
+}
+.proof--coffee {
+  left: 6%;
+  bottom: 12%;
+  width: 62%;
+  transform: rotate(-4deg);
+  border-radius: 1cqi;
+}
+.cover--bots {
+  background: var(--color-primary);
+  color: var(--color-paper);
+}
+.cover--bots .concept-title {
+  top: 27%;
+  font-style: italic;
+  transform: skew(-5deg);
+  font-size: 8cqi;
+}
+.cover--bots .concept-masthead strong {
+  font-size: 6cqi;
+  font-style: italic;
+  letter-spacing: -0.08em;
+}
+.cover--bots .concept-masthead {
+  right: 13%;
+}
+.cover--bots > .project-sculpture {
+  top: 13%;
+  right: -8%;
+  width: 70%;
+  z-index: 0;
+}
+.concept-racing-line {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 12%;
+  background: repeating-conic-gradient(
+      var(--color-paper) 0 25%,
+      var(--color-ink) 0 50%
+    )
+    0 0 / 5cqi 5cqi;
+  transform: skew(-14deg) translateX(60%);
+}
+.proof--booking {
+  bottom: 16%;
+  left: 6%;
+  width: 83%;
+  transform: rotate(-3deg);
+}
+.cover--automation {
+  background: var(--color-night);
+  color: var(--color-ink-inverse);
+}
+.cover--automation .concept-title {
+  font-weight: 500;
+  font-size: 10cqi;
+  top: 24%;
+}
+.cover--automation > .project-sculpture {
+  width: 77%;
+  top: 6%;
+  right: -14%;
+}
+.cover--automation .sculpture--automation {
+  --sculpture-shadow: var(--color-primary-deep);
+  --sculpture-light: var(--color-ink-inverse);
+}
+.concept-wires {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  stroke: var(--color-primary-light);
+  stroke-width: 1;
+  opacity: 0.5;
+  z-index: 0;
+}
+.concept-input {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 2cqi;
+  right: 9%;
+  top: 19%;
+  font-size: 2cqi;
+  padding: 1.6cqi 2cqi;
+  background: var(--color-night-raised);
+  border: 1px solid var(--color-line-inverse);
+  border-radius: 3cqi;
+  z-index: 3;
+}
+.proof--flow {
+  right: 6%;
+  bottom: 14%;
+  width: 67%;
+  border-radius: 1.6cqi;
+  transform: rotate(3deg);
+}
+.proof--flow b {
+  font-size: 4cqi;
+  letter-spacing: -0.045em;
+}
+.cover--websites {
+  background: var(--art-fog);
+  color: var(--art-graphite);
+}
+.cover--websites .concept-title {
+  top: 24%;
+  font-size: 6.6cqi;
+  line-height: 1.06;
+  font-weight: 500;
+}
+.cover--websites .concept-masthead strong {
+  letter-spacing: -0.06em;
+  font-weight: 450;
+  font-size: 6cqi;
+}
+.cover--websites > .project-sculpture {
+  width: 55%;
+  left: 1%;
+  top: 29%;
+  z-index: 1;
+}
+.concept-interior-photo {
+  position: absolute;
+  right: 5%;
+  top: 20%;
+  width: 39%;
+  height: 66%;
+  border-radius: 45% 45% 0 0;
+  overflow: hidden;
+  z-index: 0;
+}
+.concept-interior-photo img {
+  object-position: 70%;
+}
+.concept-vertical {
+  position: absolute;
+  top: 89%;
+  left: 4%;
+  font-size: 1.5cqi;
+  white-space: nowrap;
+  transform: rotate(-90deg);
+  transform-origin: left top;
+}
+.proof--interior {
+  left: 30%;
+  right: 5%;
+  bottom: 10%;
+  background: var(--art-graphite);
+  color: var(--color-paper);
+  border: 0;
+  font-size: 2cqi;
+  padding: 2cqi 3cqi;
+}
+.cover--training {
+  background: var(--color-primary);
+  color: var(--color-paper);
+}
+.cover--training .concept-title {
+  top: 23%;
+  font-size: 8cqi;
+  max-width: 70%;
+}
+.cover--training > .project-sculpture {
+  width: 65%;
+  right: -3%;
+  top: 8%;
+}
+.proof--program {
+  display: block;
+  right: 6%;
+  bottom: 12%;
+  width: 43%;
+  transform: rotate(7deg);
+  font-size: 1.8cqi;
+  border: 0;
+}
+.proof--program header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 2.2cqi;
+  padding-bottom: 1.5cqi;
+  border-bottom: 1px solid var(--color-line);
+}
+.proof--program p {
+  display: flex;
+  align-items: center;
+  gap: 1.5cqi;
+  margin-top: 2cqi;
+}
+.proof--program p > span {
+  color: var(--color-slate);
+}
+.proof--program p .pd-icon {
+  margin-left: auto;
+  color: var(--color-primary-deep);
+  width: 2.4cqi;
+  height: 2.4cqi;
+}
+.cover--training .concept-footer {
+  max-width: 40%;
+  bottom: 12%;
+  font-size: 2.2cqi;
+  line-height: 1.5;
+}
+.service-spotlight--training .service-card > .concept-cover {
+  background: var(--color-primary);
+}
+@container (width > 500px) {
+  .cover--training .concept-title {
+    font-size: 6.5cqi;
+  }
+  .cover--training .proof--program {
+    width: 38%;
+  }
+}
+.service-card:is(:hover, :focus-visible) .sculpture-object {
+  transform: rotate(-8deg) translateY(-3%);
+}
+.sculpture-object {
+  transition: transform 850ms var(--ease-out);
+}
+.concept-title {
+  transition: transform 650ms var(--ease-out);
+}
+.service-card:is(:hover, :focus-visible) .concept-title {
+  transform: translateY(-2%) rotate(-1deg);
+}
+.service-card:is(:hover, :focus-visible) .concept-proof {
+  transform: rotate(0) translateY(-3%);
+}
+.concept-proof,
+.concept-coffee-photo {
+  transition: transform 650ms var(--ease-out);
+}
+.service-card:is(:hover, :focus-visible) .concept-coffee-photo {
+  transform: rotate(-8deg) scale(1.06);
+}
+
+/* The same identities continue inside the usable projects. */
+.project-signature {
+  position: relative;
+  container-type: inline-size;
+  overflow: hidden;
+  min-height: 12rem;
+  color: var(--color-ink);
+  background: var(--color-mist);
+  margin-bottom: var(--spacing-4);
+}
+.signature-copy {
+  position: relative;
+  z-index: 2;
+  max-width: 75%;
+  padding: var(--spacing-5);
+}
+.signature-copy > span {
+  display: block;
+  font-size: clamp(0.625rem, 1.8cqi, 0.75rem);
+  line-height: 1.4;
+}
+.signature-copy h3 {
+  font-size: clamp(1.75rem, 7.5cqi, 3.25rem);
+  line-height: 0.97;
+  letter-spacing: -0.055em;
+  font-weight: 760;
+  margin-block: var(--spacing-3);
+}
+.signature-copy p {
+  max-width: 26ch;
+  font-size: clamp(0.6875rem, 1.9cqi, 0.8125rem);
+  line-height: 1.5;
+}
+.project-signature > .project-sculpture {
+  position: absolute;
+  width: 50%;
+  right: -4%;
+  top: -20%;
+  bottom: -20%;
+  margin-block: auto;
+  z-index: 0;
+}
+.signature-brand {
+  position: absolute;
+  z-index: 0;
+  right: 5%;
+  bottom: -6%;
+  font-size: clamp(3rem, 14cqi, 7rem);
+  font-weight: 850;
+  line-height: 1;
+  letter-spacing: -0.08em;
+  opacity: 0.1;
+  white-space: nowrap;
+}
+.signature-cross {
+  position: absolute;
+  top: var(--spacing-3);
+  right: var(--spacing-4);
+  font-size: 1.25rem;
+  font-weight: 300;
+  opacity: 0.65;
+}
+.signature--mini-apps {
+  background: var(--art-orange);
+  color: var(--art-graphite);
+  margin-bottom: 0;
+}
+.signature--mini-apps .signature-copy {
+  padding: var(--spacing-4);
+  max-width: 82%;
+}
+.signature--mini-apps .signature-brand {
+  font-size: 25cqi;
+  bottom: -7%;
+  right: 2%;
+}
+.signature--mini-apps .signature-copy h3 {
+  font-size: clamp(1.8rem, 10cqi, 2.2rem);
+}
+.signature--mini-apps > .project-sculpture {
+  width: 65%;
+  right: -19%;
+  top: -5%;
+}
+.signature--bots {
+  background: var(--color-primary);
+  color: var(--color-paper);
+  border-radius: var(--radius-sm);
+}
+.signature--bots::after {
+  content: "";
+  position: absolute;
+  right: -2%;
+  top: 0;
+  bottom: 0;
+  width: 7%;
+  background: repeating-conic-gradient(
+      var(--color-paper) 0 25%,
+      var(--color-ink) 0 50%
+    )
+    0 0 / 1rem 1rem;
+  transform: skew(-15deg);
+}
+.signature--bots .signature-copy h3 {
+  font-style: italic;
+}
+.signature--bots > .project-sculpture {
+  right: 2%;
+  width: 44%;
+}
+.signature--automation {
+  background: var(--color-night);
+  color: var(--color-ink-inverse);
+  margin-bottom: 0;
+}
+.signature--automation .signature-copy h3 {
+  font-weight: 500;
+}
+.signature--automation .project-sculpture {
+  --sculpture-shadow: var(--color-primary-deep);
+  --sculpture-light: var(--color-ink-inverse);
+}
+.project-signature[data-active="true"] .sculpture-object {
+  animation: sculpture-process 1.2s ease-in-out infinite alternate;
+}
+.signature--training {
+  background: var(--color-primary);
+  color: var(--color-paper);
+  margin-bottom: 0;
+}
+.signature--training .signature-copy {
+  max-width: 80%;
+}
+.signature--training .signature-copy h3 {
+  font-weight: 700;
+}
+.signature--compact {
+  min-height: 10.5rem;
+}
+.coffee-project {
+  --coffee-bg: var(--color-mist);
+  --coffee-ink: var(--color-ink);
+  --coffee-line: var(--color-line);
+}
+.coffee-project .coffee-product {
+  border-radius: var(--radius-xs);
+}
+.coffee-project .coffee-product-photo {
+  border-radius: 0;
+}
+.coffee-project .coffee-main-button {
+  background: var(--color-ink);
+  color: var(--color-paper);
+  border-radius: var(--radius-xs);
+}
+.coffee-project .coffee-scroll > .pd-tabs {
+  background: var(--color-paper);
+  border-bottom: 1px solid var(--color-ink);
+  border-radius: 0;
+}
+.coffee-project .coffee-scroll > .pd-tabs button[aria-pressed="true"] {
+  background: var(--color-ink);
+  color: var(--color-paper);
+  border-radius: var(--radius-xs);
+}
+.coffee-kitchen-header {
+  border-bottom: 3px solid var(--color-ink);
+}
+.bot-project .tg-avatar {
+  border-radius: var(--radius-xs);
+  transform: skew(-8deg);
+}
+.bot-manager .manager-today {
+  border-top: 3px solid var(--color-primary);
+}
+.bot-manager .manager-booking {
+  border-inline-start: 3px solid var(--color-primary);
+  border-radius: 0;
+}
+.automation-project .flow-nav {
+  padding-block: var(--spacing-2) 0;
+  background: var(--color-night);
+  color: var(--color-ink-inverse);
+  border-color: var(--color-line-inverse);
+}
+.automation-project .flow-nav button {
+  color: var(--color-slate-inverse);
+}
+.automation-project .flow-nav button[aria-pressed="true"] {
+  color: var(--color-paper);
+  border-bottom-color: var(--color-primary-light);
+}
+.automation-project .flow-workflow {
+  border: 1px solid var(--color-line);
+  padding: var(--spacing-4) var(--spacing-2);
+  background: var(--color-paper);
+  border-radius: var(--radius-sm);
+}
+.automation-project .flow-workflow > div[data-active="true"] > span {
+  box-shadow: 0 0 0 4px
+    color-mix(in srgb, var(--color-primary) 15%, transparent);
+}
+.interior-project .interior-hero {
+  min-height: 31rem;
+  color: var(--art-graphite);
+  background: var(--art-fog);
+  align-items: start;
+}
+.interior-project .interior-hero::after {
+  display: none;
+}
+.interior-project .interior-hero > img {
+  inset: auto 4% 5% auto;
+  width: 47%;
+  height: 61%;
+  border-radius: 50% 50% 0 0;
+  object-position: 68%;
+}
+.interior-project .interior-hero-copy {
+  padding: var(--spacing-6) var(--spacing-5);
+  max-width: 88%;
+}
+.interior-project .interior-hero h3 {
+  font-size: clamp(1.85rem, 6.5cqi, 3.25rem);
+  line-height: 1;
+  margin-block: var(--spacing-4);
+}
+.interior-project .interior-hero-copy p {
+  max-width: 25ch;
+  font-size: 0.75rem;
+}
+.interior-project .interior-hero-copy button {
+  border-color: currentColor;
+  background: var(--art-graphite);
+  color: var(--color-paper);
+  padding: var(--spacing-3) var(--spacing-4);
+  border: 0;
+  position: relative;
+  z-index: 3;
+}
+.interior-project .interior-hero > .project-sculpture {
+  position: absolute;
+  width: 46%;
+  bottom: 0;
+  left: 1%;
+  z-index: 0;
+}
+.interior-project .interior-hero-note {
+  color: var(--color-paper);
+  background: var(--art-graphite);
+  right: 4%;
+  bottom: 5%;
+  padding: var(--spacing-2);
+  font-size: 0.625rem;
+}
+.interior-project .interior-wordmark {
+  letter-spacing: -0.08em;
+  font-weight: 500;
+}
+.interior-project .interior-project-card {
+  border-radius: 0;
+}
+
+@container (width < 360px) {
+  .signature-copy {
+    padding: var(--spacing-4);
+  }
+  .signature-copy p {
+    max-width: 23ch;
+  }
+  .signature-copy h3 {
+    font-size: 1.75rem;
+  }
+  .signature--mini-apps .signature-copy h3 {
+    font-size: 1.8rem;
+  }
+  .project-signature > .project-sculpture {
+    width: 63%;
+    right: -14%;
+    top: -4%;
+  }
+  .signature--bots > .project-sculpture {
+    right: -9%;
+  }
+  .signature--training .signature-copy p {
+    max-width: 22ch;
+  }
+  .signature--training .signature-copy {
+    max-width: 90%;
+  }
+  .interior-project .interior-hero {
+    min-height: 33rem;
+  }
+  .interior-project .interior-hero > img {
+    width: 56%;
+    height: 47%;
+  }
+  .interior-project .interior-hero > .project-sculpture {
+    width: 55%;
+    bottom: -1%;
+    left: -3%;
+  }
+  .interior-project .interior-hero-copy {
+    max-width: 100%;
+    padding: var(--spacing-5) var(--spacing-4);
+  }
+  .interior-project .interior-hero h3 {
+    font-size: clamp(1.65rem, 7cqi, 1.9rem);
+  }
+  .interior-project .interior-hero-copy p {
+    max-width: 30ch;
+  }
+}
+@keyframes sculpture-arrive {
+  from {
+    opacity: 0;
+    transform: translateY(8%) rotate(15deg) scale(0.9);
+  }
+  65% {
+    opacity: 1;
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) rotate(0) scale(1);
+  }
+}
+@keyframes sculpture-process {
+  from {
+    transform: rotate(-8deg) translateY(2%);
+  }
+  to {
+    transform: rotate(10deg) translateY(-4%);
+  }
+}
+@supports (animation-timeline: view()) {
+  .concept-cover {
+    view-timeline-name: --project-cover;
+    view-timeline-axis: block;
+  }
+  .concept-cover .sculpture-object {
+    animation: sculpture-arrive 1ms linear both;
+    animation-timeline: --project-cover;
+    animation-range: entry 0% cover 55%;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .project-sculpture,
+  .sculpture-object {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+  .concept-title,
+  .concept-proof,
+  .concept-coffee-photo {
+    transition: none !important;
+  }
+}

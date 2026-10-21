@@ -4,15 +4,15 @@ import { Monogram } from "@/components/brand/Logo";
 import { CtaBand } from "@/components/site/CtaBand";
 import { buttonClass } from "@/components/ui/Button";
 import { CheckIcon } from "@/components/ui/Icons2";
-import { venues } from "@/content/services";
+import { Marquee } from "@/components/site/Marquee";
 import { company, prepayment } from "@/content/legal";
 
 export const metadata: Metadata = {
   title: "Обо мне",
-  description: "Ильяс Азелханов, Алматы. Делаю сайты, ботов, Mini Apps и AI-автоматизацию — и учу команды с этим работать.",
+  description: "Ильяс Азелханов, Алматы. Делаю сайты, ботов, Mini Apps и AI-автоматизацию - и учу команды с этим работать.",
 };
 
-// TODO(ilyas): фото и 3–5 предложений о себе своими словами. До этого — только подтверждённые факты.
+// TODO(ilyas): фото и 3–5 предложений о себе своими словами. До этого - только подтверждённые факты.
 const principles = [
   "Цены открыто на сайте",
   `Договор с ${company.name}, предоплата ${prepayment}`,
@@ -27,9 +27,9 @@ export default function AboutPage() {
         <div className="col-span-4 flex flex-col gap-5 md:col-span-8 lg:col-span-7">
           <h1 className="t-display-xl">Ильяс Азелханов</h1>
           <p className="measure t-body-l">
-            Алматы. Делаю сайты, ботов, Mini Apps и AI-автоматизацию — и учу команды этим пользоваться.
+            Алматы. Делаю сайты, ботов, Mini Apps и AI-автоматизацию - и учу команды этим пользоваться.
           </p>
-          <p className="t-body-m text-slate">В соцсетях и Telegram — Elazart.</p>
+          <p className="t-body-m text-slate">В соцсетях и Telegram - Elazart.</p>
           <div className="flex flex-wrap gap-3">
             <Link href="/work/" data-fx="press" className={buttonClass("primary")}>
               Посмотреть работы
@@ -58,16 +58,7 @@ export default function AboutPage() {
         </ul>
       </section>
 
-      <section className="flex flex-col gap-5">
-        <h2 className="t-display-l">Работал с</h2>
-        <ul className="flex flex-wrap gap-2">
-          {venues.map((v) => (
-            <li key={v.name} className="rounded-pill bg-mist px-4 py-2 t-label">
-              {v.name}
-            </li>
-          ))}
-        </ul>
-      </section>
+      <Marquee compact />
 
       <CtaBand />
     </main>

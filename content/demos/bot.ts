@@ -1,66 +1,30 @@
-// Демо-сценарий бота (SPEC.md §8): вымышленный автосервис. Все данные выдуманы для примера.
-export type BotStep = {
-  id: string;
-  /** Сообщения бота; {service} и {time} подставляются из ответов */
-  say: string[];
-  buttons: { label: string; next: string; set?: { service?: string; time?: string } }[];
-};
-
-export const botName = "Автосервис «Демо»";
+// Демонстрационный автосервис. Название, цены и контакт - пример.
+export const botName = "PITSTOP · запись в сервис";
 export const demoPhone = "+7 700 000 00 00";
 
-export const botSteps: Record<string, BotStep> = {
-  start: {
-    id: "start",
-    say: ["Здравствуйте! Я бот автосервиса «Демо». Чем помочь?"],
-    buttons: [
-      { label: "Записаться", next: "service" },
-      { label: "Цены", next: "prices" },
-      { label: "Адрес и часы", next: "address" },
-    ],
+export const botServices = [
+  {
+    id: "oil",
+    name: "Замена масла",
+    price: 8000,
+    duration: "45 минут",
+    note: "Масло и фильтр оплачиваются отдельно",
   },
-  prices: {
-    id: "prices",
-    say: ["Замена масла — от 8 000 ₸\nДиагностика — от 5 000 ₸\nШиномонтаж — от 6 000 ₸", "Цены выдуманы для демо."],
-    buttons: [
-      { label: "Записаться", next: "service" },
-      { label: "Назад", next: "start" },
-    ],
+  {
+    id: "diagnostic",
+    name: "Диагностика",
+    price: 5000,
+    duration: "30 минут",
+    note: "Проверка ошибок и основных систем",
   },
-  address: {
-    id: "address",
-    say: ["Алматы, ул. Примерная, 1. Работаем каждый день с 9:00 до 20:00.", "Адрес выдуман для демо."],
-    buttons: [
-      { label: "Записаться", next: "service" },
-      { label: "Назад", next: "start" },
-    ],
+  {
+    id: "tires",
+    name: "Шиномонтаж",
+    price: 6000,
+    duration: "60 минут",
+    note: "Снятие, установка и балансировка",
   },
-  service: {
-    id: "service",
-    say: ["Что нужно сделать?"],
-    buttons: [
-      { label: "Замена масла", next: "time", set: { service: "Замена масла" } },
-      { label: "Диагностика", next: "time", set: { service: "Диагностика" } },
-      { label: "Шиномонтаж", next: "time", set: { service: "Шиномонтаж" } },
-    ],
-  },
-  time: {
-    id: "time",
-    say: ["Когда вам удобно?"],
-    buttons: [
-      { label: "Сегодня, 17:00", next: "phone", set: { time: "Сегодня, 17:00" } },
-      { label: "Завтра, 11:00", next: "phone", set: { time: "Завтра, 11:00" } },
-      { label: "Завтра, 15:00", next: "phone", set: { time: "Завтра, 15:00" } },
-    ],
-  },
-  phone: {
-    id: "phone",
-    say: ["Оставьте номер — менеджер подтвердит запись."],
-    buttons: [{ label: "Отправить номер (демо)", next: "done" }],
-  },
-  done: {
-    id: "done",
-    say: ["Готово! Вы записаны: {service}, {time}.", "Менеджер уже получил заявку и подтвердит запись."],
-    buttons: [{ label: "Начать заново", next: "start" }],
-  },
-};
+] as const;
+export const botSlots = ["10:00", "11:30", "14:00", "15:30", "17:00"];
+export const botIntro =
+  "Здравствуйте! Помогу записаться в PITSTOP: выберите услугу и удобное время. Здесь же можно посмотреть цены и статус записи.";

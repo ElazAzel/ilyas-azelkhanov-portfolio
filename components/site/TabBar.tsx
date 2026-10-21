@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-// Bottom tab bar — only when the site is installed to the home screen (display-mode: standalone), CLAUDE.md → Mobile / PWA.
+// Bottom tab bar - only when the site is installed to the home screen (display-mode: standalone), CLAUDE.md → Mobile / PWA.
 const TABS = [
   { href: "/", label: "Главная", icon: "M4 11 12 4l8 7v9h-5v-6H9v6H4z" },
   { href: "/#services", label: "Услуги", icon: "M4 5h7v7H4zM13 5h7v7h-7zM4 14h7v6H4zM13 14h7v6h-7z" },

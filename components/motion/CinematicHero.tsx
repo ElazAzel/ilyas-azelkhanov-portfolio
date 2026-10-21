@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef } from "react";
+import { Fragment, useEffect, useRef } from "react";
 import { MagneticLink } from "@/components/motion/MagneticLink";
 import { buttonClass } from "@/components/ui/Button";
 import { WhatsAppIcon } from "@/components/ui/Icons";
@@ -31,7 +31,8 @@ function loadOrder(): number[] {
     }
   };
   for (let i = 0; i <= INTRO_END; i++) add(i);
-  for (const step of [8, 4, 2, 1]) for (let i = INTRO_END; i < N; i += step) add(i);
+  for (const step of [8, 4, 2, 1])
+    for (let i = INTRO_END; i < N; i += step) add(i);
   add(N - 1);
   return out;
 }
@@ -62,13 +63,20 @@ export function CinematicHero() {
     const ctx = cv.getContext("2d");
     if (!ctx) return;
     const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const chapters = Array.from(section.querySelectorAll<HTMLElement>("[data-ch]"));
+    const chapters = Array.from(
+      section.querySelectorAll<HTMLElement>("[data-ch]"),
+    );
 
     let portrait = innerWidth / innerHeight < 1;
     let images: (HTMLImageElement | null)[] = [];
     let drawn = -1;
     let cssW = 0;
     let cssH = 0;
+    let introStart: number | null = null;
+    let lastTick = 0;
+    let lastFrom = -1;
+    let lastTo = -1;
+    let lastMix = -1;
 
     const load = () => {
       images = new Array(N).fill(null);
@@ -88,20 +96,19 @@ export function CinematicHero() {
           .then(() => {
             if (set !== portrait) return;
             images[i] = img;
-            if (Math.abs(i - frame) < Math.abs(drawn - frame) || drawn < 0) draw(true);
+            if (
+              !reduced &&
+              introStart === null &&
+              images.slice(0, INTRO_END + 1).every(Boolean)
+            )
+              introStart = performance.now();
+            draw(true);
+            if (!reduced) kick();
           })
           .catch(() => {})
           .finally(next);
       };
       for (let j = 0; j < 6; j++) next();
-    };
-
-    const nearest = (i: number) => {
-      for (let d = 0; d < N; d++) {
-        if (images[i - d]) return i - d;
-        if (images[i + d]) return i + d;
-      }
-      return -1;
     };
 
     const resize = () => {
@@ -111,6 +118,8 @@ export function CinematicHero() {
       cssH = r.height;
       cv.width = Math.round(r.width * dpr);
       cv.height = Math.round(r.height * dpr);
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = "high";
       const nowPortrait = innerWidth / innerHeight < 1;
       if (nowPortrait !== portrait) {
         portrait = nowPortrait;
@@ -121,16 +130,48 @@ export function CinematicHero() {
 
     let frame = reduced ? N - 1 : 0;
     const draw = (force = false) => {
-      const i = nearest(Math.round(frame));
-      if (i < 0 || (i === drawn && !force)) return;
-      const img = images[i];
-      if (!img) return;
-      const s = Math.max(cv.width / img.naturalWidth, cv.height / img.naturalHeight);
-      const w = img.naturalWidth * s;
-      const h = img.naturalHeight * s;
-      ctx.drawImage(img, (cv.width - w) / 2, (cv.height - h) / 2, w, h);
+      // Blend the surrounding frames, retaining the fractional scroll position.
+      // Rounded frame indices looked like a 16 fps sequence during the intro.
+      let from = Math.floor(frame),
+        to = Math.ceil(frame);
+      while (from >= 0 && !images[from]) from--;
+      while (to < N && !images[to]) to++;
+      if (from < 0) from = to;
+      if (to >= N) to = from;
+      if (from < 0 || from >= N) return;
+      const mix = from === to ? 0 : clamp((frame - from) / (to - from));
+      if (
+        !force &&
+        from === lastFrom &&
+        to === lastTo &&
+        Math.abs(mix - lastMix) < 0.001
+      )
+        return;
+      const paint = (image: HTMLImageElement, alpha: number) => {
+        const scale = Math.max(
+          cv.width / image.naturalWidth,
+          cv.height / image.naturalHeight,
+        );
+        const width = image.naturalWidth * scale,
+          height = image.naturalHeight * scale;
+        ctx.globalAlpha = alpha;
+        ctx.drawImage(
+          image,
+          (cv.width - width) / 2,
+          (cv.height - height) / 2,
+          width,
+          height,
+        );
+      };
+      ctx.clearRect(0, 0, cv.width, cv.height);
+      paint(images[from]!, 1);
+      if (to !== from && mix > 0) paint(images[to]!, mix);
+      ctx.globalAlpha = 1;
       if (drawn < 0) cv.dataset.ready = "";
-      drawn = i;
+      drawn = frame;
+      lastFrom = from;
+      lastTo = to;
+      lastMix = mix;
     };
 
     const ro = new ResizeObserver(resize);
@@ -139,7 +180,6 @@ export function CinematicHero() {
     if (reduced) return () => ro.disconnect();
 
     // Scroll → progress → frame. The intro assembles the mark once, then scroll takes over.
-    const start = performance.now();
     let progress = 0;
     let active = -1;
     let raf = 0;
@@ -167,42 +207,73 @@ export function CinematicHero() {
         el.style.transform = `translate3d(0, ${shift.toFixed(1)}px, 0)`;
         el.inert = o < 0.5;
       });
-      const now = marks.reduce((best, m, idx) => (Math.abs(p - m) < Math.abs(p - (marks[best] ?? 0)) ? idx : best), 0);
+      const now = marks.reduce(
+        (best, m, idx) =>
+          Math.abs(p - m) < Math.abs(p - (marks[best] ?? 0)) ? idx : best,
+        0,
+      );
       if (active >= 0 && now !== active) {
         play("step");
         haptic("light");
       }
       active = now;
+      section.dataset.chapter = String(now);
       if (bar.current) bar.current.style.transform = `scaleX(${p.toFixed(4)})`;
     };
 
     const tick = (now: number) => {
       raf = 0;
-      const intro = clamp((now - start) / INTRO_MS);
+      const delta = Math.max(1, Math.min(64, now - lastTick));
+      lastTick = now;
+      const intro =
+        introStart === null ? 0 : clamp((now - introStart) / INTRO_MS);
       const scrollFrame = INTRO_END + progress * (N - 1 - INTRO_END);
-      const target = intro < 1 ? Math.max(ease(intro) * INTRO_END, progress > 0 ? scrollFrame * ease(intro) : 0) : scrollFrame;
-      frame += (target - frame) * (intro < 1 ? 1 : 0.2);
+      const target =
+        intro < 1
+          ? Math.max(
+              ease(intro) * INTRO_END,
+              progress > 0 ? scrollFrame * ease(intro) : 0,
+            )
+          : scrollFrame;
+      frame += (target - frame) * (intro < 1 ? 1 : 1 - Math.exp(-delta / 105));
       if (Math.abs(target - frame) < 0.02) frame = target;
       draw();
-      tiltX += (tTiltX - tiltX) * 0.08;
-      tiltY += (tTiltY - tiltY) * 0.08;
+      const follow = 1 - Math.exp(-delta / 180);
+      tiltX += (tTiltX - tiltX) * follow;
+      tiltY += (tTiltY - tiltY) * follow;
       wrap.style.transform = `perspective(1400px) rotateX(${(-tiltY * 4).toFixed(2)}deg) rotateY(${(tiltX * 5).toFixed(2)}deg) scale(1.06)`;
-      chapterState(progress);
-      const moving = intro < 1 || frame !== target || Math.abs(tTiltX - tiltX) > 0.002 || Math.abs(tTiltY - tiltY) > 0.002;
+      chapterState(clamp((frame - INTRO_END) / (N - 1 - INTRO_END)));
+      const moving =
+        intro < 1 ||
+        frame !== target ||
+        Math.abs(tTiltX - tiltX) > 0.002 ||
+        Math.abs(tTiltY - tiltY) > 0.002;
       if (moving && visible) raf = requestAnimationFrame(tick);
     };
     const kick = () => {
-      if (!raf && visible) raf = requestAnimationFrame(tick);
+      if (!raf && visible) {
+        lastTick = performance.now();
+        raf = requestAnimationFrame(tick);
+      }
     };
 
     const onScroll = () => {
       readProgress();
+      if (progress > 0.001) introStart = performance.now() - INTRO_MS;
       kick();
     };
     const onPointer = (e: PointerEvent) => {
       if (e.pointerType !== "mouse") return;
       tTiltX = (e.clientX / innerWidth) * 2 - 1;
       tTiltY = (e.clientY / innerHeight) * 2 - 1;
+      section.style.setProperty(
+        "--hero-x",
+        `${((e.clientX / innerWidth) * 100).toFixed(1)}%`,
+      );
+      section.style.setProperty(
+        "--hero-y",
+        `${((e.clientY / innerHeight) * 100).toFixed(1)}%`,
+      );
       kick();
     };
     const onOrient = (e: DeviceOrientationEvent) => {
@@ -211,14 +282,23 @@ export function CinematicHero() {
       tTiltY = clamp((e.beta - 45) / 30, -1, 1);
       kick();
     };
-    type OrientationCtor = typeof DeviceOrientationEvent & { requestPermission?: () => Promise<"granted" | "denied"> };
-    const Orient = typeof DeviceOrientationEvent !== "undefined" ? (DeviceOrientationEvent as OrientationCtor) : null;
+    type OrientationCtor = typeof DeviceOrientationEvent & {
+      requestPermission?: () => Promise<"granted" | "denied">;
+    };
+    const Orient =
+      typeof DeviceOrientationEvent !== "undefined"
+        ? (DeviceOrientationEvent as OrientationCtor)
+        : null;
     let gyro = false;
     const enableGyro = async () => {
       if (gyro || !Orient) return;
       gyro = true;
       try {
-        if (typeof Orient.requestPermission === "function" && (await Orient.requestPermission()) !== "granted") return;
+        if (
+          typeof Orient.requestPermission === "function" &&
+          (await Orient.requestPermission()) !== "granted"
+        )
+          return;
         addEventListener("deviceorientation", onOrient);
       } catch {
         gyro = false;
@@ -226,7 +306,8 @@ export function CinematicHero() {
     };
     // Android gives orientation without asking; iOS asks after the first tap on the scene.
     const coarse = matchMedia("(pointer: coarse)").matches;
-    if (coarse && Orient && typeof Orient.requestPermission !== "function") void enableGyro();
+    if (coarse && Orient && typeof Orient.requestPermission !== "function")
+      void enableGyro();
     const onTap = () => void enableGyro();
 
     const io = new IntersectionObserver(([e]) => {
@@ -256,23 +337,57 @@ export function CinematicHero() {
   return (
     <section ref={root} aria-label="Сделаю и научу" className="cine">
       <div className="cine-stage">
+        <div className="cine-atmosphere" aria-hidden="true">
+          <i />
+          <i />
+        </div>
         <div ref={media} className="cine-media" aria-hidden="true">
           <picture>
             <source media="(max-aspect-ratio: 1/1)" srcSet={src(true, 0)} />
-            <img src={src(false, 0)} alt="" fetchPriority="high" className="cine-poster" />
+            <img
+              src={src(false, 0)}
+              alt=""
+              fetchPriority="high"
+              className="cine-poster"
+            />
           </picture>
           <canvas ref={canvas} className="cine-canvas" />
         </div>
 
+        <div className="container-page cine-meta">
+          <p>
+            {heroIntro.author}
+            <span>{heroIntro.disciplines}</span>
+          </p>
+          <p className="cine-location">
+            <span className="cine-live" aria-hidden="true" />
+            {heroIntro.location}
+          </p>
+        </div>
         <div className="container-page cine-copy">
           <div data-ch className="cine-ch">
-            <h1 className="t-display-xl">{heroIntro.title}</h1>
-            <p className="measure t-body-l text-ink-inverse">{heroIntro.lead}</p>
+            <h1 className="t-display-xl cine-title">
+              {heroIntro.title.split(" ").map((word, index) => (
+                <Fragment key={word}>
+                  {index > 0 && " "}
+                  <span className="cine-title-window">
+                    <span className="cine-title-word">{word}</span>
+                  </span>
+                </Fragment>
+              ))}
+            </h1>
+            <p className="measure t-body-l text-ink-inverse">
+              {heroIntro.lead}
+            </p>
             <div className="flex flex-wrap items-center gap-3">
               <MagneticLink href={hello} icon={<WhatsAppIcon />}>
                 Написать в WhatsApp
               </MagneticLink>
-              <Link href="/brief/" data-fx="press" className={buttonClass("inverse")}>
+              <Link
+                href="/brief/"
+                data-fx="press"
+                className={buttonClass("inverse")}
+              >
                 Оценить задачу
               </Link>
             </div>
@@ -285,8 +400,14 @@ export function CinematicHero() {
           {heroChapters.map((c) => (
             <div key={c.title} data-ch className="cine-ch">
               <h2 className="t-display-xl">{c.title}</h2>
-              <p className="t-price">{formatPrice(packagesFor(c.service)[0]!)}</p>
-              <Link href={c.href} data-fx="press" className={buttonClass("inverse")}>
+              <p className="t-price">
+                {formatPrice(packagesFor(c.service)[0]!)}
+              </p>
+              <Link
+                href={c.href}
+                data-fx="press"
+                className={buttonClass("inverse")}
+              >
                 Смотреть демо
               </Link>
             </div>
@@ -296,11 +417,19 @@ export function CinematicHero() {
             <h2 className="t-display-xl">{heroOutro.title}</h2>
             <p className="t-body-m text-slate-inverse">{contacts.sla}</p>
             <div className="flex flex-wrap items-center gap-3">
-              <a href={hello} data-fx="press" className={buttonClass("primary")}>
+              <a
+                href={hello}
+                data-fx="press"
+                className={buttonClass("primary")}
+              >
                 <WhatsAppIcon />
                 Написать в WhatsApp
               </a>
-              <Link href="/brief/" data-fx="press" className={buttonClass("inverse")}>
+              <Link
+                href="/brief/"
+                data-fx="press"
+                className={buttonClass("inverse")}
+              >
                 Оценить задачу
               </Link>
             </div>

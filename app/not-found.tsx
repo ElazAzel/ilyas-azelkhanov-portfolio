@@ -8,7 +8,7 @@ export default function NotFound() {
     <main className="container-page grid-page min-h-[calc(100svh-var(--spacing-8))] content-center gap-y-7 py-7">
       <div className="col-span-4 flex flex-col gap-5 md:col-span-8 lg:col-span-6">
         <h1 className="t-display-xl">Такой страницы нет</h1>
-        <p className="t-body-l text-slate">Возможно, ссылка устарела. Нажмите на знак справа — а потом выберите, куда пойти дальше.</p>
+        <p className="t-body-l text-slate">Возможно, ссылка устарела. Нажмите на знак справа - а потом выберите, куда пойти дальше.</p>
         <div className="flex flex-wrap gap-3">
           <Link href="/" data-fx="press" className={buttonClass("primary")}>
             На главную

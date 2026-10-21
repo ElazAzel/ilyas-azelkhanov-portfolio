@@ -3,13 +3,14 @@
 import { createServer } from "node:http";
 import { readFile, mkdir, stat } from "node:fs/promises";
 import { extname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { chromium } from "playwright";
 
-const OUT = new URL("../out/", import.meta.url).pathname;
-const SHOTS = new URL("../shots/", import.meta.url).pathname;
+const OUT = fileURLToPath(new URL("../out/", import.meta.url));
+const SHOTS = fileURLToPath(new URL("../shots/", import.meta.url));
 const ROUTES = process.argv.slice(2).length ? process.argv.slice(2) : ["/", "/style/"];
 const WIDTHS = [375, 768, 1440];
-const TYPES = { ".html": "text/html; charset=utf-8", ".css": "text/css", ".js": "text/javascript", ".woff2": "font/woff2", ".svg": "image/svg+xml", ".png": "image/png", ".json": "application/json", ".txt": "text/plain" };
+const TYPES = { ".html": "text/html; charset=utf-8", ".css": "text/css", ".js": "text/javascript", ".woff2": "font/woff2", ".svg": "image/svg+xml", ".png": "image/png", ".webp": "image/webp", ".jpg": "image/jpeg", ".json": "application/json", ".txt": "text/plain" };
 
 const server = createServer(async (req, res) => {
   let p = join(OUT, decodeURIComponent(new URL(req.url, "http://x").pathname));
@@ -23,7 +24,7 @@ const server = createServer(async (req, res) => {
 });
 await new Promise((r) => server.listen(4173, r));
 
-const browser = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH ?? "/opt/pw-browsers/chromium" });
+const browser = await chromium.launch(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : process.platform === "win32" ? { channel: "msedge" } : {});
 await mkdir(SHOTS, { recursive: true });
 for (const route of ROUTES) {
   for (const width of WIDTHS) {
@@ -33,6 +34,13 @@ for (const route of ROUTES) {
     page.on("console", (m) => m.type() === "error" && errors.push(m.text()));
     await page.goto(`http://localhost:4173${route}`, { waitUntil: "networkidle" });
     await page.evaluate(() => document.fonts.ready);
+    // Full-page captures must load images below the viewport as well.
+    await page.evaluate(async () => {
+      await Promise.all(Array.from(document.images, async (img) => {
+        img.loading = "eager";
+        await img.decode().catch(() => {});
+      }));
+    });
     await page.waitForTimeout(Number(process.env.SHOTS_WAIT ?? 0));
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
     const name = (route.replace(/\//g, "_").replace(/^_|_$/g, "") || "home") + `-${width}.png`;

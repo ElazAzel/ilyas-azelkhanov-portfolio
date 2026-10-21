@@ -6,6 +6,8 @@ const basePath = process.env.NEXT_PUBLIC_BASE_PATH || undefined;
 
 const nextConfig: NextConfig = {
   output: "export",
+  // The app's preview opens the loopback IP; Next 16.4 guards dev assets by origin.
+  allowedDevOrigins: ["127.0.0.1"],
   basePath,
   trailingSlash: true,
   reactStrictMode: true,

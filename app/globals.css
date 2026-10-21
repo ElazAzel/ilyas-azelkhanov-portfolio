@@ -1,5 +1,11 @@
 @import "tailwindcss";
 @import "./tokens.css";
+@import "./showcase.css";
+@import "./demos.css";
+/* Experimental identities of the five demo projects. */
+@import "./project-art.css";
+/* Live project selector and scene transitions. */
+@import "./playground.css";
 
 /* Motion tokens (DESIGN.md → Layout → Motion). */
 :root {
@@ -215,7 +221,7 @@
   }
 }
 
-/* The phone turns toward you as it scrolls in, then leans away — the 3D depth of a real object. */
+/* The phone turns toward you as it scrolls in, then leans away - the 3D depth of a real object. */
 @keyframes px-tilt {
   from {
     transform: perspective(1200px) rotateX(28deg) rotateY(-14deg) translate3d(0, 14%, 0);
@@ -390,7 +396,7 @@ html.xray [data-xray]:not(.night-stage)::before {
   }
 }
 
-/* S1 — cinematic hero: sticky stage, the canvas is scrubbed by scroll (components/motion/CinematicHero.tsx) */
+/* S1 - cinematic hero: sticky stage, the canvas is scrubbed by scroll (components/motion/CinematicHero.tsx) */
 .cine {
   position: relative;
   height: 320svh;
@@ -419,6 +425,7 @@ html.xray [data-xray]:not(.night-stage)::before {
 }
 .cine-canvas {
   opacity: 0;
+  transition: opacity var(--dur-base) var(--ease-out);
 }
 .cine-canvas[data-ready] {
   opacity: 1;

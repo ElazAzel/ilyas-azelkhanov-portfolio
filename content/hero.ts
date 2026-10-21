@@ -9,12 +9,15 @@ export const heroFrames = {
 };
 
 export const heroIntro = {
+  author: "Ильяс Азелханов",
+  disciplines: "Разработка · AI · Обучение",
+  location: "Алматы, Казахстан",
   title: "Сделаю и научу",
   lead: "Сайты, Telegram-боты, Mini Apps и AI-автоматизация. И учу команды этим пользоваться.",
   hint: "Листайте вниз",
 };
 
-/** `at` — scroll progress 0…1 where the chapter is fully visible. Price comes from content/pricing.ts. */
+/** `at` - scroll progress 0…1 where the chapter is fully visible. Price comes from content/pricing.ts. */
 export const heroChapters: { at: number; title: string; service: ServiceId; href: string }[] = [
   { at: 0.3, title: "Сайты и лендинги", service: "websites", href: "/services/websites/" },
   { at: 0.54, title: "Боты и Mini Apps", service: "bots", href: "/services/bots/" },

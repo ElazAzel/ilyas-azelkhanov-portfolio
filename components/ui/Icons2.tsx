@@ -1,7 +1,7 @@
 // Interface icons drawn on a 24-unit grid, stroke = currentColor.
 type Props = { className?: string };
 
-/** Chevron used inside round "open" buttons — the visible tap target on cards. */
+/** Chevron used inside round "open" buttons - the visible tap target on cards. */
 export function OpenIcon({ className = "size-5" }: Props) {
   return (
     <svg viewBox="0 0 24 24" className={className} aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">

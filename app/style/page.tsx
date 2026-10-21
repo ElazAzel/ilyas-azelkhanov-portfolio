@@ -137,7 +137,7 @@ export default function StylePage() {
 
       <Section
         title="Цвета"
-        note="Пять ролей и производные для состояний. Синий — только заливка, фокус и выбранное; синий текст всегда primary-deep."
+        note="Пять ролей и производные для состояний. Синий - только заливка, фокус и выбранное; синий текст всегда primary-deep."
       >
         <div className="grid-page gap-y-6">
           <ul className="col-span-4 flex flex-col lg:col-span-6">
@@ -155,7 +155,7 @@ export default function StylePage() {
 
       <Section
         title="Типографика"
-        note="Geologica — шрифт wordmark, на весь текст. Fira Code — только код и измеренные метрики. Размеры плавно растут от 375 до 1440 px."
+        note="Geologica - шрифт wordmark, на весь текст. Fira Code - только код и измеренные метрики. Размеры плавно растут от 375 до 1440 px."
       >
         <ul className="flex flex-col gap-6">
           {TYPE.map((t) => (
@@ -171,7 +171,7 @@ export default function StylePage() {
         </ul>
       </Section>
 
-      <Section title="Кнопки и ссылки" note="Синее — скруглённое, ink — острое, как в логотипе. Одна синяя кнопка на экран.">
+      <Section title="Кнопки и ссылки" note="Синее - скруглённое, ink - острое, как в логотипе. Одна синяя кнопка на экран.">
         <div className="flex flex-col gap-6">
           <div className="flex flex-wrap items-center gap-4">
             <ButtonLink href={whatsappLink("Здравствуйте, Ильяс! Хочу обсудить задачу.")} icon={<WhatsAppIcon />}>
@@ -196,7 +196,7 @@ export default function StylePage() {
         </div>
       </Section>
 
-      <Section title="Поля и выбор" note="Поля 48 px. Выбор в брифе — чипы; выбранный — синяя pill.">
+      <Section title="Поля и выбор" note="Поля 48 px. Выбор в брифе - чипы; выбранный - синяя pill.">
         <div className="grid-page gap-y-7">
           <div className="col-span-4 flex flex-col gap-5 lg:col-span-5">
             <Field label="Как к вам обращаться" placeholder="Например, Айгерим" hint="Имя попадёт только в текст сообщения." />
@@ -209,7 +209,7 @@ export default function StylePage() {
         </div>
       </Section>
 
-      <Section title="Пакеты" note="Цены из content/pricing.ts. Пакеты одной услуги — разной ширины по содержанию, не сетка одинаковых карточек.">
+      <Section title="Пакеты" note="Цены из content/pricing.ts. Пакеты одной услуги - разной ширины по содержанию, не сетка одинаковых карточек.">
         <div className="grid-page gap-y-5">
           <div className="col-span-4 lg:col-span-5">
             <PackageCard
@@ -263,7 +263,7 @@ export default function StylePage() {
             </DemoStage>
             <div className="flex items-center gap-5 rounded-md bg-mist p-5">
               <Monogram className="w-8 shrink-0" />
-              <p className="t-body-s text-slate">Монограмма — исходник для 3D-сцены на главной.</p>
+              <p className="t-body-s text-slate">Монограмма - исходник для 3D-сцены на главной.</p>
             </div>
           </div>
         </div>
@@ -271,7 +271,7 @@ export default function StylePage() {
 
       <Section
         title="Индекс услуг"
-        note="Сигнатура: при наведении у цены прорисовывается синий штрих под углом монограммы, 39.5°. На телефоне его нет — там нет наведения."
+        note="Сигнатура: при наведении у цены прорисовывается синий штрих под углом монограммы, 39.5°. На телефоне его нет - там нет наведения."
       >
         <ServiceIndex
           rows={[
@@ -297,7 +297,7 @@ export default function StylePage() {
 
       <Section
         title="Переход между страницами"
-        note="View Transitions: общий элемент (заголовок услуги) переезжает со страницы на страницу. Без поддержки в браузере — обычная смена."
+        note="View Transitions: общий элемент (заголовок услуги) переезжает со страницы на страницу. Без поддержки в браузере - обычная смена."
       >
         <ViewTransitionDemo />
       </Section>

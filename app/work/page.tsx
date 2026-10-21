@@ -17,8 +17,8 @@ export const metadata: Metadata = {
 const demos: { id: ServiceId; href: string; title: string; text: string }[] = [
   { id: "bots", href: "/services/bots/", title: "Бот автосервиса", text: "Запись клиента в три нажатия, заявка сразу у менеджера." },
   { id: "mini-apps", href: "/services/mini-apps/", title: "Mini App кофейни", text: "Меню, корзина и заказ внутри Telegram, экран бариста." },
-  { id: "automation", href: "/services/automation/", title: "Заявка без ручной работы", text: "Одна заявка вручную и с ИИ — сравните время." },
-  { id: "websites", href: "/services/websites/", title: "Рентген сайта", text: "Устройство и реальная скорость страницы в вашем браузере." },
+  { id: "automation", href: "/services/automation/", title: "Заявка без ручной работы", text: "Одна заявка вручную и с ИИ - сравните время." },
+  { id: "websites", href: "/services/websites/", title: "Сайт интерьерной студии", text: "Каталог, фильтр проектов и конструктор брифа. Рентген сайта - во второй вкладке." },
   { id: "training", href: "/training/", title: "Конструктор тренинга", text: "Программа и цена для вашей команды за минуту." },
 ];
 
@@ -65,7 +65,7 @@ export default function WorkPage() {
               <li>3D-знак, который вращается при прокрутке</li>
               <li>Пять живых демо вместо скриншотов</li>
               <li>Звук и вибрация в ответ на нажатия</li>
-              <li>Версия для ИИ-поиска —{" "}
+              <li>Версия для ИИ-поиска -{" "}
                 <a href={`${BASE_PATH}/llms.txt`} className="link">llms.txt</a>
               </li>
             </ul>

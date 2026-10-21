@@ -4,9 +4,10 @@ import { formatPrice, packagesFor } from "@/content/pricing";
 import { services } from "@/content/services";
 import { ServiceVisual } from "@/components/visuals/ServiceVisual";
 import { OpenIcon } from "@/components/ui/Icons2";
+import { Spotlight } from "@/components/motion/Spotlight";
 
 // Bento of the five services: different sizes, each with its own live scene,
-// and a clear round button — the whole card is the link.
+// and a clear round button - the whole card is the link.
 const LAYOUT: Record<string, string> = {
   websites: "lg:col-span-7",
   "mini-apps": "lg:col-span-5",
@@ -23,11 +24,12 @@ export function ServiceGrid() {
         const wide = s.id === "training";
         return (
           <li key={s.id} className={`${LAYOUT[s.id]} ${wide ? "md:col-span-2" : ""}`}>
+            <Spotlight className={`service-spotlight service-spotlight--${s.id}`}>
             <Link
               href={s.href}
               data-fx="hover"
-              className={`group flex h-full flex-col gap-5 rounded-md p-5 transition-colors duration-[var(--dur-quick)] lg:p-6 ${
-                wide ? "night-stage bg-night text-ink-inverse lg:flex-row lg:items-center" : "bg-mist text-ink hover:bg-line"
+              className={`service-card group flex h-full flex-col gap-5 rounded-md p-5 transition-colors duration-[var(--dur-quick)] lg:p-6 ${
+                wide ? "night-stage bg-night text-ink-inverse lg:flex-row lg:items-center" : "bg-mist text-ink"
               }`}
             >
               <ServiceVisual
@@ -54,6 +56,7 @@ export function ServiceGrid() {
                 </div>
               </div>
             </Link>
+            </Spotlight>
           </li>
         );
       })}

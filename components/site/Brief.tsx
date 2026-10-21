@@ -37,9 +37,9 @@ export function Brief() {
     if (!service || !pkg) return "";
     return [
       "Здравствуйте, Ильяс! Бриф с сайта:",
-      `— Услуга: ${service.title}`,
-      `— Объём: ${pkg.title} (${formatPrice(pkg).replace(/ /g, " ")})`,
-      `— Сроки: ${st.timing ?? "—"}`,
+      `- Услуга: ${service.title}`,
+      `- Объём: ${pkg.title} (${formatPrice(pkg).replace(/ /g, " ")})`,
+      `- Сроки: ${st.timing ?? "-"}`,
       "Хочу обсудить задачу.",
     ].join("\n");
   }, [service, pkg, st.timing]);
@@ -142,7 +142,7 @@ export function Brief() {
                 <button type="button" data-fx="press" onClick={openTelegram} className={buttonClass("primary", "self-start")}>
                   <TelegramIcon /> Скопировать и открыть Telegram
                 </button>
-                {copied ? <p className="t-body-s text-slate-inverse">Текст скопирован — вставьте его в чат с {contacts.telegram.display}.</p> : null}
+                {copied ? <p className="t-body-s text-slate-inverse">Текст скопирован - вставьте его в чат с {contacts.telegram.display}.</p> : null}
               </>
             ) : (
               <a href={whatsappLink(message)} data-fx="press" className={buttonClass("primary", "self-start")}>

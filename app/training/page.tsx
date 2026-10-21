@@ -33,7 +33,7 @@ export default function TrainingPage() {
           <p className="t-body-m text-slate-inverse">Один на один, в вашем темпе.</p>
           <p className="t-price">{formatPrice(personal)}</p>
           <p className="t-body-s text-slate-inverse">
-            {personal.term}. Условия — в{" "}
+            {personal.term}. Условия - в{" "}
             <Link href="/offer/" className="underline underline-offset-4">
               публичной оферте
             </Link>
@@ -43,7 +43,7 @@ export default function TrainingPage() {
             <WhatsAppIcon /> Записаться
           </a>
         </article>
-        <p className="col-span-4 t-body-s text-slate md:col-span-8 lg:col-span-12">Курс для студентов — в подготовке.</p>
+        <p className="col-span-4 t-body-s text-slate md:col-span-8 lg:col-span-12">Курс для студентов - в подготовке.</p>
       </section>
       <section className="flex flex-col gap-5">
         <h2 className="t-display-l">Работал с</h2>
