@@ -1,0 +1,198 @@
+/* Brief, contact status, command palette, next-service link. Tokens only; transform/opacity motion. */
+
+/* ---------- Brief ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  .brief-step .brief-option {
+    animation: brief-in var(--dur-base) var(--ease-out) calc(var(--i, 0) * 45ms) both;
+  }
+  .brief-fill {
+    animation: brief-fill var(--dur-base) var(--ease-out) both;
+  }
+  .brief-stamp {
+    animation: brief-stamp 420ms var(--ease-out) both;
+  }
+  .brief-bubble {
+    animation: v-msg-in var(--dur-base) var(--ease-out) both;
+  }
+}
+@keyframes brief-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, var(--spacing-3), 0);
+  }
+}
+@keyframes brief-fill {
+  from {
+    opacity: 0;
+    transform: translate3d(var(--spacing-3), 0, 0);
+  }
+}
+@keyframes brief-stamp {
+  0% {
+    opacity: 0;
+    transform: scale(1.6);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(0.94);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Receipt: a torn paper edge at the bottom, cut with a mask (no images). */
+.brief-receipt {
+  --tooth: var(--spacing-3);
+  padding-bottom: calc(var(--spacing-6) + var(--tooth));
+  mask:
+    linear-gradient(#000 0 0) top / 100% calc(100% - var(--tooth)) no-repeat,
+    radial-gradient(circle at 50% 100%, transparent calc(var(--tooth) / 2), #000 calc(var(--tooth) / 2 + 0.5px)) bottom / var(--tooth) var(--tooth) repeat-x;
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+}
+.brief-receipt.is-done {
+  box-shadow: inset 0 0 0 var(--stroke) var(--color-primary);
+}
+
+/* ---------- Contact: availability ---------- */
+.avail-track {
+  position: relative;
+  height: var(--spacing-2);
+  border-radius: var(--radius-pill);
+  background: var(--color-line-inverse);
+}
+.avail-window {
+  position: absolute;
+  inset-block: 0;
+  left: calc(10 / 24 * 100%);
+  width: calc(9 / 24 * 100%);
+  border-radius: var(--radius-pill);
+  background: var(--color-primary);
+}
+.avail-now {
+  position: absolute;
+  top: 50%;
+  left: var(--now, 50%);
+  width: var(--spacing-4);
+  height: var(--spacing-4);
+  border-radius: var(--radius-pill);
+  background: var(--color-ink-inverse);
+  box-shadow: 0 0 0 var(--spacing-1) var(--color-night);
+  transform: translate(-50%, -50%);
+}
+.avail-pulse {
+  position: relative;
+  display: inline-block;
+  width: var(--spacing-3);
+  height: var(--spacing-3);
+  border-radius: var(--radius-pill);
+  background: var(--avail-color, var(--color-primary-light));
+}
+@media (prefers-reduced-motion: no-preference) {
+  .avail-pulse[data-on]::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: inherit;
+    animation: avail-ping 1.8s var(--ease-out) infinite;
+  }
+}
+@keyframes avail-ping {
+  to {
+    opacity: 0;
+    transform: scale(2.6);
+  }
+}
+
+/* ---------- Command palette ---------- */
+.cmdk-dialog {
+  width: min(40rem, calc(100vw - 2 * var(--gutter)));
+  max-height: min(36rem, calc(100dvh - 2 * var(--spacing-8)));
+  margin: var(--spacing-9) auto auto;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-md);
+  background: var(--color-paper);
+  color: var(--color-ink);
+  box-shadow: var(--shadow-phone);
+  overflow: hidden;
+}
+.cmdk-dialog::backdrop {
+  background: color-mix(in srgb, var(--color-night) 55%, transparent);
+  backdrop-filter: blur(var(--spacing-1));
+}
+@media (prefers-reduced-motion: no-preference) {
+  .cmdk-dialog[open] {
+    animation: cmdk-in var(--dur-base) var(--ease-out) both;
+  }
+  .cmdk-dialog[open]::backdrop {
+    animation: cmdk-fade var(--dur-base) var(--ease-out) both;
+  }
+}
+@keyframes cmdk-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, calc(-1 * var(--spacing-4)), 0) scale(0.98);
+  }
+}
+@keyframes cmdk-fade {
+  from {
+    opacity: 0;
+  }
+}
+.cmdk-item[aria-selected="true"] {
+  background: var(--color-mist);
+}
+.cmdk-item[aria-selected="true"] .cmdk-enter {
+  opacity: 1;
+}
+.cmdk-enter {
+  opacity: 0;
+}
+/* In the components layer so responsive utilities (max-lg:hidden) can still hide it. */
+@layer components {
+  .kbd {
+    display: inline-grid;
+    place-items: center;
+    min-width: var(--spacing-5);
+    height: var(--spacing-5);
+    padding-inline: var(--spacing-1);
+    border-radius: var(--radius-xs);
+    background: var(--color-mist);
+    color: var(--color-slate);
+    font: 500 0.75rem/1 var(--font-mono);
+  }
+}
+
+/* ---------- Next service ---------- */
+.next-service {
+  position: relative;
+  overflow: hidden;
+}
+.next-service-title {
+  transition: transform var(--dur-base) var(--ease-out);
+}
+.next-service:hover .next-service-title {
+  transform: translate3d(var(--spacing-3), 0, 0);
+}
+.next-service-visual {
+  transition: transform var(--dur-scene, 700ms) var(--ease-out);
+}
+.next-service:hover .next-service-visual {
+  transform: scale(1.04) rotate(-2deg);
+}
+
+/* ---------- Facts (home / about) ---------- */
+.fact-num {
+  font-feature-settings: "tnum" 1, "lnum" 1;
+}
+.cmdk-dialog input:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+/* Pages that are themselves the contact form do not need the floating button. */
+body:has(main[data-no-float]) .floating-contact {
+  display: none;
+}
