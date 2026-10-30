@@ -205,12 +205,13 @@ async function checkTraining(page, width, edgeCases = false) {
       "Офлайн в Алматы",
     );
     await page.screenshot({ path: `shots/training-mobile/edit-${width}.png` });
-    // The contact shortcut returns when the constructor leaves the viewport.
+    // Direct contact actions replace the floating shortcut near the final CTA.
     await page.locator("main > section").last().scrollIntoViewIfNeeded();
     await waitFor(
-      () => page.locator(".floating-contact").isVisible(),
-      "contact shortcut returns outside constructor",
+      () => page.evaluate(() => !document.documentElement.hasAttribute("data-training-in-view") && document.querySelector(".floating-contact")?.hasAttribute("data-contact-visible")),
+      "constructor has left the viewport and direct contact actions are available",
     );
+    assert.equal(await page.locator(".floating-contact").isVisible(), false, "floating shortcut must not cover direct contact actions");
   }
   assert.equal(
     await page.evaluate(

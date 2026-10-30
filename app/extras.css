@@ -135,6 +135,28 @@
 /* ---------- Facts (home / about) ---------- */
 .fact-num {
   font-feature-settings: "tnum" 1, "lnum" 1;
+  display: inline-flex;
+  align-items: baseline;
+  white-space: nowrap;
+}
+.fact-unit {
+  margin-left: 0.18em;
+  font-size: 0.65em;
+  letter-spacing: normal;
+}
+.fact-label { min-width: 0; overflow-wrap: anywhere; }
+.floating-contact[data-contact-visible] { visibility: hidden; pointer-events: none; }
+.cta-contact-mobile { display: none; }
+@media (max-width: 767px) {
+  .facts-grid { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto; }
+  .facts-grid > li { grid-column: auto; }
+  .fact-tile { flex-direction: row; align-items: center; gap: var(--spacing-3); padding: var(--spacing-4); min-height: var(--spacing-9); }
+  .fact-num { flex-shrink: 0; font-size: clamp(2rem, 9vw, 2.75rem); line-height: 1.1; }
+  .fact-label { font-size: 0.9375rem; text-align: right; }
+  .cta-actions { width: 100%; }
+  .cta-actions a { width: 100%; min-width: 0; justify-content: center; padding-inline: var(--spacing-4); white-space: nowrap; font-size: 0.875rem; }
+  .cta-contact-desktop { display: none; }
+  .cta-contact-mobile { display: inline; }
 }
 .cmdk-dialog input:focus-visible {
   outline: none;

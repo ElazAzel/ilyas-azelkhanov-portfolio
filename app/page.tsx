@@ -14,7 +14,7 @@ export default function Home() {
   return (
     <>
       <SmoothScroll />
-      <main className="flex flex-col gap-9 pb-8 lg:gap-10">
+      <main className="flex flex-col gap-7 pb-6 md:gap-9 lg:gap-10 lg:pb-8">
         <CinematicHero />
 
         <Marquee />

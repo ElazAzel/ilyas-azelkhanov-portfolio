@@ -13,13 +13,16 @@ export function CtaBand({ ask = "Здравствуйте, Ильяс! Хочу 
       <div className="cta-content flex flex-col gap-6">
         <p className="t-label">{homeCopy.ctaLead}</p>
         <h2 className="max-w-[16ch] t-display-xl whitespace-pre-line">{homeCopy.cta}</h2>
-        <div className="flex flex-wrap gap-3">
+        <div className="cta-actions flex flex-wrap gap-3">
           <a
             href={whatsappLink(ask)}
+            aria-label={`WhatsApp ${contacts.whatsapp.display}`}
             data-fx="press"
             className="inline-flex min-h-7 items-center gap-2 rounded-pill bg-paper px-5 py-3 t-label text-ink transition-transform active:scale-98"
           >
-            <WhatsAppIcon /> WhatsApp {contacts.whatsapp.display}
+            <WhatsAppIcon />
+            <span className="cta-contact-desktop">WhatsApp {contacts.whatsapp.display}</span>
+            <span className="cta-contact-mobile">Написать в WhatsApp</span>
           </a>
           <a
             href={telegramLink()}

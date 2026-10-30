@@ -118,6 +118,51 @@ try {
       "Decorative meshes should be external SVGs",
     );
     await page.screenshot({ path: `shots/release/home-${width}.png` });
+    if (width < 768) assert.equal(await page.locator('.floating-contact').isVisible(), true, 'Contact shortcut is available away from demos and contact sections');
+    await page.locator(".facts-grid").first().scrollIntoViewIfNeeded();
+    for (const label of await page.locator(".fact-label").all()) {
+      assert.equal(
+        await label.evaluate((e) => e.scrollWidth > e.clientWidth + 1),
+        false,
+        `Clipped fact label ${width}`,
+      );
+    }
+    const cta = page.locator(".cta-band").last();
+    await cta.scrollIntoViewIfNeeded();
+    if (width < 768) {
+      await page.waitForFunction(() =>
+        document
+          .querySelector(".floating-contact")
+          ?.hasAttribute("data-contact-visible"),
+      );
+      assert.equal(
+        await page.locator(".floating-contact").isVisible(),
+        false,
+        "Floating contact covers CTA",
+      );
+      for (const link of await cta.locator(".cta-actions a").all()) {
+        assert.equal(
+          await link.evaluate((e) => e.scrollWidth > e.clientWidth + 1),
+          false,
+          "CTA button overflows",
+        );
+        assert(
+          (await link.boundingBox()).height <= 50,
+          "Contact button should fit on one line",
+        );
+      }
+      const card = await cta.boundingBox(),
+        footer = await page.locator("footer").boundingBox();
+      assert(
+        footer.y - card.y - card.height <= 80,
+        "Excessive empty gap before footer",
+      );
+    }
+    await page
+      .locator(".facts-grid")
+      .first()
+      .screenshot({ path: `shots/release/facts-${width}.png` });
+    await cta.screenshot({ path: `shots/release/cta-${width}.png` });
     await page.goto(site.url + "/brief/", { waitUntil: "networkidle" });
     // On a fresh document, the first Tab must reach the bypass link.
     await page.keyboard.press("Tab");
