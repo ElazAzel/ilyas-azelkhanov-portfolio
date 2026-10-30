@@ -1,29 +1,15 @@
+import { serveExport } from "./lib/export-preview.mjs";
 // Screenshots of every exported route at 375 / 768 / 1440 into ./shots.
 // Usage: pnpm build && pnpm shots [route ...]
-import { createServer } from "node:http";
-import { readFile, mkdir, stat } from "node:fs/promises";
-import { extname, join } from "node:path";
+import { mkdir } from "node:fs/promises";
+import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { chromium } from "playwright";
 
-const OUT = fileURLToPath(new URL("../out/", import.meta.url));
 const SHOTS = fileURLToPath(new URL("../shots/", import.meta.url));
 const ROUTES = process.argv.slice(2).length ? process.argv.slice(2) : ["/", "/style/"];
 const WIDTHS = [375, 768, 1440];
-const TYPES = { ".html": "text/html; charset=utf-8", ".css": "text/css", ".js": "text/javascript", ".woff2": "font/woff2", ".svg": "image/svg+xml", ".png": "image/png", ".webp": "image/webp", ".jpg": "image/jpeg", ".json": "application/json", ".txt": "text/plain" };
-
-const server = createServer(async (req, res) => {
-  let p = join(OUT, decodeURIComponent(new URL(req.url, "http://x").pathname));
-  try {
-    if ((await stat(p)).isDirectory()) p = join(p, "index.html");
-    res.writeHead(200, { "content-type": TYPES[extname(p)] ?? "application/octet-stream" });
-    res.end(await readFile(p));
-  } catch {
-    res.writeHead(404).end("not found");
-  }
-});
-await new Promise((r) => server.listen(4173, r));
-
+const site = await serveExport();
 const browser = await chromium.launch(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : process.platform === "win32" ? { channel: "msedge" } : {});
 await mkdir(SHOTS, { recursive: true });
 for (const route of ROUTES) {
@@ -32,7 +18,7 @@ for (const route of ROUTES) {
     const errors = [];
     page.on("pageerror", (e) => errors.push(e.message));
     page.on("console", (m) => m.type() === "error" && errors.push(m.text()));
-    await page.goto(`http://localhost:4173${route}`, { waitUntil: "networkidle" });
+    await page.goto(site.url + route, { waitUntil: "networkidle" });
     await page.evaluate(() => document.fonts.ready);
     // Full-page captures must load images below the viewport as well.
     await page.evaluate(async () => {
@@ -50,4 +36,4 @@ for (const route of ROUTES) {
   }
 }
 await browser.close();
-server.close();
+await site.close();

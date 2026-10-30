@@ -1,39 +1,8 @@
+import { serveExport } from "./lib/export-preview.mjs";
 import assert from "node:assert/strict";
 import { chromium } from "playwright";
-import { createServer } from "node:http";
-import { mkdir, readFile, stat } from "node:fs/promises";
-import { join, extname } from "node:path";
-import { fileURLToPath } from "node:url";
-const root = fileURLToPath(new URL("../out/", import.meta.url));
-const mime = {
-  ".html": "text/html",
-  ".css": "text/css",
-  ".js": "text/javascript",
-  ".svg": "image/svg+xml",
-  ".png": "image/png",
-  ".jpg": "image/jpeg",
-  ".webp": "image/webp",
-  ".woff2": "font/woff2",
-  ".txt": "text/plain",
-};
-const server = process.env.DEMO_TEST_URL
-  ? null
-  : createServer(async (req, res) => {
-      try {
-        let path = join(
-          root,
-          decodeURIComponent(new URL(req.url, "http://x").pathname),
-        );
-        if ((await stat(path)).isDirectory()) path = join(path, "index.html");
-        res.writeHead(200, {
-          "content-type": mime[extname(path)] || "application/octet-stream",
-        });
-        res.end(await readFile(path));
-      } catch {
-        res.writeHead(404).end();
-      }
-    });
-if (server) await new Promise((r) => server.listen(4175, "127.0.0.1", r));
+import { mkdir, readFile } from "node:fs/promises";
+const site = process.env.DEMO_TEST_URL ? null : await serveExport();
 const browser = await chromium.launch(
   process.env.CHROMIUM_PATH
     ? { executablePath: process.env.CHROMIUM_PATH }
@@ -42,7 +11,7 @@ const browser = await chromium.launch(
       : {},
 );
 const errors = [];
-const base = process.env.DEMO_TEST_URL || "http://127.0.0.1:4175";
+const base = process.env.DEMO_TEST_URL || site.url;
 async function waitFor(check, message) {
   for (let i = 0; i < 60; i++) {
     if (await check()) return;
@@ -452,5 +421,5 @@ try {
   console.log("PASS no JavaScript errors");
 } finally {
   await browser.close();
-  server?.close();
+  await site?.close();
 }

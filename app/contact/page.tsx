@@ -1,3 +1,4 @@
+import { canonicalFor } from "@/lib/metadata";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ParticleMonogram } from "@/components/motion/ParticleMonogram";
@@ -5,7 +6,7 @@ import { TelegramIcon, WhatsAppIcon } from "@/components/ui/Icons";
 import { CopyButton } from "@/components/ui/CopyButton";
 import { contacts, telegramLink, whatsappLink } from "@/content/contacts";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = { alternates: canonicalFor("/contact/"),
   title: "Контакты",
   description: "WhatsApp и Telegram. Алматы, работаю по всему Казахстану онлайн.",
 };

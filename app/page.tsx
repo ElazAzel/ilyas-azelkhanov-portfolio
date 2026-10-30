@@ -1,3 +1,4 @@
+import { canonicalFor } from "@/lib/metadata";
 import { CinematicHero } from "@/components/motion/CinematicHero";
 import { SmoothScroll } from "@/components/motion/SmoothScroll";
 import { ServiceGrid } from "@/components/site/ServiceGrid";
@@ -6,6 +7,8 @@ import { CtaBand } from "@/components/site/CtaBand";
 import { ProjectPlayground } from "@/components/site/ProjectPlayground";
 import { AboutStrip } from "@/components/site/AboutStrip";
 import { homeCopy } from "@/content/home";
+
+export const metadata = { alternates: canonicalFor("/") };
 
 export default function Home() {
   return (

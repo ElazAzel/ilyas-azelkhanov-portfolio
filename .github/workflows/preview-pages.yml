@@ -28,10 +28,15 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm typecheck
+      - run: pnpm design:lint
       - run: pnpm build
         env:
           NEXT_PUBLIC_BASE_PATH: /ilyas-azelkhanov-portfolio
           NEXT_PUBLIC_SITE_URL: https://elazazel.github.io/ilyas-azelkhanov-portfolio
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm check:release
+      - run: pnpm check:playground
+      - run: pnpm check:showcase
       # Pages must be switched on once by the repo owner: Settings → Pages → Source: GitHub Actions.
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3

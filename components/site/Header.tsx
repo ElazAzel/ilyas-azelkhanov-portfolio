@@ -54,7 +54,7 @@ export function Header() {
         className="site-header sticky top-0 z-30 bg-paper"
       >
         <div className="container-page flex min-h-8 items-center justify-between gap-3 md:gap-5">
-          <Link href="/" aria-label="Azelkhanov - на главную" data-fx="select">
+          <Link href="/" aria-label="Azelkhanov - на главную" data-fx="select" className="site-brand shrink-0">
             <LogoInline className="inline-flex items-center gap-3" />
           </Link>
           <nav

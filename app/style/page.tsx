@@ -1,3 +1,4 @@
+import { canonicalFor } from "@/lib/metadata";
 import type { Metadata } from "next";
 import Link from "next/link";
 import type { ReactNode } from "react";
@@ -16,7 +17,7 @@ import { DemoStage } from "@/components/ui/DemoStage";
 import { ServiceIndex } from "@/components/style/ServiceIndex";
 import { ViewTransitionDemo } from "@/components/style/ViewTransitionDemo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = { alternates: canonicalFor("/style/"),
   title: "Дизайн-система",
   robots: { index: false },
 };

@@ -1,8 +1,9 @@
+import { canonicalFor } from "@/lib/metadata";
 import type { Metadata } from "next";
 import { Brief } from "@/components/site/Brief";
 import { briefCopy } from "@/content/brief";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = { alternates: canonicalFor("/brief/"),
   title: "Оценить задачу",
   description: "Четыре вопроса - и ориентир по цене. Ответ в WhatsApp или Telegram.",
 };

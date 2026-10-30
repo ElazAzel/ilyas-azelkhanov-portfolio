@@ -1,3 +1,4 @@
+import { canonicalFor } from "@/lib/metadata";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ServiceVisual } from "@/components/visuals/ServiceVisual";
@@ -9,7 +10,7 @@ import { ownBot } from "@/content/demos/miniapp";
 import type { ServiceId } from "@/content/pricing";
 import { BASE_PATH } from "@/lib/base-path";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = { alternates: canonicalFor("/work/"),
   title: "Работы",
   description: "Собственные продукты и живые демо, которые можно потрогать прямо на сайте.",
 };

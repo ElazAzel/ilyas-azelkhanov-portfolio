@@ -27,9 +27,9 @@ export const metadata: Metadata = {
     siteName: "Azelkhanov",
     title: "Azelkhanov - сделаю и научу",
     description,
-    images: [{ url: `${BASE_PATH}/og.png`, width: 1200, height: 630, alt: "Azelkhanov - сделаю и научу" }],
+    images: [{ url: `${SITE_URL}/og.png`, width: 1200, height: 630, alt: "Azelkhanov - сделаю и научу" }],
   },
-  twitter: { card: "summary_large_image", images: [`${BASE_PATH}/og.png`] },
+  twitter: { card: "summary_large_image", images: [`${SITE_URL}/og.png`] },
 };
 
 // schema.org: the person behind the services and what he offers (SPEC.md §10).
@@ -62,6 +62,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <style dangerouslySetInnerHTML={{ __html: FONT_FACES.replaceAll('url("/fonts/', `url("${BASE_PATH}/fonts/`) }} />
       </head>
       <body>
+        <a className="skip-link" href="#main-content">К основному содержимому</a>
         <Header />
         <PageTransition>{children}</PageTransition>
         <Footer />

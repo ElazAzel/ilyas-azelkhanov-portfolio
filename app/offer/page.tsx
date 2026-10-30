@@ -1,10 +1,11 @@
+import { canonicalFor } from "@/lib/metadata";
 import type { Metadata } from "next";
 import { LegalPage } from "@/components/site/LegalPage";
 import { company, freeRescheduleHours, nonRefundable, prepayment, refundDays } from "@/content/legal";
 import { contacts } from "@/content/contacts";
 import { formatPrice, packages } from "@/content/pricing";
 
-export const metadata: Metadata = { title: "Публичная оферта", description: `Оферта ${company.name} на личные тренинги по ИИ.` };
+export const metadata: Metadata = { alternates: canonicalFor("/offer/"), title: "Публичная оферта", description: `Оферта ${company.name} на личные тренинги по ИИ.` };
 
 const personal = packages.find((p) => p.id === "training-personal")!;
 

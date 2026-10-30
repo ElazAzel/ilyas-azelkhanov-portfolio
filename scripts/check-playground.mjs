@@ -1,36 +1,7 @@
+import { serveExport } from "./lib/export-preview.mjs";
 import assert from "node:assert/strict";
-import { createServer } from "node:http";
-import { readFile, stat } from "node:fs/promises";
-import { join, extname } from "node:path";
 import { chromium } from "playwright";
-const mime = {
-  ".html": "text/html",
-  ".css": "text/css",
-  ".js": "text/javascript",
-  ".txt": "text/plain",
-  ".svg": "image/svg+xml",
-  ".png": "image/png",
-  ".jpg": "image/jpeg",
-  ".webp": "image/webp",
-  ".woff2": "font/woff2",
-};
-const server = createServer(async (req, res) => {
-  try {
-    let p = join(
-      process.cwd(),
-      "out",
-      decodeURIComponent(new URL(req.url, "http://local").pathname),
-    );
-    if ((await stat(p)).isDirectory()) p = join(p, "index.html");
-    res.writeHead(200, {
-      "content-type": mime[extname(p)] || "application/octet-stream",
-    });
-    res.end(await readFile(p));
-  } catch {
-    res.writeHead(404).end();
-  }
-});
-await new Promise((r) => server.listen(4180, "127.0.0.1", r));
+const site = await serveExport();
 const browser = await chromium.launch(
   process.platform === "win32" ? { channel: "msedge" } : {},
 );
@@ -42,7 +13,7 @@ try {
       reducedMotion: "reduce",
     });
     page.on("pageerror", (e) => errors.push(e.message));
-    await page.goto("http://127.0.0.1:4180/", { waitUntil: "networkidle" });
+    await page.goto(site.url + "/", { waitUntil: "networkidle" });
     const stage = page.locator("#playground");
     await stage.scrollIntoViewIfNeeded();
     const coffee = stage.locator("#project-panel-mini-apps");
@@ -116,7 +87,7 @@ try {
     assert.equal(await stage.locator("#project-panel-bots").isVisible(), true);
     assert.equal(
       await stage.locator(".playground-stage-header a").getAttribute("href"),
-      "/services/bots/",
+      site.basePath + "/services/bots/",
     );
     assert.equal(
       await stage
@@ -132,7 +103,7 @@ try {
   for (const width of [375, 1440]) {
     const page = await browser.newPage({ viewport: { width, height: 900 } });
     page.on("pageerror", (e) => errors.push(e.message));
-    await page.goto("http://127.0.0.1:4180/", { waitUntil: "networkidle" });
+    await page.goto(site.url + "/", { waitUntil: "networkidle" });
     assert.equal(
       await page.locator(".cine-steps, [data-cine-step]").count(),
       0,
@@ -168,7 +139,7 @@ try {
   console.log("PASS playground and cinematic scene: no JavaScript errors");
 } finally {
   await browser.close();
-  server.close();
+  await site.close();
 }
 async function stageShot(page, width) {
   const stage = page.locator("#playground");

@@ -7,11 +7,12 @@
   "scripts": {
     "dev": "next dev",
     "preview": "node scripts/preview.mjs",
-    "build": "next build && node scripts/finalize-export.mjs",
+    "build": "node scripts/generate-sculptures.mjs && next build && node scripts/finalize-export.mjs",
     "typecheck": "tsc --noEmit",
     "lint": "tsc --noEmit",
     "tokens": "node scripts/tokens.mjs",
-    "design:lint": "design.md lint DESIGN.md",
+    "design:lint": "node scripts/design-lint.mjs",
+    "check:release": "node scripts/check-release.mjs",
     "fonts": "python3 scripts/fonts.py",
     "shots": "node scripts/shots.mjs",
     "check:showcase": "node scripts/check-showcase.mjs",
@@ -29,7 +30,6 @@
   "devDependencies": {
     "@fontsource-variable/geologica": "^5.3.0",
     "@fontsource-variable/onest": "^5.3.1",
-    "@google/design.md": "0.4.0",
     "@tailwindcss/postcss": "4.3.3",
     "@types/node": "^26.6.5",
     "@types/react": "19.3.0",

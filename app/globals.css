@@ -9,6 +9,28 @@
 /* Brief receipt, command palette, next-service link. */
 @import "./extras.css";
 
+/* Keyboard users can bypass the repeated site header. */
+.skip-link {
+  position: fixed;
+  z-index: 100;
+  top: var(--spacing-3);
+  left: var(--spacing-4);
+  min-height: var(--spacing-7);
+  padding: var(--spacing-3) var(--spacing-4);
+  border-radius: var(--radius-sm);
+  background: var(--color-paper);
+  color: var(--color-ink);
+  transform: translateY(-200%);
+}
+.skip-link:focus {
+  transform: none;
+}
+@media (max-width: 374px) {
+  .site-brand .t-heading-s {
+    display: none;
+  }
+}
+
 /* Motion tokens (DESIGN.md → Layout → Motion). */
 :root {
   --dur-press: 120ms;

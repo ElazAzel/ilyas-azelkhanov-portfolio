@@ -1,13 +1,7 @@
+import { serveExport } from "./lib/export-preview.mjs";
 import assert from 'node:assert/strict';
 import {chromium} from 'playwright';
-import {createServer} from 'node:http';
-import {readFile,stat} from 'node:fs/promises';
-import {join,extname} from 'node:path';
-import {fileURLToPath} from 'node:url';
-const root=fileURLToPath(new URL('../out/',import.meta.url));
-const mime={'.html':'text/html','.css':'text/css','.js':'text/javascript','.svg':'image/svg+xml','.png':'image/png','.jpg':'image/jpeg','.webp':'image/webp','.woff2':'font/woff2','.txt':'text/plain'};
-const server=createServer(async(req,res)=>{try{let p=join(root,decodeURIComponent(new URL(req.url,'http://x').pathname));if((await stat(p)).isDirectory())p=join(p,'index.html');res.writeHead(200,{'content-type':mime[extname(p)]||'application/octet-stream'});res.end(await readFile(p));}catch{res.writeHead(404).end();}});
-await new Promise(r=>server.listen(4174,'127.0.0.1',r));
+const site=await serveExport();
 const browser=await chromium.launch(process.env.CHROMIUM_PATH ? {executablePath:process.env.CHROMIUM_PATH} : process.platform==='win32' ? {channel:'msedge'} : {});
 const errors=[];const missing=new Set();
 try{
@@ -15,7 +9,7 @@ try{
   const page=await browser.newPage({viewport:{width,height:900}});
   page.on('pageerror',e=>errors.push(e.message));
   page.on('response',r=>{if(r.status()>=400)missing.add(new URL(r.url()).pathname)});
-  await page.goto('http://127.0.0.1:4174/',{waitUntil:'networkidle'});
+  await page.goto(site.url + '/' ,{waitUntil:'networkidle'});
   await page.locator('.partners').scrollIntoViewIfNeeded();
   await page.getByRole('button',{name:'Остановить движение'}).click();
   assert.equal(await page.locator('.partners-track').first().evaluate(e=>getComputedStyle(e).animationPlayState),'paused');
@@ -34,7 +28,7 @@ try{
   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,`overflow at ${width}`);
   await page.locator('.partners-directory summary').click();
   await page.locator('.partners').screenshot({path:`shots/partners-${width}-verified.png`});
-  await page.goto('http://127.0.0.1:4174/about/',{waitUntil:'networkidle'});
+  await page.goto(site.url + '/about/',{waitUntil:'networkidle'});
   assert.equal(await page.locator('.partners-grid > li').count(),29);
   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,`about overflow ${width}`);
   await page.getByRole('link',{name:'Посмотреть работы',exact:true}).click();
@@ -44,7 +38,7 @@ try{
   await page.close();
  }
  const page=await browser.newPage({viewport:{width:375,height:900},reducedMotion:'reduce'});
- await page.goto('http://127.0.0.1:4174/',{waitUntil:'networkidle'});
+ await page.goto(site.url + '/' ,{waitUntil:'networkidle'});
  assert.equal(await page.locator('.partners-track').first().evaluate(e=>getComputedStyle(e).animationName),'none');
  assert.equal(await page.locator('.cine-stage').evaluate(e=>getComputedStyle(e).position),'relative');
  assert.equal(await page.locator('.partners-pause').isVisible(),false);
@@ -54,7 +48,7 @@ try{
  for(const width of [320,390,768]){
   const mobile=await browser.newPage({viewport:{width,height:740},reducedMotion:'reduce'});
   mobile.on('pageerror',e=>errors.push(e.message));
-  await mobile.goto('http://127.0.0.1:4174/',{waitUntil:'networkidle'});
+  await mobile.goto(site.url + '/' ,{waitUntil:'networkidle'});
   const toggle=mobile.getByRole('button',{name:'Открыть меню',exact:true});
   const menu=mobile.locator('#site-menu');
   await toggle.click();
@@ -105,7 +99,7 @@ try{
    return Reflect.apply(paint,this,args);
   };
  });
- await story.goto('http://127.0.0.1:4174/',{waitUntil:'networkidle'});
+ await story.goto(site.url + '/' ,{waitUntil:'networkidle'});
  await story.waitForFunction(()=>window.__heroPaints.some(p=>p.alpha>0&&p.alpha<1));
  await story.waitForFunction(()=>window.__heroPaints.some(p=>p.frame>=29));
  await story.evaluate(()=>{
@@ -126,7 +120,7 @@ try{
  console.log('PASS logo: blended intro, forward/reverse scroll, matching chapters, pointer, portrait resize');
  const fallback=await browser.newPage();
  await fallback.route('**/logos/bcc-hub.svg',r=>r.abort());
- await fallback.goto('http://127.0.0.1:4174/about/',{waitUntil:'networkidle'});
+ await fallback.goto(site.url + '/about/',{waitUntil:'networkidle'});
  await fallback.locator('.partners-grid li').first().scrollIntoViewIfNeeded();
  await fallback.locator('.partners-grid li').first().getByText('BCC HUB',{exact:true}).waitFor();
  assert.equal(await fallback.locator('.partners-grid li').first().locator('img').count(),0);
@@ -134,4 +128,4 @@ try{
  assert.equal(errors.length,0,errors.join('\n'));
  assert.equal(missing.size,0,`Missing resources: ${[...missing].join(', ')}`);
  console.log('PASS no page errors or missing assets / navigation payloads');
-}finally{await browser.close();server.close();}
+}finally{await browser.close();await site.close();}

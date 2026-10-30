@@ -1,3 +1,4 @@
+import { canonicalFor } from "@/lib/metadata";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ServicePage } from "@/components/site/ServicePage";
@@ -15,7 +16,7 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const s = services.find((x) => x.id === slug);
-  return s ? { title: s.title, description: s.offer } : {};
+  return s ? { title: s.title, description: s.offer, alternates: canonicalFor(s.href) } : {};
 }
 
 export default async function Page({ params }: { params: Promise<{ slug: string }> }) {

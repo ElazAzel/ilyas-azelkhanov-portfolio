@@ -1,3 +1,4 @@
+import { canonicalFor } from "@/lib/metadata";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Monogram } from "@/components/brand/Logo";
@@ -7,7 +8,7 @@ import { CheckIcon } from "@/components/ui/Icons2";
 import { Marquee } from "@/components/site/Marquee";
 import { company, prepayment } from "@/content/legal";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = { alternates: canonicalFor("/about/"),
   title: "Обо мне",
   description: "Ильяс Азелханов, Алматы. Делаю сайты, ботов, Mini Apps и AI-автоматизацию - и учу команды с этим работать.",
 };

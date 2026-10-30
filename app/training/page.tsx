@@ -1,3 +1,4 @@
+import { canonicalFor } from "@/lib/metadata";
 import type { Metadata } from "next";
 import { ServicePage } from "@/components/site/ServicePage";
 import { formatPrice, packages } from "@/content/pricing";
@@ -7,7 +8,7 @@ import Link from "next/link";
 import { buttonClass } from "@/components/ui/Button";
 import { WhatsAppIcon } from "@/components/ui/Icons";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = { alternates: canonicalFor("/training/"),
   title: "Тренинги по ИИ",
   description: "Корпоративные и личные тренинги по ИИ на ваших задачах. Алматы и онлайн.",
 };

@@ -62,6 +62,13 @@ export function Brief() {
   const [copied, setCopied] = useState(false);
   const [done, setDone] = useState(false);
   const receipt = useRef<HTMLDivElement>(null);
+  const question = useRef<HTMLFieldSetElement>(null);
+  const previousStep = useRef(step);
+
+  useEffect(() => {
+    if (previousStep.current !== step) question.current?.focus({ preventScroll: true });
+    previousStep.current = step;
+  }, [step]);
 
   useEffect(() => {
     const q = new URLSearchParams(window.location.search).get("service");
@@ -196,8 +203,9 @@ export function Brief() {
                   data-fx="select"
                   disabled={!reachable}
                   onClick={() => setStep(i)}
+                  aria-label={`Шаг ${i + 1}: ${q}`}
                   aria-current={i === step ? "step" : undefined}
-                  className="flex w-full flex-col gap-2 text-left disabled:opacity-40"
+                  className="flex min-h-7 w-full flex-col justify-center gap-2 text-left disabled:opacity-40"
                 >
                   <span className="brief-bar h-2 overflow-hidden rounded-pill bg-mist">
                     <span className={`block h-full origin-left rounded-pill bg-primary transition-transform duration-[var(--dur-base)] ease-[var(--ease-out)] ${done || i < step ? "scale-x-100" : i === step ? "scale-x-50" : "scale-x-0"}`} />
@@ -211,7 +219,7 @@ export function Brief() {
           })}
         </ol>
 
-        <fieldset key={step} className="brief-step flex flex-col gap-5">
+        <fieldset key={step} ref={question} tabIndex={-1} className="brief-step flex flex-col gap-5">
           <legend className="mb-5 t-display-l">
             <span className="text-slate">{step + 1}/4 </span>
             {briefSteps[step]}

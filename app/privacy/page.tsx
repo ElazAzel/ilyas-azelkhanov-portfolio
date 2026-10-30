@@ -1,9 +1,10 @@
+import { canonicalFor } from "@/lib/metadata";
 import type { Metadata } from "next";
 import { LegalPage } from "@/components/site/LegalPage";
 import { company } from "@/content/legal";
 import { contacts } from "@/content/contacts";
 
-export const metadata: Metadata = { title: "Политика конфиденциальности", description: "Какие данные собирает сайт и как с ними обращаются." };
+export const metadata: Metadata = { alternates: canonicalFor("/privacy/"), title: "Политика конфиденциальности", description: "Какие данные собирает сайт и как с ними обращаются." };
 
 export default function PrivacyPage() {
   return (

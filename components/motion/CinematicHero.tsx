@@ -38,10 +38,6 @@ function loadOrder(): number[] {
 }
 
 const clamp = (x: number, a = 0, b = 1) => Math.min(b, Math.max(a, x));
-const smooth = (a: number, b: number, x: number) => {
-  const t = clamp((x - a) / (b - a));
-  return t * t * (3 - 2 * t);
-};
 const ease = (t: number) => 1 - Math.pow(1 - t, 3);
 
 /**
@@ -182,6 +178,7 @@ export function CinematicHero() {
     // Scroll → progress → frame. The intro assembles the mark once, then scroll takes over.
     let progress = 0;
     let active = -1;
+    let chapterReveal: Animation | undefined;
     let raf = 0;
     let visible = true;
     let tiltX = 0;
@@ -197,22 +194,26 @@ export function CinematicHero() {
 
     const chapterState = (p: number) => {
       const marks = [0, ...heroChapters.map((c) => c.at), 1];
+      const now = marks.reduce(
+        (best, mark, idx) =>
+          Math.abs(p - mark) < Math.abs(p - marks[best]!) ? idx : best,
+        0,
+      );
+      // One fully readable chapter at every position. Movement gives the transition
+      // continuity without compositing two differently sized text blocks together.
       chapters.forEach((el, idx) => {
-        let o: number;
-        if (idx === 0) o = 1 - smooth(0.05, 0.14, p);
-        else if (idx === chapters.length - 1) o = smooth(0.84, 0.93, p);
-        else o = 1 - smooth(0.06, 0.13, Math.abs(p - (marks[idx] ?? 0)));
+        const o = idx === now ? 1 : 0;
         const shift = idx === 0 ? -p * 120 : (p - (marks[idx] ?? 0)) * -90;
         el.style.opacity = o.toFixed(3);
         el.style.transform = `translate3d(0, ${shift.toFixed(1)}px, 0)`;
-        el.inert = o < 0.5;
+        el.inert = idx !== now;
       });
-      const now = marks.reduce(
-        (best, m, idx) =>
-          Math.abs(p - m) < Math.abs(p - (marks[best] ?? 0)) ? idx : best,
-        0,
-      );
       if (active >= 0 && now !== active) {
+        chapterReveal?.cancel();
+        chapterReveal = chapters[now]?.animate(
+          [{ translate: "0 12px" }, { translate: "0 0" }],
+          { duration: 320, easing: "cubic-bezier(0.22, 1, 0.36, 1)" },
+        );
         play("step");
         haptic("light");
       }
@@ -324,6 +325,7 @@ export function CinematicHero() {
 
     return () => {
       cancelAnimationFrame(raf);
+      chapterReveal?.cancel();
       ro.disconnect();
       io.disconnect();
       removeEventListener("scroll", onScroll);
