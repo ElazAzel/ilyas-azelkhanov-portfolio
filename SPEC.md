@@ -219,3 +219,5 @@ TODO(ilyas):
 10. Модули тренинг-программ (темы).
 11. Ответы на FAQ, помеченные TODO.
 12. Язык тренингов: RU / KK / оба.
+13. Создать счётчик Яндекс Метрики (metrika.yandex.ru), цели: whatsapp, telegram, brief, demo-bots, demo-mini-apps, demo-websites, demo-automation, demo-training. Номер - в переменную YM_ID репозитория.
+14. Для выкладки: GitHub → Settings → Secrets and variables → Actions: секреты HOSTER_HOST, HOSTER_USER, HOSTER_PASSWORD, HOSTER_PATH и переменная SITE_URL; затем Actions → «Deploy to hoster.kz» → Run workflow.

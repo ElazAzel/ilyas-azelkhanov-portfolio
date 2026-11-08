@@ -16,8 +16,10 @@
 - Звук и вибрация: `lib/sfx.ts` (Web Audio, без файлов) и `lib/haptics.ts`; подключаются атрибутом `data-fx="press|select|hover"`, обработчик один - `components/motion/Feedback.tsx`
 - three / R3F / drei: ТОЛЬКО для одной сцены hero на главной (`components/hero-scene`), lazy, desktop + capable mobile
 - Язык сайта: только русский, без next-intl и `/kk`-страниц
-- @serwist/turbopack: manifest + offline-страница. Push, background sync: не делать
-- Деплой: GitHub Actions → `pnpm build` → SFTP на hoster.kz (доступы в GitHub Secrets). Превью - `dev.azelkhanov.kz` за basic auth. `.htaccess`: HTTPS-редирект, 404, кэш статики
+- PWA: manifest + свой `public/sw.js` (≈1 KB, без @serwist: статике хватает) - офлайн-страница `/offline`, кэш статики. Push, background sync: не делать
+- Деплой: `.github/workflows/deploy-hoster.yml` (запуск вручную) → `pnpm build` → SFTP на hoster.kz; секреты HOSTER_HOST/USER/PASSWORD/PATH, переменные SITE_URL и YM_ID. Превью сейчас - GitHub Pages (`preview-pages.yml`). `public/.htaccess`: HTTPS-редирект, 404, кэш статики
+- Метрика: `components/site/Analytics.tsx`, включается переменной NEXT_PUBLIC_YM_ID; цели whatsapp, telegram, brief, demo-<id>. Без неё на сайте нет ни счётчика, ни абзаца о Метрике в политике
+- Проверки в облачной среде: `CHROMIUM_PATH=/opt/pw-browsers/chromium pnpm check:release` (+ check:showcase, check:playground, check:demos)
 
 ## Карта сайта (источник правды - SPEC.md)
 `/` · `/services/websites` · `/services/mini-apps` · `/services/bots` · `/services/automation` · `/training` · `/work` · `/about` · `/brief` · `/contact` · `/privacy` · `/offer`
