@@ -5,7 +5,7 @@ import { mkdir } from "node:fs/promises";
 const BASE = (process.env.BASE ?? "http://localhost:3000").replace(/\/$/, "");
 const OUT = "shots/extras";
 await mkdir(OUT, { recursive: true });
-const browser = await chromium.launch(process.platform === "win32" ? { channel: "msedge" } : {});
+const browser = await chromium.launch(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : process.platform === "win32" ? { channel: "msedge" } : {});
 const fails = [];
 const ok = (cond, msg) => { if (!cond) fails.push(msg); console.log(cond ? "✓" : "✗", msg); };
 

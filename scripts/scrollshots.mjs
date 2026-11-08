@@ -4,7 +4,7 @@ const [route = "/", width = "1440", step = "700", count = "10"] = process.argv.s
 const SHOTS = process.env.OUTDIR ?? "shots/scroll";
 import { mkdir } from "node:fs/promises";
 await mkdir(SHOTS, { recursive: true });
-const browser = await chromium.launch(process.platform === "win32" ? { channel: "msedge" } : {});
+const browser = await chromium.launch(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : process.platform === "win32" ? { channel: "msedge" } : {});
 const page = await browser.newPage({ viewport: { width: +width, height: +width < 500 ? 812 : 900 }, deviceScaleFactor: 1, isMobile: +width < 500, hasTouch: +width < 500 });
 const errors = [];
 page.on("pageerror", (e) => errors.push(e.message));

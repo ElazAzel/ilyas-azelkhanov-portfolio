@@ -1,5 +1,7 @@
 "use client";
 
+import { goal } from "@/lib/analytics";
+
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { formatPrice, packagesFor, type Package, type ServiceId } from "@/content/pricing";
@@ -172,6 +174,7 @@ export function Brief() {
     } catch {
       setCopied(false);
     }
+    goal("brief");
     window.open(telegramLink(), "_blank", "noopener");
   };
 
@@ -319,7 +322,7 @@ export function Brief() {
 
           <div className="flex flex-wrap gap-3">
             {ready ? (
-              <a href={whatsappLink(message)} target="_blank" rel="noopener" data-fx="press" className={buttonClass("primary")}>
+              <a href={whatsappLink(message)} target="_blank" rel="noopener" data-fx="press" onClick={() => goal("brief")} className={buttonClass("primary")}>
                 <WhatsAppIcon /> Отправить в WhatsApp
               </a>
             ) : (

@@ -1,0 +1,42 @@
+# Production: build and upload `out/` to hoster.kz over SFTP (CLAUDE.md → Деплой).
+# Manual until the domain and hosting are ready. Needs repository secrets:
+#   HOSTER_HOST (e.g. srv123.hoster.kz), HOSTER_USER, HOSTER_PASSWORD, HOSTER_PATH (e.g. /home/user/azelkhanov.kz/public_html)
+# and repository variables: SITE_URL (https://azelkhanov.kz), YM_ID (Metrica counter, optional).
+name: Deploy to hoster.kz
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm typecheck
+      - run: pnpm design:lint
+      - run: pnpm build
+        env:
+          NEXT_PUBLIC_SITE_URL: ${{ vars.SITE_URL }}
+          NEXT_PUBLIC_YM_ID: ${{ vars.YM_ID }}
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm check:release
+      - name: Upload over SFTP (mirror, deletes stale files)
+        env:
+          HOST: ${{ secrets.HOSTER_HOST }}
+          USER: ${{ secrets.HOSTER_USER }}
+          PASS: ${{ secrets.HOSTER_PASSWORD }}
+          DEST: ${{ secrets.HOSTER_PATH }}
+        run: |
+          sudo apt-get install -y lftp
+          lftp -u "$USER","$PASS" "sftp://$HOST" -e "set sftp:auto-confirm yes; mirror -R --delete --verbose out/ $DEST/; bye"

@@ -7,6 +7,8 @@ import { FloatingContact } from "@/components/site/FloatingContact";
 import tokens from "@/content/tokens.json";
 import { BASE_PATH, SITE_URL } from "@/lib/base-path";
 import { TabBar } from "@/components/site/TabBar";
+import { Analytics } from "@/components/site/Analytics";
+import { ServiceWorker } from "@/components/site/ServiceWorker";
 import { services } from "@/content/services";
 import { contacts } from "@/content/contacts";
 import { company } from "@/content/legal";
@@ -69,6 +71,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <FloatingContact />
         <TabBar />
         <Feedback />
+        <Analytics />
+        <ServiceWorker />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </body>
     </html>

@@ -2,9 +2,7 @@ import { serveExport } from "./lib/export-preview.mjs";
 import assert from "node:assert/strict";
 import { chromium } from "playwright";
 const site = await serveExport();
-const browser = await chromium.launch(
-  process.platform === "win32" ? { channel: "msedge" } : {},
-);
+const browser = await chromium.launch(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : process.platform === "win32" ? { channel: "msedge" } : {});
 const errors = [];
 try {
   for (const width of [320, 375, 768, 1440]) {

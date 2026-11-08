@@ -1,3 +1,4 @@
+import { YM_ID } from "@/lib/analytics";
 import { canonicalFor } from "@/lib/metadata";
 import type { Metadata } from "next";
 import { LegalPage } from "@/components/site/LegalPage";
@@ -22,6 +23,12 @@ export default function PrivacyPage() {
         <p className="t-body-m">
           В браузере сохраняется одна настройка - включён ли звук интерфейса. Её можно удалить, очистив данные сайта в браузере.
         </p>
+        {YM_ID ? (
+          <p className="t-body-m">
+            Для статистики посещений работает Яндекс Метрика: она использует cookies и видит обезличенные данные - страницы, клики по кнопкам
+            мессенджеров, тип устройства и скорость загрузки. Отключить её можно в настройках браузера или блокировщиком.
+          </p>
+        ) : null}
       </section>
       <section className="flex flex-col gap-3">
         <h2 className="t-heading-m">Когда вы пишете мне</h2>
